@@ -1,12 +1,14 @@
 import "./Styles/LandingPage.css";
-import Home from "./Components/Home";
 import Navbar from "./Components/Navbar";
-import About from "./Components/About";
-import CelebrationCake from "./Components/CelebrationCake";
-import PartyPacks from "./Components/PartyPacks";
-import DesignAcake from "./Components/DesignAcake"
 import Footer from "./Components/Footer";
 import {Routes, Route} from 'react-router-dom';
+import Home from "./pages/Home";
+import CelebrationCake from "./pages/CelebrationCake";
+import PartyPacks from "./pages/PartyPacks";
+import DesignAcake from "./pages/DesignAcake";
+import About from "./pages/About";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -18,7 +20,8 @@ function App() {
         <Route path="/celebrationcakes" element={<CelebrationCake />} />
         <Route path="/partypacks" element={<PartyPacks />} />
         <Route path="/designacake" element={<DesignAcake />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <Footer />
     </>
