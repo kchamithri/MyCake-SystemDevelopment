@@ -1,6 +1,6 @@
 /* navbar */
 .navbar {
-  background-color: #E9B2B2;
+  background-color: #f5d8e8;
 }
 
 .navbar .nav-item {
@@ -8,7 +8,10 @@
   margin-left: 30px;
 }
 
-
+.form {
+  background: #B1397A;
+  background: #B1397A;
+}
 /* Home */
 #home {
   background-image: url("/public/Assets/landingpage.jpg");
