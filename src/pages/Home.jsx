@@ -21,17 +21,11 @@ const Home = () => {
                 Bake with Love
               </h1>
               <p className="lead text-center fs-4 mb-5 text-white">
-                loream is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+                "Cakes are special. Every birthday, every celebration ends with
+                something sweet, a cake, and people remember. It's all about the
+                memories."
               </p>
+
               <div className="buttons d-flex justify-content-center">
                 <button className="btn btn-light rounded-pill px-4 py-2">
                   View
@@ -41,6 +35,60 @@ const Home = () => {
           </div>
         </div>
       </section>
+      <div className="container mt-2">
+        
+          <h1 style={{color:"pink"}}>Most Popular</h1>
+        
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <img src="Assets/cake2.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">
+                This is a longer card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="Assets/cake3.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a short card.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="Assets/cake4.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">
+                This is a longer card with supporting text below as a natural
+                lead-in to additional content.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="Assets/kids.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">
+                This is a longer card with supporting text below as a natural
+                lead-in to additional content. This content is a little bit
+                longer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   );
 };
