@@ -1,7 +1,51 @@
+import { Button } from 'bootstrap';
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const Register = () => {
+
+  const navigate = useNavigate();
+
+const [user, setUser] = useState({
+  email : "",
+  password : "",
+});
+
+const handleInput = (event) =>{
+  let name = event.target.name;
+  let value = event.target.value;
+
+  setUser({...user, [name]:value});
+}
+
+const handleSubmit = async(event) =>{
+  event.preventDefault();
+  const {email, password} = user;
+  try{
+
+    const res = await fetch("/register", {
+      method : "POST",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        email, password
+      })
+    })
+    if(res.status === 400 || !res){
+      window.alert("Already used details");
+    }else{
+      window.alert("registered successfully");
+      navigate("/login")
+    }
+  }catch(error){
+    console.log(error);
+  }
+}
+
     return ( 
         <div>
                 <div className="container shadow my-5">
@@ -18,7 +62,7 @@ const Register = () => {
             </NavLink>
           </div>
           <div className="col-md-6 p-5">
-            <form>
+            <form onSubmit={handleSubmit} method="POST">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
                   Email address
@@ -29,6 +73,9 @@ const Register = () => {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   placeholder="kc@gmail.com"
+                  name='email'
+                  value={user.email}
+                  onChange={handleInput}
                 />
                 </div>
               <div class="mb-3">
@@ -39,11 +86,14 @@ const Register = () => {
                   type="password"
                   class="form-control"
                   id="exampleInputPassword1"
+                  name='password'
+                  value={user.password}
+                  onChange={handleInput}
                 />
               </div>
-              <NavLink to="/register" className="btn btn-outline-primary w-100 mt-4 rounded-pill pb-2 w-50">
-                Register
-              </NavLink>
+              <button type="submit" class="btn btn-primary w-100 mt-4 rounded-pill">
+               Register
+              </button>
             </form>
           </div>
         </div>
