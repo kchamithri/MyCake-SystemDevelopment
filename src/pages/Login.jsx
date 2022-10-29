@@ -1,7 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
+
 
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInput = (event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+
+    setUser({ ...user, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { email, password } = user;
+    try {
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      if (res.status === 400 || !res) {
+        window.alert("Invalid Credentials");
+      } else {
+        window.alert("Successfully logged");
+        navigate("/dashboard")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="container shadow my-5">
@@ -20,7 +62,7 @@ const Login = () => {
           </div>
           <div className="col-md-6 p-5">
             <h1 className="display-6 fw-bolder mb-5">LOGIN</h1>
-            <form>
+            <form onSubmit={handleSubmit} method="POST">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
                   Email address
@@ -31,6 +73,9 @@ const Login = () => {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   placeholder="kc@gmail.com"
+                  name="email"
+                  value={user.email}
+                  onChange={handleInput}
                 />
               </div>
               <div class="mb-3">
@@ -41,6 +86,9 @@ const Login = () => {
                   type="password"
                   class="form-control"
                   id="exampleInputPassword1"
+                  name="password"
+                  value={user.password}
+                  onChange={handleInput}
                 />
               </div>
               <div class="mb-3 form-check">
@@ -53,8 +101,11 @@ const Login = () => {
                   Remember me
                 </label>
               </div>
-              <button type="submit" class="btn btn-primary w-100 mt-4 rounded-pill">
-               Login
+              <button
+                type="submit"
+                class="btn btn-primary w-100 mt-4 rounded-pill"
+              >
+                Login
               </button>
             </form>
           </div>
