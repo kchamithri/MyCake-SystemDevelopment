@@ -2,8 +2,8 @@ import React from "react";
 
 const LongCard = () => {
   return (
-    <div className="mb-4 container" style={{ height: "200px" }}>
-      <div className="row mx-auto border" style={{ height: "100%" }}>
+    <div className="mb-4 mt-4 container relative">
+      <div className="row mx-auto border h-100">
         <div
           className="col-9 d-flex align-items-center"
           style={{ backgroundColor: "#b1397a" }}
@@ -14,11 +14,10 @@ const LongCard = () => {
           </button>
         </div>
 
-        <div className="col-3 p-0">
+        <div className="col-3 p-0 h-100">
           <img
             src="Assets/cake2.jpg"
-            className="d-block img-fluid"
-            style={{ maxWidth: "100%", minHeight: "100%" }}
+            className="d-block img-fluid mh-100 w-100"
             alt="abcd"
           ></img>
         </div>
