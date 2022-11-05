@@ -1,4 +1,5 @@
 import React from "react";
+import Card from "../Components/Card";
 
 const Home = () => {
   return (
@@ -6,9 +7,9 @@ const Home = () => {
       <section id="home">
         <div className="container">
           <div className="col-3">
-            <form class="form-inline pt-2">
+            <form className="form-inline pt-2">
               <input
-                class="form-control mr-sm-2 rounded-pill"
+                className="form-control mr-sm-2 rounded-pill"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
@@ -36,58 +37,39 @@ const Home = () => {
         </div>
       </section>
       <div className="container mt-2">
-        
-          <h1 style={{color:"pink"}}>Most Popular</h1>
-        
-      <div class="row row-cols-1 row-cols-md-4 g-4">
-        <div class="col">
-          <div class="card h-100">
-            <img src="Assets/cake2.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
-            </div>
-          </div>
+        <h1 style={{ color: "pink" }}>Most Popular</h1>
+
+        <div className="row row-cols-1 row-cols-md-4 g-4">
+          <Card
+            image="Assets/cake2.jpg"
+            name="card title"
+            description="This is a longer card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer."
+          />
+          <Card
+            image="Assets/cake3.jpg"
+            name="card title"
+            description="This is a longer card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer."
+          />
+          <Card
+            image="Assets/cake4.jpg"
+            altName="cake image"
+            name="card title"
+            description="This is a longer card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer."
+          />
+          <Card
+            image="Assets/kids.jpg"
+            name="card title"
+            description="This is a longer card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer."
+          />
         </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="Assets/cake3.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a short card.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="Assets/cake4.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="Assets/kids.jpg" class="card-img-top" alt="..." style={{height:"250px"}}/>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     </div>
   );

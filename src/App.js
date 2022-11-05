@@ -1,7 +1,7 @@
 import "./Styles/LandingPage.css";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
-import {Routes, Route} from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import CelebrationCake from "./pages/CelebrationCake";
 import PartyPacks from "./pages/PartyPacks";

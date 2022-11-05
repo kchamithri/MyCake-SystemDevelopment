@@ -1,9 +1,9 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div>
+    <div className="fixed-top">
       <nav className="navbar navbar-expand-lg navbar-light shadow pt-2">
         <div className="container">
           <button
@@ -45,10 +45,16 @@ const Navbar = () => {
                 </NavLink>
               </li>
             </ul>
-            <NavLink to="/login" className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm">
+            <NavLink
+              to="/login"
+              className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+            >
               <i className="fa fa-user-plus me-2"></i> Sign in{" "}
             </NavLink>
-            <NavLink to="/register" className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm">
+            <NavLink
+              to="/register"
+              className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+            >
               <i className="fa fa-user-plus me-2"></i> Register{" "}
             </NavLink>
           </div>
