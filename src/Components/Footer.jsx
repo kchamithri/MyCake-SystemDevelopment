@@ -1,72 +1,62 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
-const Footer = () => (
-  <Container
-    className=" footer mt-2 relative"
-    fluid
-    style={{ width: "100", backgroundColor: "#F6DFEB" }}
-  >
-    <Row>
-      <Col>
-        <p className="about">
-          <span> About the company</span> Ut congue augue non tellus bibendum,
-          in varius tellus condimentum. In scelerisque nibh tortor, sed rhoncus
-          odio condimentum in. Sed sed est ut sapien ultrices eleifend. Integer
-          tellus est, vehicula eu lectus tincidunt, ultricies feugiat leo.
-          Suspendisse tellus elit, pharetra in hendrerit ut, aliquam quis augue.
-          Nam ut nibh mollis, tristique ante sed, viverra massa.
-        </p>
-        <div className="icons">
-          <a href="#">
-            <i className="fa fa-facebook"></i>
-          </a>
-          <a href="#">
-            <i className="fa fa-twitter"></i>
-          </a>
-          <a href="#">
-            <i className="fa fa-linkedin"></i>
-          </a>
-          <a href="#">
-            <i className="fa fa-google-plus"></i>
-          </a>
-          <a href="#">
-            <i className="fa fa-instagram"></i>
-          </a>
+const Footer = () => {
+  return (
+    <div>
+      <footer className="footer text-white">
+        <div className="container" mt="5">
+          <footer className="py-5">
+            <div className="row">
+              <div className="col-6">
+                <h4>FOOD BANK</h4>
+                <ul className="nav flex-column">
+                  <li className="nav-item mb-2">All around the country</li>
+                  <li className="nav-item mb-2">Sri Lanka</li>
+                </ul>
+              </div>
+              <div className="col-4">
+                <h5>Admin</h5>
+                <ul className="nav flex-column">
+                  <li className="nav-item mb-2">Dilini Jayasiri</li>
+                  <li className="nav-item mb-2">
+                    <a to="#" className="nav-link p-0 text-white">
+                      dilininadeesha2018@gmail.com
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="col-2">
+                <h5>We Need Sponsors</h5>
+                <ul className="nav flex-column">
+                  <li className="nav-item mb-2">
+                    <NavLink
+                      to="./requestForm"
+                      className="nav-link p-0 text-white"
+                    >
+                      Request food
+                    </NavLink>
+                  </li>
+                  <li className="nav-item mb-2">
+                    <NavLink
+                      to="./tableNew"
+                      className="nav-link p-0 text-white"
+                    >
+                      Show Food Requests
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="d-flex justify-content-between pt-4 mt-4 border-top">
+                <p>2021 Copy right reserved</p>
+              </div>
+            </div>
+          </footer>
         </div>
-      </Col>
-      <Col>
-        <div>
-          <i className="fa fa-map-marker"></i>
-          <p>
-            <span> Street name and number</span> City, Country
-          </p>
-        </div>
-        <div>
-          <i className="fa fa-phone"></i>
-          <p> (+00) 0000 000 000</p>
-        </div>
-        <div>
-          <i className="fa fa-envelope"></i>
-          <p>
-            <a href="#"> office@company.com</a>
-          </p>
-        </div>
-      </Col>
-      <Col lg={4}>
-        <h2>
-          {" "}
-          Company<span> logo</span>
-        </h2>
-        <p className="menu">
-          <a href="#"> Home</a> |<a href="#"> About</a> |
-          <a href="#"> Services</a> |<a href="#"> Portfolio</a> |
-          <a href="#"> News</a> |<a href="#"> Contact</a>
-        </p>
-        <p className="name"> Company Name &copy; 2016</p>
-      </Col>
-    </Row>
-  </Container>
-);
+      </footer>
+    </div>
+  );
+};
 
 export default Footer;
