@@ -1,5 +1,7 @@
 import React from "react";
 import Card from "../Components/Card";
+import HomeCards from "../Components/HomeCards";
+import LongCard from "../Components/LongCard";
 
 const Home = () => {
   return (
@@ -39,22 +41,22 @@ const Home = () => {
       <div className="container mt-2">
         <h1 style={{ color: "pink" }}>Most Popular</h1>
 
-        <div className="row row-cols-1 row-cols-md-4 g-4">
-          <Card
+        <div className="row row-cols-1 row-cols-md-4 g-3">
+          <HomeCards
             image="Assets/cake2.jpg"
             name="card title"
             description="This is a longer card with supporting text below as a natural
                   lead-in to additional content. This content is a little bit
                   longer."
           />
-          <Card
+          <HomeCards
             image="Assets/cake3.jpg"
             name="card title"
             description="This is a longer card with supporting text below as a natural
                   lead-in to additional content. This content is a little bit
                   longer."
           />
-          <Card
+          <HomeCards
             image="Assets/cake4.jpg"
             altName="cake image"
             name="card title"
@@ -62,7 +64,7 @@ const Home = () => {
                   lead-in to additional content. This content is a little bit
                   longer."
           />
-          <Card
+          <HomeCards
             image="Assets/kids.jpg"
             name="card title"
             description="This is a longer card with supporting text below as a natural
@@ -71,6 +73,13 @@ const Home = () => {
           />
         </div>
       </div>
+      <LongCard title={"On Your Special Day"} image={"Assets/cake2.jpg"} />
+      <LongCard
+        title={"Celebrate Your Loved Ones Big Day"}
+        image={"Assets/cake2.jpg"}
+      />
+      <LongCard title={"On Your Companys Big Day"} image={"Assets/cake2.jpg"} />
+      <LongCard title={"Customize Your Cake"} image={"Assets/cake2.jpg"} />
     </div>
   );
 };
