@@ -4,7 +4,7 @@ import LongCard from "../Components/LongCard";
 
 const CelebrationCake = () => {
   return (
-    <div className="container my-2">
+    <div className="pageStyle container my-4">
       <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
         <h2>Celebration Cakes</h2>
         <p>
@@ -13,7 +13,7 @@ const CelebrationCake = () => {
         </p>
       </div>
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-2">
           <div className="d-flex flex-column">
             <h4>Price</h4>
             <div class="form-check">
@@ -87,7 +87,7 @@ const CelebrationCake = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-9">
+        <div className="col-md-10">
           <div className="row row-cols-1 row-cols-md-4 g-4">
             <Card
               image="Assets/cake2.jpg"

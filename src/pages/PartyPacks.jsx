@@ -3,7 +3,7 @@ import Card from "../Components/Card";
 
 const PartyPacks = () => {
   return (
-    <div className="container my-2">
+    <div className="pageStyle container my-4">
       <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
         <h2>Party Packs</h2>
         <p>
@@ -12,7 +12,7 @@ const PartyPacks = () => {
         </p>
       </div>
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-2">
           <div className="d-flex flex-column">
             <h4>Price</h4>
             <div class="form-check">
@@ -86,7 +86,7 @@ const PartyPacks = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-9">
+        <div className="col-md-10">
           <div className="row row-cols-1 row-cols-md-4 g-4">
             <Card
               image="Assets/cake2.jpg"

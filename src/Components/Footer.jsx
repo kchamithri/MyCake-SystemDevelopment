@@ -9,7 +9,7 @@ const Footer = () => {
           <footer className="py-5">
             <div className="row">
               <div className="col-6">
-                <h4>FOOD BANK</h4>
+                <h4>MY CAKE</h4>
                 <ul className="nav flex-column">
                   <li className="nav-item mb-2">All around the country</li>
                   <li className="nav-item mb-2">Sri Lanka</li>
@@ -18,23 +18,23 @@ const Footer = () => {
               <div className="col-4">
                 <h5>Admin</h5>
                 <ul className="nav flex-column">
-                  <li className="nav-item mb-2">Dilini Jayasiri</li>
+                  <li className="nav-item mb-2">Kosala Chamithri</li>
                   <li className="nav-item mb-2">
                     <a to="#" className="nav-link p-0 text-white">
-                      dilininadeesha2018@gmail.com
+                      kosala@gmail.com
                     </a>
                   </li>
                 </ul>
               </div>
               <div className="col-2">
-                <h5>We Need Sponsors</h5>
+                <h5>Contact Us</h5>
                 <ul className="nav flex-column">
                   <li className="nav-item mb-2">
                     <NavLink
                       to="./requestForm"
                       className="nav-link p-0 text-white"
                     >
-                      Request food
+                      Tel
                     </NavLink>
                   </li>
                   <li className="nav-item mb-2">
@@ -42,14 +42,14 @@ const Footer = () => {
                       to="./tableNew"
                       className="nav-link p-0 text-white"
                     >
-                      Show Food Requests
+                      Address
                     </NavLink>
                   </li>
                 </ul>
               </div>
 
-              <div className="d-flex justify-content-between pt-4 mt-4 border-top">
-                <p>2021 Copy right reserved</p>
+              <div className="d-flex justify-content-center pt-4 mt-4 border-top">
+                <p>@2022 Copy right reserved</p>
               </div>
             </div>
           </footer>

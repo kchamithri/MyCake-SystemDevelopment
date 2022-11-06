@@ -41,7 +41,7 @@ const Home = () => {
       <div className="container mt-2">
         <h1 style={{ color: "pink" }}>Most Popular</h1>
 
-        <div className="row row-cols-1 row-cols-md-4 g-3">
+        <div className="row row-cols-1 row-cols-md-4 g-3 ">
           <HomeCards
             image="Assets/cake2.jpg"
             name="card title"
