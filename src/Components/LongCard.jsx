@@ -1,25 +1,19 @@
 import React from "react";
 
-const LongCard = () => {
+const LongCard = (props) => {
   return (
-    <div className="mb-4 mt-4 container relative">
-      <div className="row mx-auto border h-100">
-        <div
-          className="col-9 d-flex align-items-center"
-          style={{ backgroundColor: "#b1397a" }}
-        >
-          <h2 className="mx-auto">Customize Your Own Cake</h2>
-          <button className="d-inline-block btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm">
-            Click Here
-          </button>
-        </div>
-
-        <div className="col-3 p-0 h-100">
-          <img
-            src="Assets/cake2.jpg"
-            className="d-block img-fluid mh-100 w-100"
-            alt="abcd"
-          ></img>
+    <div className="container">
+      <div className="card my-4 relative shadow">
+        <div className="row">
+          <div className="col-md-9 col-sm-8 d-flex flex-md-column justify-content-center align-items-center">
+            <h2 className="card-title">{props.title}</h2>
+            <button className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm ">
+              Click Here
+            </button>
+          </div>
+          <div className="mr-1 col-md-3 col-sm-4">
+            <img src={props.image} className="img-fluid" alt="abcd"></img>
+          </div>
         </div>
       </div>
     </div>
