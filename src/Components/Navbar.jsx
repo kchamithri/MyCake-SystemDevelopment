@@ -57,6 +57,9 @@ const Navbar = () => {
             >
               <i className="fa fa-user-plus me-2"></i> Register{" "}
             </NavLink>
+            <NavLink to="/cart">
+              <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+            </NavLink>
           </div>
         </div>
       </nav>

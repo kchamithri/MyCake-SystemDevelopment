@@ -15,42 +15,6 @@ const CelebrationCake = () => {
       <div className="row">
         <div className="col-md-2">
           <div className="d-flex flex-column">
-            <h4>Price</h4>
-            <div class="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                id="defaultCheck1"
-              />
-              <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                id="defaultCheck1"
-              />
-              <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                id="defaultCheck1"
-              />
-              <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
-              </label>
-            </div>
-          </div>
-          <div className="d-flex flex-column mt-4">
             <h4>Type</h4>
             <div class="form-check">
               <input
@@ -60,7 +24,7 @@ const CelebrationCake = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                Milk Chocolate
               </label>
             </div>
             <div class="form-check">
@@ -71,7 +35,7 @@ const CelebrationCake = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                Strawberry
               </label>
             </div>
             <div class="form-check">
@@ -82,7 +46,43 @@ const CelebrationCake = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                Cheesecake
+              </label>
+            </div>
+          </div>
+          <div className="d-flex flex-column mt-4">
+            <h4>Price (LKR)</h4>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                900 - 1500
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                1500 - 2000
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                2000 - 2500
               </label>
             </div>
           </div>

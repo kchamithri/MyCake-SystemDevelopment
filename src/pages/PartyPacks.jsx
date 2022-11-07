@@ -14,7 +14,7 @@ const PartyPacks = () => {
       <div className="row">
         <div className="col-md-2">
           <div className="d-flex flex-column">
-            <h4>Price</h4>
+            <h4>Type</h4>
             <div class="form-check">
               <input
                 className="form-check-input"
@@ -23,7 +23,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                Sandwiches
               </label>
             </div>
             <div class="form-check">
@@ -34,7 +34,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                Cutlet
               </label>
             </div>
             <div class="form-check">
@@ -45,12 +45,12 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                Buns
               </label>
             </div>
           </div>
           <div className="d-flex flex-column mt-4">
-            <h4>Type</h4>
+            <h4>Price</h4>
             <div class="form-check">
               <input
                 className="form-check-input"
