@@ -56,17 +56,6 @@ const CartTable = (getPickerValue) => {
               </a>
             </td>
           </tr>
-          <tr>
-            <th>2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th>3</th>
-            <td colSpan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
         </tbody>
       </table>
     </div>
