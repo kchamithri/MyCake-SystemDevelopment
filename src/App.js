@@ -9,13 +9,13 @@ import DesignAcake from "./pages/DesignAcake";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Cart from "./pages/Cart";
 
 function App() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -26,8 +26,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
