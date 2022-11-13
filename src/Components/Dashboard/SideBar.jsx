@@ -5,9 +5,8 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
   return (
     <div className={sidebarOpen ? "sidebar_responsive" : ""} id="sidebar">
       <div className="sidebar__title">
-        <div className="sidebar__img">
-          {/* <img src={logo} alt="logo" /> */}
-          <h1>My Cake</h1>
+        <div className="d-flex align-items-center">
+          <img src="Assets/mycakelogo.jpg" className="rounded-5 " alt="logo" />
         </div>
         <i
           onClick={() => closeSidebar()}
@@ -23,11 +22,11 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
           <a href="#">Dashboard</a>
         </div>
         <div className="sidebar__link">
-          <i className="fa fa-user-secret" aria-hidden="true"></i>
+          <i className="fa fa-line-chart" aria-hidden="true"></i>
           <a href="#">Analytics</a>
         </div>
         <div className="sidebar__link">
-          <i className="fa fa-building-o"></i>
+          <i className="fa fa-plus-square-o"></i>
           <a href="#">Add Products</a>
         </div>
 
@@ -36,12 +35,12 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
           <a href="#">Inventory</a>
         </div>
         <div className="sidebar__link">
-          <i className="fa fa-handshake-o"></i>
+          <i className="fa fa-users"></i>
           <a href="#">Suppliers</a>
         </div>
 
         <div className="sidebar__logout">
-          <i className="fa fa-power-off"></i>
+          <i className="fa fa-sign-out"></i>
           <a href="#">Log out</a>
         </div>
       </div>

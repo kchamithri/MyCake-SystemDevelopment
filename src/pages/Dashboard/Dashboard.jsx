@@ -3,10 +3,10 @@ import { useState } from "react";
 import DashboardContent from "../../Components/Dashboard/DashboardContent";
 import NavBar from "../../Components/Dashboard/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar";
-import "../../Styles/Dashboard.css";
+// import "../../Styles/Dashboard.css";
 
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const openSidebar = () => {
     setSidebarOpen(true);
@@ -17,10 +17,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container">
-      <NavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
-      <DashboardContent />
-      <SideBar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} />
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-md-2 col-4" style={{ paddingLeft: "0px" }}>
+          <SideBar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} />
+        </div>
+        <div className="col-md-10 col-12">
+          <NavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
+          <DashboardContent />
+        </div>
+      </div>
     </div>
   );
 };

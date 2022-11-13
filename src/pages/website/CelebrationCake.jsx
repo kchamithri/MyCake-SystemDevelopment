@@ -1,11 +1,11 @@
 import React from "react";
-import Card from "../Components/Card";
+import Card from "../../Components/Card";
 
-const PartyPacks = () => {
+const CelebrationCake = () => {
   return (
     <div className="pageStyle container my-4">
       <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
-        <h2>Party Packs</h2>
+        <h2>Celebration Cakes</h2>
         <p>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab,
           voluptatem!
@@ -23,7 +23,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Sandwiches
+                Milk Chocolate
               </label>
             </div>
             <div class="form-check">
@@ -34,7 +34,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Cutlet
+                Strawberry
               </label>
             </div>
             <div class="form-check">
@@ -45,12 +45,12 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Buns
+                Cheesecake
               </label>
             </div>
           </div>
           <div className="d-flex flex-column mt-4">
-            <h4>Price</h4>
+            <h4>Price (LKR)</h4>
             <div class="form-check">
               <input
                 className="form-check-input"
@@ -59,7 +59,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                900 - 1500
               </label>
             </div>
             <div class="form-check">
@@ -70,7 +70,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                1500 - 2000
               </label>
             </div>
             <div class="form-check">
@@ -81,7 +81,7 @@ const PartyPacks = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Default checkbox
+                2000 - 2500
               </label>
             </div>
           </div>
@@ -117,4 +117,4 @@ const PartyPacks = () => {
   );
 };
 
-export default PartyPacks;
+export default CelebrationCake;

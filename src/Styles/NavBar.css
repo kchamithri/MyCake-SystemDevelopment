@@ -1,6 +1,5 @@
 .navbar {
   background: #ffffff;
-  grid-area: nav;
   height: 60px;
   display: flex;
   align-items: center;
@@ -23,12 +22,6 @@
   justify-content: flex-end;
   align-items: center;
 }
-
-.navbar__right > a {
-  margin-left: 20px;
-  text-decoration: none;
-}
-
 .navbar__right > a > i {
   color: #a5aaad;
   font-size: 16px;

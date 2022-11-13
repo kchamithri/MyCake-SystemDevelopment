@@ -1,9 +1,9 @@
 import React from "react";
 import "../../Styles/NavBar.css";
 
-const NavBar = ({ sidebarOpen, openSidebar }) => {
+const NavBar = ({ openSidebar }) => {
   return (
-    <nav className="navbar">
+    <div className="navbar">
       <div className="nav_icon" onClick={() => openSidebar()}>
         <i className="fa fa-bars" aria-hidden="true"></i>
       </div>
@@ -12,7 +12,7 @@ const NavBar = ({ sidebarOpen, openSidebar }) => {
           <i className="fa fa-bell" aria-hidden="true"></i>
         </a>
       </div>
-    </nav>
+    </div>
   );
 };
 
