@@ -1,7 +1,7 @@
 import React from "react";
 import "../../Styles/Dashboard.css";
-import InventoryTable from "../InventoryTable";
-import Table from "../Table";
+import InventoryTable from "./InventoryTable";
+import Table from "./Table";
 
 const DashboardContent = () => {
   return (

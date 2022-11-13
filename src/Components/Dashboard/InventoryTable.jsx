@@ -13,7 +13,7 @@ const InventoryTable = ({ tableName }) => {
       >
         <div className="d-flex justify-content-between">
           {tableName}
-          <button type="button" class="btn btn-link btn-sm">
+          <button type="button" className="btn btn-link btn-sm" style={{textDecoration:"none", color:"white"}}>
             Order Details
             <i class="fa fa-angle-double-right mx-1" aria-hidden="true" />
           </button>

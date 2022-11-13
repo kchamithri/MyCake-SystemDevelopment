@@ -1,7 +1,6 @@
 import React from "react";
-import Card from "../../Components/Card";
-import HomeCards from "../../Components/HomeCards";
-import LongCard from "../../Components/LongCard";
+import HomeCards from "../../Components/Website/HomeCards";
+import LongCard from "../../Components/Website/LongCard";
 
 const Home = () => {
   return (

@@ -1,6 +1,4 @@
 import "./Styles/LandingPage.css";
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";

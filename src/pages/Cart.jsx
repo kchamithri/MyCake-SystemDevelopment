@@ -1,5 +1,5 @@
 import React from "react";
-import CartTable from "../Components/CartTable";
+import CartTable from "../Components/Website/CartTable";
 
 const Cart = () => {
   const getPickerValue = (value) => {
