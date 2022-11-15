@@ -9,11 +9,13 @@ import About from "./pages/website/About";
 import Home from "./pages/website/Home";
 import PartyPacks from "./pages/website/PartyPacks";
 import DesignAcake from "./pages/website/DesignAcake";
+import Navbar from "./Components/Website/Navbar";
+import Footer from "./Components/Website/Footer";
 
 function App() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -25,7 +27,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

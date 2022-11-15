@@ -13,9 +13,13 @@ const InventoryTable = ({ tableName }) => {
       >
         <div className="d-flex justify-content-between">
           {tableName}
-          <button type="button" className="btn btn-link btn-sm" style={{textDecoration:"none", color:"white"}}>
-            Order Details
-            <i class="fa fa-angle-double-right mx-1" aria-hidden="true" />
+          <button
+            type="button"
+            className="btn btn-link btn-sm"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            View All
+            <i className="fa fa-angle-double-right mx-1" aria-hidden="true" />
           </button>
         </div>
         <div
@@ -29,7 +33,7 @@ const InventoryTable = ({ tableName }) => {
       <div className="d-flex flex-column justify-content-center align-items-center">
         <div className="card mt-2" style={{ width: "98%" }}>
           <div className="card-body">
-            <h5 class="card-title" style={{ fontSize: "95%" }}>
+            <h5 className="card-title" style={{ fontSize: "95%" }}>
               Dates
             </h5>
             <p className="mb-0" style={{ color: "red" }}>
@@ -39,7 +43,7 @@ const InventoryTable = ({ tableName }) => {
         </div>
         <div className="card mt-2" style={{ width: "98%" }}>
           <div className="card-body">
-            <h5 class="card-title" style={{ fontSize: "95%" }}>
+            <h5 className="card-title" style={{ fontSize: "95%" }}>
               Flour
             </h5>
             <p className="mb-0" style={{ color: "red" }}>

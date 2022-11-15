@@ -1,11 +1,25 @@
 import React from "react";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
 import "../../Styles/Dashboard.css";
 import InventoryTable from "./InventoryTable";
+import OrderDetailsModal from "./OrderDetailsModal";
 import Table from "./Table";
+import Tile from "./Tile";
 
 const DashboardContent = () => {
+  const [modalOpen, setModalOpen] = useState(true);
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   return (
     <div className="container">
+      <OrderDetailsModal show={modalOpen} closeModal={closeModal} />
+
       <div>
         <h1 className="fs-5 mb-1" style={{ color: "#2e4a66" }}>
           Hello Achini
@@ -16,96 +30,12 @@ const DashboardContent = () => {
       </div>
 
       <div className="row row-cols-2 row-cols-lg-6">
-        <div className="col col-sm-12 mb-1">
-          <div className="card shadow">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <i className="fa fa-gift" aria-hidden="true"></i>
-                <h6 className="card-subtitle text-muted">Today</h6>
-              </div>
-
-              <p className="d-flex card-text mt-1 justify-content-center align-items-center">
-                3
-              </p>
-              <h6 className="fw-bold">Orders to dispatch</h6>
-            </div>
-          </div>
-        </div>
-        <div className="col col-sm-12 mb-1">
-          <div className="card shadow">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <i className="fa fa-gift" aria-hidden="true"></i>
-                <h6 className="card-subtitle text-muted">Today</h6>
-              </div>
-
-              <p className="d-flex card-text mt-1 justify-content-center align-items-center">
-                3
-              </p>
-              <h6 className="fw-bold">Orders Received</h6>
-            </div>
-          </div>
-        </div>
-        <div className="col col-sm-12 mb-1">
-          <div className="card shadow">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <i className="fa fa-gift" aria-hidden="true"></i>
-                <h6 className="card-subtitle text-muted">Today</h6>
-              </div>
-
-              <p className="d-flex card-text mt-1 justify-content-center align-items-center">
-                3
-              </p>
-              <h6 className="fw-bold">Customized Orders</h6>
-            </div>
-          </div>
-        </div>
-        <div className="col col-sm-12 mb-1">
-          <div className="card shadow">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <i className="fa fa-gift" aria-hidden="true"></i>
-                <h6 className="card-subtitle text-muted">Today</h6>
-              </div>
-
-              <p className="d-flex card-text mt-1 justify-content-center align-items-center">
-                3
-              </p>
-              <h6 className="fw-bold">Total Orders</h6>
-            </div>
-          </div>
-        </div>
-        <div className="col col-sm-12 mb-1">
-          <div className="card shadow">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <i className="fa fa-gift" aria-hidden="true"></i>
-                <h6 className="card-subtitle text-muted">Today</h6>
-              </div>
-
-              <p className="d-flex card-text mt-1 justify-content-center align-items-center">
-                3
-              </p>
-              <h6 className="fw-bold">Total Revenue</h6>
-            </div>
-          </div>
-        </div>
-        <div className="col col-sm-12 mb-1">
-          <div className="card shadow">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <i className="fa fa-gift" aria-hidden="true"></i>
-                <h6 className="card-subtitle text-muted">Today</h6>
-              </div>
-
-              <p className="d-flex card-text mt-1 justify-content-center align-items-center">
-                3
-              </p>
-              <h6 className="fw-bold">Total customers</h6>
-            </div>
-          </div>
-        </div>
+        <Tile date="Today" title="Orders to dispatch" quantity="3" />
+        <Tile date="Today" title="Orders Received" quantity="3" />
+        <Tile date="Today" title="Customized Orders" quantity="3" />
+        <Tile date="November" title="Total Orders" quantity="3" />
+        <Tile date="November" title="Total Revenue" quantity="3" />
+        <Tile title="Total customers" quantity="3" />
       </div>
 
       <div className="row my-2">
@@ -115,14 +45,12 @@ const DashboardContent = () => {
             tableName="Orders to dispatch"
             tabDisplay={true}
             tabs={["Today", "Pending", "All"]}
+            openModal={openModal}
+            closeModal={closeModal}
           />
         </div>
         <div className="col-lg-4 col-sm-12">
-          <InventoryTable
-            
-            tableName="Inventory"
-           
-          />
+          <InventoryTable tableName="Inventory" />
         </div>
       </div>
 
@@ -133,6 +61,8 @@ const DashboardContent = () => {
             tableName="Customized Orders"
             tabDisplay={true}
             tabs={["Today", "Pending", "All"]}
+            openModal={openModal}
+            closeModal={closeModal}
           />
         </div>
       </div>

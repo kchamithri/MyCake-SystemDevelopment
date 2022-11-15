@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import OrderDetailsModal from "./OrderDetailsModal";
 
-const Table = ({ color, tableName, tabDisplay, tabs }) => {
+const Table = ({
+  color,
+  tableName,
+  tabDisplay,
+  tabs,
+  openModal,
+  closeModal,
+}) => {
   return (
     <div className="card pb-2">
       <div
@@ -34,7 +42,11 @@ const Table = ({ color, tableName, tabDisplay, tabs }) => {
               <h5 class="card-title" style={{ fontSize: "95%" }}>
                 Kosala Chamithri
               </h5>
-              <button type="button" class="btn btn-light btn-sm">
+              <button
+                type="button"
+                class="btn btn-light btn-sm"
+                onClick={openModal}
+              >
                 Order Details
                 <i class="fa fa-angle-double-right mx-1" aria-hidden="true" />
               </button>
@@ -56,7 +68,11 @@ const Table = ({ color, tableName, tabDisplay, tabs }) => {
               <h5 class="card-title" style={{ fontSize: "95%" }}>
                 Imasha Nanayakkara
               </h5>
-              <button type="button" class="btn btn-light btn-sm">
+              <button
+                type="button"
+                class="btn btn-light btn-sm"
+                onClick={openModal}
+              >
                 Order Details
                 <i class="fa fa-angle-double-right mx-1" aria-hidden="true" />
               </button>
