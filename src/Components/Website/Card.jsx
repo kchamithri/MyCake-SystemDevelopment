@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import ProductViewModal from "./ZoomProduct/ProductViewModal";
 
 const Card = (props) => {
   return (
@@ -9,6 +11,7 @@ const Card = (props) => {
           className="card-img-top"
           alt={props.altName}
           style={{ height: "10rem" }}
+          onClick={props.handleModal}
         />
         <div className="card-body">
           <h6 className="card-title">{props.name}</h6>

@@ -8,7 +8,7 @@ import Table from "./Table";
 import Tile from "./Tile";
 
 const DashboardContent = () => {
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
   };
