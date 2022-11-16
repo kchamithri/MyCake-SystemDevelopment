@@ -11,6 +11,7 @@ import PartyPacks from "./pages/website/PartyPacks";
 import DesignAcake from "./pages/website/DesignAcake";
 import Navbar from "./Components/Website/Navbar";
 import Footer from "./Components/Website/Footer";
+import Checkout from "./pages/website/Checkout";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />

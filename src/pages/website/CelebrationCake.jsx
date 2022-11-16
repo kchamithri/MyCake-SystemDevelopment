@@ -1,10 +1,30 @@
 import React from "react";
+import { useState } from "react";
 import Card from "../../Components/Website/Card";
-
+import ProductViewCard from "../../Components/Website/ZoomProduct/ProductViewCard";
+import ProductViewModal from "../../Components/Website/ZoomProduct/ProductViewModal";
 
 const CelebrationCake = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   return (
     <div className="pageStyle container my-4">
+      <ProductViewModal show={modalOpen} close={closeModal}>
+        <ProductViewCard
+          image="Assets/cake2.jpg"
+          optionalImages = {["Assets/cake3.jpg", "Assets/cake4.jpg"]}
+          name="Swan Chocolate Cake"
+          price="Rs.5000"
+          description="lorem10"
+          weight="3kg"
+        />
+      </ProductViewModal>
       <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
         <h2>Celebration Cakes</h2>
         <p>
@@ -93,6 +113,7 @@ const CelebrationCake = () => {
               image="Assets/cake2.jpg"
               name="Swan Chocolate Cake"
               price="Rs.5000"
+              handleModal={openModal}
             />
             <Card image="Assets/cake3.jpg" name="card title" price="Rs.5000" />
             <Card

@@ -3,6 +3,7 @@ import { useState } from "react";
 import DashboardContent from "../../Components/Dashboard/DashboardContent";
 import NavBar from "../../Components/Dashboard/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar";
+import Analytics from "./Analytics";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,6 +25,7 @@ const Dashboard = () => {
         <div className="col-md-10 col-12">
           <NavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
           <DashboardContent />
+          {/* <Analytics /> */}
         </div>
       </div>
     </div>
