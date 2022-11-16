@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
-const AddProductForm = (props) => {
+const UpdateProductForm = () => {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -14,6 +14,7 @@ const AddProductForm = (props) => {
 
     setValidated(true);
   };
+
   return (
     <Form
       noValidate
@@ -101,9 +102,9 @@ const AddProductForm = (props) => {
         </Form.Group>
       </Row>
 
-      <Button type="submit">Add</Button>
+      <Button type="submit">Update</Button>
     </Form>
   );
 };
 
-export default AddProductForm;
+export default UpdateProductForm;
