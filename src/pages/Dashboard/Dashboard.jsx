@@ -3,6 +3,7 @@ import { useState } from "react";
 import DashboardContent from "../../Components/Dashboard/DashboardContent";
 import NavBar from "../../Components/Dashboard/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar";
+import AddProducts from "./AddProducts";
 import Analytics from "./Analytics";
 
 const Dashboard = () => {
@@ -24,8 +25,9 @@ const Dashboard = () => {
         </div>
         <div className="col-md-10 col-12">
           <NavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
-          <DashboardContent />
+          {/* <DashboardContent /> */}
           {/* <Analytics /> */}
+          <AddProducts />
         </div>
       </div>
     </div>

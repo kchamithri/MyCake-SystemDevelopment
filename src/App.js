@@ -12,11 +12,12 @@ import DesignAcake from "./pages/website/DesignAcake";
 import Navbar from "./Components/Website/Navbar";
 import Footer from "./Components/Website/Footer";
 import Checkout from "./pages/website/Checkout";
+import AddProducts from "./pages/Dashboard/AddProducts";
 
 function App() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -28,8 +29,9 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/addProducts" element={<AddProducts />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
