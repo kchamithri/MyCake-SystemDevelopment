@@ -1,5 +1,6 @@
 import React from "react";
 import { QuantityPicker } from "react-qty-picker";
+import { NavLink } from "react-router-dom";
 
 const CartTable = (getPickerValue) => {
   return (
@@ -54,6 +55,23 @@ const CartTable = (getPickerValue) => {
                   style={{ color: "black" }}
                 ></i>
               </a>
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={4}></td>
+            <td className="fs-5" style={{ textAlign: "center" }}>
+              Total(Rs) : 5000
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={4}></td>
+            <td className="fs-5" style={{ textAlign: "center" }}>
+              <NavLink
+                to="/checkout"
+                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+              >
+                Checkout
+              </NavLink>
             </td>
           </tr>
         </tbody>
