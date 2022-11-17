@@ -5,6 +5,7 @@ import NavBar from "../../Components/Dashboard/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar";
 import AddProducts from "./AddProducts";
 import Analytics from "./Analytics";
+import Inventory from "./Inventory";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -27,7 +28,8 @@ const Dashboard = () => {
           <NavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
           {/* <DashboardContent /> */}
           {/* <Analytics /> */}
-          <AddProducts />
+          {/* <AddProducts /> */}
+          <Inventory />
         </div>
       </div>
     </div>
