@@ -9,34 +9,48 @@ import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
 
 const AddProducts = () => {
   const [key, setKey] = useState("cake");
-  const [isActive, setIsActive] = useState(true);
+
   const [buttonName, setButtonName] = useState("add");
 
   useEffect(() => {
     setButtonName("add");
-    setIsActive((prev) => !prev);
   }, [key]);
 
   const handleButton = (event) => {
     setButtonName(event.target.value);
     console.log(buttonName);
   };
+
+  function cm(...args) {
+    return args.filter((v) => v).join(" ");
+  }
   return (
     <div className="mt-2">
       <div className="row justify-content-end my-2">
         <div className="col-lg-1 col-sm-6 text-center">
           <button
-            className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+            className={cm(
+              buttonName,
+              "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm",
+              buttonName === "add" &&
+                "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
+            )}
             value="add"
             onClick={handleButton}
           >
             Add
           </button>
         </div>
-        <div className="col-lg-2 col-sm-6" onClick={handleButton}>
+        <div className="col-lg-2 col-sm-6">
           <button
-            className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+            className={cm(
+              buttonName,
+              "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm",
+              buttonName === "update" &&
+                "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
+            )}
             value="update"
+            onClick={handleButton}
           >
             Update
           </button>
