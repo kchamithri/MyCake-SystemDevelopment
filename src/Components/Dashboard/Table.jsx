@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import OrderDetailsModal from "./OrderDetailsModal";
+import { Form } from "react-bootstrap";
+import DashboardModal from "./DashboardModal";
+import OrderDetailsModal from "./Modals/OrderDetailsModal";
+import UpdateIngredients from "./Modals/UpdateIngredients";
 
 const Table = ({
   color,
@@ -7,7 +10,10 @@ const Table = ({
   tabDisplay,
   tabs,
   openModal,
+  openEditModal,
   closeModal,
+  displayButtons,
+  displaySearch,
 }) => {
   return (
     <div className="card pb-2">
@@ -35,6 +41,22 @@ const Table = ({
           );
         })}
       </ul>
+      <div className="row my-2 d-flex flex-column justify-content-center align-items-center">
+        <Form
+          style={{
+            width: "98%",
+            display: displaySearch ? displaySearch : "none",
+          }}
+        >
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+          />
+        </Form>
+      </div>
+
       <div className="d-flex flex-column justify-content-center align-items-center">
         <div className="card mt-2" style={{ width: "98%" }}>
           <div className="card-body">
@@ -57,9 +79,32 @@ const Table = ({
             >
               Order ID: 12345 : 1 Item
             </h6>
-            <p className="mb-0" style={{ color: "green" }}>
-              Rs. 2500
-            </p>
+            <div className="d-flex justify-content-between">
+              <p className="mb-0" style={{ color: "green" }}>
+                Rs. 2500
+              </p>
+              <div
+                className={
+                  displayButtons === "none"
+                    ? "d-none"
+                    : "d-flex justify-content-between"
+                }
+              >
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
+                  onClick={openEditModal}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="card mt-2" style={{ width: "98%" }}>

@@ -1,6 +1,7 @@
 import React from "react";
+import { useState } from "react";
 
-const InventoryTable = ({ tableName }) => {
+const InventoryTable = ({ tableName, chartDisplay }) => {
   return (
     <div className="card pb-2">
       <div
@@ -30,25 +31,36 @@ const InventoryTable = ({ tableName }) => {
         </div>
       </div>
 
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <div className="card mt-2" style={{ width: "98%" }}>
-          <div className="card-body">
-            <h5 className="card-title" style={{ fontSize: "95%" }}>
-              Dates
-            </h5>
-            <p className="mb-0" style={{ color: "red" }}>
-              Available : Not Available
-            </p>
-          </div>
+      <div className="row row-cols row-cols-lg-2 d-flex justify-content-center align-items-center px-2">
+        <div className={chartDisplay === "none" ? "d-none" : "col-lg-6 "}>
+          chart
         </div>
-        <div className="card mt-2" style={{ width: "98%" }}>
-          <div className="card-body">
-            <h5 className="card-title" style={{ fontSize: "95%" }}>
-              Flour
-            </h5>
-            <p className="mb-0" style={{ color: "red" }}>
-              Available : 2 kg
-            </p>
+        <div
+          className={
+            chartDisplay === "none"
+              ? "col-lg-12"
+              : "col-lg-6 flex-column align-items-center"
+          }
+        >
+          <div className="card mt-2" style={{ width: "100%" }}>
+            <div className="card-body">
+              <h5 className="card-title" style={{ fontSize: "95%" }}>
+                Dates
+              </h5>
+              <p className="mb-0" style={{ color: "red" }}>
+                Available : Not Available
+              </p>
+            </div>
+          </div>
+          <div className="card mt-2" style={{ width: "100%" }}>
+            <div className="card-body">
+              <h5 className="card-title" style={{ fontSize: "95%" }}>
+                Flour
+              </h5>
+              <p className="mb-0" style={{ color: "red" }}>
+                Available : 2 kg
+              </p>
+            </div>
           </div>
         </div>
       </div>

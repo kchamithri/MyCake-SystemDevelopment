@@ -2,8 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "../../Styles/Dashboard.css";
+import DashboardModal from "./DashboardModal";
 import InventoryTable from "./InventoryTable";
-import OrderDetailsModal from "./OrderDetailsModal";
+import OrderDetailsModal from "./Modals/OrderDetailsModal";
 import Table from "./Table";
 import Tile from "./Tile";
 
@@ -18,7 +19,13 @@ const DashboardContent = () => {
   };
   return (
     <div className="container">
-      <OrderDetailsModal show={modalOpen} closeModal={closeModal} />
+      <DashboardModal
+        title="Order Details"
+        show={modalOpen}
+        closeModal={closeModal}
+      >
+        <OrderDetailsModal />
+      </DashboardModal>
 
       <div>
         <h1 className="fs-5 mb-1" style={{ color: "#2e4a66" }}>
@@ -47,10 +54,11 @@ const DashboardContent = () => {
             tabs={["Today", "Pending", "All"]}
             openModal={openModal}
             closeModal={closeModal}
+            displayButtons="none"
           />
         </div>
         <div className="col-lg-4 col-sm-12">
-          <InventoryTable tableName="Inventory" />
+          <InventoryTable tableName="Inventory" chartDisplay="none" />
         </div>
       </div>
 
@@ -63,6 +71,7 @@ const DashboardContent = () => {
             tabs={["Today", "Pending", "All"]}
             openModal={openModal}
             closeModal={closeModal}
+            displayButtons="none"
           />
         </div>
       </div>
