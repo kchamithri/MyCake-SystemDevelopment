@@ -4,32 +4,57 @@ import AddProductForm from "../../Components/Dashboard/AddProductForm";
 import DashboardModal from "../../Components/Dashboard/DashboardModal";
 import InventoryTable from "../../Components/Dashboard/InventoryTable";
 import AddIngredients from "../../Components/Dashboard/Modals/AddIngredients";
+import AddSupplier from "../../Components/Dashboard/Modals/AddSupplier";
 import IngredientsListTable from "../../Components/Dashboard/Modals/IngredientsListTable";
+import SuppliersListTable from "../../Components/Dashboard/Modals/SuppliersListTable";
 import UpdateIngredients from "../../Components/Dashboard/Modals/UpdateIngredients";
 import Table from "../../Components/Dashboard/Table";
+import TransactionsTable from "../../Components/Dashboard/TransactionsTable";
 
 const Inventory = () => {
   const [key, setKey] = useState("inventory");
   const [buttonName, setButtonName] = useState("add");
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const openAddModal = () => {
-    setAddModalOpen(true);
+  const [addIngredientModalOpen, setAddIngredientModalOpen] = useState(false);
+  const [editIngredientModalOpen, setEditIngredientModalOpen] = useState(false);
+  const [IngredientsModalOpen, setIngredientsModalOpen] = useState(false);
+  const [addSupplierOpen, setAddSupplierOpen] = useState(false);
+  const [editSupplierOpen, setEditSupplierOpen] = useState(false);
+  const [suppliersModalOpen, setSuppliersModalOpen] = useState(false);
+
+  const openAddIngredientModal = () => {
+    setAddIngredientModalOpen(true);
   };
-  const openEditModal = () => {
-    setEditModalOpen(true);
+  const openIngredientEditModal = () => {
+    setEditIngredientModalOpen(true);
+  };
+  const openIngredientsModal = () => {
+    setIngredientsModalOpen(true);
+  };
+
+  const openAddSupplierModal = () => {
+    setAddSupplierOpen(true);
+  };
+  const openSupplierEditModal = () => {
+    setEditSupplierOpen(true);
+  };
+  const openSuppliersModal = () => {
+    setSuppliersModalOpen(true);
   };
 
   const closeModal = () => {
-    setAddModalOpen(false);
-    setEditModalOpen(false);
+    setAddIngredientModalOpen(false);
+    setEditIngredientModalOpen(false);
+    setIngredientsModalOpen(false);
+    setAddSupplierOpen(false);
+    setEditSupplierOpen(false);
+    setSuppliersModalOpen(false);
   };
 
   return (
     <div className="mt-2">
       <DashboardModal
         title="Add Ingredients"
-        show={addModalOpen}
+        show={addIngredientModalOpen}
         closeModal={closeModal}
       >
         {buttonName === "add" && key === "inventory" ? (
@@ -40,12 +65,23 @@ const Inventory = () => {
       </DashboardModal>
       <DashboardModal
         title="Update Ingredients"
-        show={editModalOpen}
+        show={editIngredientModalOpen}
         closeModal={closeModal}
       >
         <UpdateIngredients />
       </DashboardModal>
-      <IngredientsListTable />
+      <IngredientsListTable
+        show={IngredientsModalOpen}
+        closeModal={closeModal}
+      />
+      <DashboardModal
+        title="Add Supplier"
+        show={addSupplierOpen}
+        closeModal={closeModal}
+      >
+        <AddSupplier />
+      </DashboardModal>
+      <SuppliersListTable show={suppliersModalOpen} closeModal={closeModal} />
       <Tabs
         id="controlled-tab-example"
         activeKey={key}
@@ -63,7 +99,7 @@ const Inventory = () => {
               <div className="d-flex flex-column col-lg-2">
                 <button
                   className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm m-1"
-                  onClick={openAddModal}
+                  onClick={openAddIngredientModal}
                 >
                   Add
                 </button>
@@ -80,7 +116,8 @@ const Inventory = () => {
                   tableName="Ingredients List"
                   tabDisplay={false}
                   tabs={["Today", "Pending", "All"]}
-                  openEditModal={openEditModal}
+                  openEditModal={openIngredientEditModal}
+                  openModal={openIngredientsModal}
                   displayButtons="true"
                   displaySearch="true"
                 />
@@ -88,7 +125,38 @@ const Inventory = () => {
             </div>
           </div>
         </Tab>
-        <Tab eventKey="supplier" title="Supplier"></Tab>
+        <Tab eventKey="supplier" title="Supplier">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-10">
+                <TransactionsTable />
+              </div>
+              <div className="d-flex flex-column col-lg-2">
+                <button
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm m-1"
+                  onClick={openAddSupplierModal}
+                >
+                  Add Supplier
+                </button>
+              </div>
+            </div>
+
+            <div className="row mt-2">
+              <div className="col-lg-10">
+                <Table
+                  color="green"
+                  tableName="Suppliers"
+                  tabDisplay={false}
+                  tabs={["Today", "Pending", "All"]}
+                  openEditModal={openAddSupplierModal}
+                  openModal={openSuppliersModal}
+                  displayButtons="true"
+                  displaySearch="true"
+                />
+              </div>
+            </div>
+          </div>
+        </Tab>
       </Tabs>
     </div>
   );

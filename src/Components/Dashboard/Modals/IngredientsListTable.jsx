@@ -1,32 +1,54 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
+import "../../../Styles/Dashboard.css";
 
-const IngredientsListTable = () => {
-  const [show, setShow] = useState(true);
+const IngredientsListTable = ({show, closeModal}) => {
+  
   return (
-    <Modal
-      show={show}
-      onHide={() => setShow(false)}
-      dialogClassName="modal-70w"
-      aria-labelledby="example-custom-modal-styling-title"
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="example-custom-modal-styling-title">
-          Custom Modal Styling
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>
-          Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae unde
-          commodi aspernatur enim, consectetur. Cumque deleniti temporibus ipsam
-          atque a dolores quisquam quisquam adipisci possimus laboriosam.
-          Quibusdam facilis doloribus debitis! Sit quasi quod accusamus eos
-          quod. Ab quos consequuntur eaque quo rem! Mollitia reiciendis porro
-          quo magni incidunt dolore amet atque facilis ipsum deleniti rem!
-        </p>
-      </Modal.Body>
-    </Modal>
+   
+      <Modal show={show} onHide={closeModal} size="lg" scrollable={true}>
+        <Modal.Header closeButton style={{ backgroundColor: "green" }}>
+          <Modal.Title>Flour</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table>
+            <thead>
+              <tr style={{ color: "green" }}>
+                <th>Status</th>
+                <th>Received Date</th>
+                <th>Expiry Date</th>
+                <th>Quantity Updated</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Otto</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                <td>Otto</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                <td>Otto</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Modal.Body>
+      </Modal>
+    
   );
 };
 
