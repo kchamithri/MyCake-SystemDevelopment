@@ -72,6 +72,7 @@ const Inventory = () => {
       </DashboardModal>
       <IngredientsListTable
         show={IngredientsModalOpen}
+        openEditModal={openIngredientEditModal}
         closeModal={closeModal}
       />
       <DashboardModal
@@ -116,9 +117,8 @@ const Inventory = () => {
                   tableName="Ingredients List"
                   tabDisplay={false}
                   tabs={["Today", "Pending", "All"]}
-                  openEditModal={openIngredientEditModal}
                   openModal={openIngredientsModal}
-                  displayButtons="true"
+                  displayButtons="none"
                   displaySearch="true"
                 />
               </div>

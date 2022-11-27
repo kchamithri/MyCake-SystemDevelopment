@@ -3,52 +3,68 @@ import { useState } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 import "../../../Styles/Dashboard.css";
 
-const IngredientsListTable = ({show, closeModal}) => {
-  
+const IngredientsListTable = ({ show, openEditModal, closeModal }) => {
   return (
-   
-      <Modal show={show} onHide={closeModal} size="lg" scrollable={true}>
-        <Modal.Header closeButton style={{ backgroundColor: "green" }}>
-          <Modal.Title>Flour</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Table>
-            <thead>
-              <tr style={{ color: "green" }}>
-                <th>Status</th>
-                <th>Received Date</th>
-                <th>Expiry Date</th>
-                <th>Quantity Updated</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Otto</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Otto</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Otto</td>
-              </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-      </Modal>
-    
+    <Modal show={show} onHide={closeModal} size="lg" scrollable={true}>
+      <Modal.Header closeButton style={{ backgroundColor: "green" }}>
+        <Modal.Title>Flour</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Table>
+          <thead>
+            <tr style={{ color: "green" }}>
+              <th>Status</th>
+              <th>Received Date</th>
+              <th>Expiry Date</th>
+              <th>Quantity Updated</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>Otto</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
+                  onClick={() => {
+                    closeModal();
+                    openEditModal();
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+              <td>Otto</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+              <td>Otto</td>
+            </tr>
+          </tbody>
+        </Table>
+      </Modal.Body>
+    </Modal>
   );
 };
 

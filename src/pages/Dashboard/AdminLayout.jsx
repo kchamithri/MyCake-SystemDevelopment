@@ -1,13 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import DashboardContent from "../../Components/Dashboard/DashboardContent";
+import { Outlet } from "react-router-dom";
+import DashboardContent from "../../Components/Dashboard/Dashboard";
 import NavBar from "../../Components/Dashboard/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar";
 import AddProducts from "./AddProducts";
 import Analytics from "./Analytics";
 import Inventory from "./Inventory";
 
-const Dashboard = () => {
+const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const openSidebar = () => {
@@ -26,14 +27,11 @@ const Dashboard = () => {
         </div>
         <div className="col-md-10 col-12">
           <NavBar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
-          {/* <DashboardContent /> */}
-          {/* <Analytics /> */}
-          {/* <AddProducts /> */}
-          <Inventory />
+          <Outlet />
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default AdminLayout;

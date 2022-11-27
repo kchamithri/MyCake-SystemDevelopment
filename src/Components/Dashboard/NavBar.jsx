@@ -3,7 +3,7 @@ import "../../Styles/NavBar.css";
 
 const NavBar = ({ openSidebar }) => {
   return (
-    <div className="navbar">
+    <div className="adminNavbar">
       <div className="nav_icon" onClick={() => openSidebar()}>
         <i className="fa fa-bars" aria-hidden="true"></i>
       </div>

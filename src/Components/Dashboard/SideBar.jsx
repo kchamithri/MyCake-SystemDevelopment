@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "../../Styles/Sidebar.css";
 
 const SideBar = ({ sidebarOpen, closeSidebar }) => {
@@ -18,25 +19,30 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
 
       <div className="sidebar__menu">
         <div className="sidebar__link active_menu_link">
-          <i className="fa fa-home"></i>
-          <a href="#">Dashboard</a>
+          <NavLink to="">
+            <i className="fa fa-home"></i>Dashboard
+          </NavLink>
         </div>
         <div className="sidebar__link">
-          <i className="fa fa-line-chart" aria-hidden="true"></i>
-          <a href="#">Analytics</a>
+          <NavLink to="analytics">
+            <i className="fa fa-line-chart" aria-hidden="true"></i> Analytics
+          </NavLink>
         </div>
         <div className="sidebar__link">
-          <i className="fa fa-plus-square-o"></i>
-          <a href="#">Add Products</a>
+          <NavLink to="addProducts">
+            <i className="fa fa-plus-square-o"></i> Add Products
+          </NavLink>
         </div>
 
         <div className="sidebar__link">
-          <i className="fa fa-archive"></i>
-          <a href="#">Inventory</a>
+          <NavLink to="inventory">
+            <i className="fa fa-archive"></i>Inventory
+          </NavLink>
         </div>
         <div className="sidebar__link">
-          <i className="fa fa-users"></i>
-          <a href="#">Suppliers</a>
+          <NavLink to="suppliers">
+            <i className="fa fa-users"></i> Suppliers
+          </NavLink>
         </div>
 
         <div className="sidebar__logout">

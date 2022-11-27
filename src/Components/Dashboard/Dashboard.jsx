@@ -8,7 +8,7 @@ import OrderDetailsModal from "./Modals/OrderDetailsModal";
 import Table from "./Table";
 import Tile from "./Tile";
 
-const DashboardContent = () => {
+const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
@@ -79,4 +79,4 @@ const DashboardContent = () => {
   );
 };
 
-export default DashboardContent;
+export default Dashboard;

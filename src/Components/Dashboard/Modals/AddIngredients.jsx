@@ -26,6 +26,15 @@ const AddIngredients = (props) => {
         </Form.Group>
       </Row>
       <Row className="mb-3">
+        <Form.Group as={Col} md="12" controlId="validationCustom01">
+          <Form.Label>Ingredient Type</Form.Label>
+          <Form.Control required type="text" autoFocus />
+          <Form.Control.Feedback type="invalid">
+            Please provide the Ingredient Type.
+          </Form.Control.Feedback>
+        </Form.Group>
+      </Row>
+      <Row className="mb-3">
         <Form.Group as={Col} md="6" controlId="validationCustom01">
           <Form.Label>Initial Quantity</Form.Label>
           <Form.Control required type="text" size="sm" />
@@ -44,12 +53,18 @@ const AddIngredients = (props) => {
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustom01">
           <Form.Label>Supplier</Form.Label>
-          <Form.Control required type="text" />
+          <Form.Select aria-label="Default select example">
+            <option>Select</option>
+            <option value="1">Sunil</option>
+            <option value="2">Cargills</option>
+            <option value="3">Cake shop</option>
+          </Form.Select>
           <Form.Control.Feedback type="invalid">
             Please provide the Supplier Name.
           </Form.Control.Feedback>
         </Form.Group>
       </Row>
+
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustom01">
           <Form.Label>Received Date</Form.Label>
