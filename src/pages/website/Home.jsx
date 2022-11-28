@@ -37,48 +37,51 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <div className="container mt-2">
-        <h1 style={{ color: "pink" }}>Most Popular</h1>
+      <div className="container mt-4">
+        <h2
+          style={{
+            color: "#863A6F",
+            fontFamily: "sans-serif",
+            fontWeight: "5px",
+          }}
+        >
+          Most Popular
+        </h2>
 
-        <div className="row row-cols-1 row-cols-md-4 g-3 ">
+        <div className="row row-cols-1 row-cols-md-4 g-3">
           <HomeCards
-            image="Assets/cake2.jpg"
-            name="card title"
-            description="This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer."
+            image="Assets/image6.webp"
+            name="Chocolate Truffle Cake"
+            description="This rich and super smooth chocolate cake is full of chocolate ganache and soft chocolate sponge. An authentic chocolate truffle cake melts as soon as it goes in your mouth, leaving the taste of pure chocolate."
           />
           <HomeCards
-            image="Assets/cake3.jpg"
-            name="card title"
-            description="This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer."
+            image="Assets/cake5.jpg"
+            name=" Strawberry-Rose Snack Cake"
+            description="It's always wine o' clock with this easy strawberry cake. The pretty pink comes from the freeze-dried strawberries and a generous splash of rosé. "
           />
           <HomeCards
-            image="Assets/cake4.jpg"
+            image="Assets/cake6.jpg"
             altName="cake image"
-            name="card title"
-            description="This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer."
+            name="Classic Coffee Cake"
+            description="A delicious all-in-one coffee sponge topped with smooth coffee buttercream. Simple to make and packed full of flavour."
           />
           <HomeCards
-            image="Assets/kids.jpg"
-            name="card title"
-            description="This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer."
+            image="Assets/image7.jpg"
+            name="Chocolate Buttercream Cake"
+            description="This kid-friendly cake recipe starts with a basic yellow cake, which is topped with the fudgiest buttercream made from semisweet chocolate, heavy cream, corn syrup, and unsalted butter."
           />
         </div>
       </div>
-      <LongCard title={"On Your Special Day"} image={"Assets/cake2.jpg"} />
+      <LongCard title={"On Your Special Day"} image={"Assets/wedding1.webp"} />
       <LongCard
         title={"Celebrate Your Loved Ones Big Day"}
-        image={"Assets/cake2.jpg"}
+        image={"Assets/birthday3.jpeg"}
       />
-      <LongCard title={"On Your Companys Big Day"} image={"Assets/cake2.jpg"} />
-      <LongCard title={"Customize Your Cake"} image={"Assets/cake2.jpg"} />
+      <LongCard
+        title={"On Your Companys Big Day"}
+        image={"Assets/company.webp"}
+      />
+      <LongCard title={"Customize Your Cake"} image={"Assets/custom.jpg"} />
     </div>
   );
 };

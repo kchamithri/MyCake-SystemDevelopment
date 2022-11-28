@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeCards = (props) => {
   return (
-    <div className="col">
+    <div className="col d-flex justify-content-center align-items-center">
       <div className="card h-100" style={{ width: "90%" }}>
         <img
           src={props.image}

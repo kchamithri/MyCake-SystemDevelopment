@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div>
       <footer className="footer text-white">
-        <div className="container" mt="5">
+        <div className="container" mt="2">
           <footer className="py-5">
             <div className="row">
               <div className="col-6">
@@ -48,7 +48,7 @@ const Footer = () => {
                 </ul>
               </div>
 
-              <div className="d-flex justify-content-center pt-4 mt-4 border-top">
+              <div className="d-flex justify-content-center pt-4 mt-3 border-top">
                 <p>@2022 Copy right reserved</p>
               </div>
             </div>

@@ -1,12 +1,45 @@
 import React from "react";
 import { useState } from "react";
+import { Alert } from "react-bootstrap";
 import Card from "../../Components/Website/Card";
 import ProductViewCard from "../../Components/Website/ZoomProduct/ProductViewCard";
 import ProductViewModal from "../../Components/Website/ZoomProduct/ProductViewModal";
+import products from "../../Data/products";
 
 const CelebrationCake = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const openModal = () => {
+  const [addToCart, setAddToCart] = useState([]);
+  const [filter, setFilter] = useState([]);
+  const [showAlert, setShowAlert] = useState("none");
+  let modalInfo = [];
+
+  const handleChecked = (e) => {
+    let updatedList = [...filter];
+    if (e.target.checked) {
+      updatedList = [...filter, e.target.value];
+    } else {
+      updatedList.splice(filter.indexOf(e.target.value), 1);
+    }
+    setFilter(updatedList);
+    console.log(filter);
+  };
+
+  const handleAddToCart = (id) => {
+    const ID = id;
+    console.log(ID);
+    setShowAlert(true);
+    setAddToCart([...addToCart, { id }]);
+    console.log(addToCart);
+    setTimeout(() => {
+      setShowAlert("none");
+    }, 1000);
+  };
+
+  const openModal = (id) => {
+    console.log(id);
+    modalInfo = products.filter((item) => item.id === id);
+
+    console.log(modalInfo[0].mainImage);
     setModalOpen(true);
   };
 
@@ -15,10 +48,14 @@ const CelebrationCake = () => {
   };
   return (
     <div className="pageStyle container my-4">
+      <Alert key="info" variant="info" style={{ display: showAlert }}>
+        Added to the cart
+      </Alert>
+
       <ProductViewModal show={modalOpen} close={closeModal}>
         <ProductViewCard
-          image="Assets/cake2.jpg"
-          optionalImages = {["Assets/cake3.jpg", "Assets/cake4.jpg"]}
+          image={modalInfo.mainImage}
+          optionalImages={["Assets/cake3.jpg", "Assets/cake4.jpg"]}
           name="Swan Chocolate Cake"
           price="Rs.5000"
           description="lorem10"
@@ -40,11 +77,23 @@ const CelebrationCake = () => {
               <input
                 className="form-check-input"
                 type="checkbox"
-                value=""
-                id="defaultCheck1"
+                value="Milk Chocolate"
+                onChange={handleChecked}
               />
               <label class="form-check-label" for="defaultCheck1">
-                Milk Chocolate
+                Birthday Cakes
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="Strawberry"
+                id="defaultCheck2"
+                onChange={handleChecked}
+              />
+              <label class="form-check-label" for="defaultCheck2">
+                Wedding Cakes
               </label>
             </div>
             <div class="form-check">
@@ -55,6 +104,43 @@ const CelebrationCake = () => {
                 id="defaultCheck1"
               />
               <label class="form-check-label" for="defaultCheck1">
+                Kids Birthday Cakes
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                Anniversary Cakes
+              </label>
+            </div>
+          </div>
+          <div className="d-flex flex-column mt-4">
+            <h4>Flavor</h4>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="Milk Chocolate"
+                onChange={handleChecked}
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                Milk Chocolate
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="Strawberry"
+                id="defaultCheck2"
+                onChange={handleChecked}
+              />
+              <label class="form-check-label" for="defaultCheck2">
                 Strawberry
               </label>
             </div>
@@ -109,29 +195,18 @@ const CelebrationCake = () => {
         </div>
         <div className="col-md-10">
           <div className="row row-cols-1 row-cols-md-4 g-4">
-            <Card
-              image="Assets/cake2.jpg"
-              name="Swan Chocolate Cake"
-              price="Rs.5000"
-              handleModal={openModal}
-            />
-            <Card image="Assets/cake3.jpg" name="card title" price="Rs.5000" />
-            <Card
-              image="Assets/cake4.jpg"
-              altName="cake image"
-              name="card title"
-              price="Rs.5000"
-            />
-            <Card image="Assets/cake2.jpg" name="card title" price="Rs.5000" />
-            <Card image="Assets/cake2.jpg" name="card title" price="Rs.5000" />
-            <Card image="Assets/cake3.jpg" name="card title" price="Rs.5000" />
-            <Card
-              image="Assets/cake4.jpg"
-              altName="cake image"
-              name="card title"
-              price="Rs.5000"
-            />
-            <Card image="Assets/cake2.jpg" name="card title" price="Rs.5000" />
+            {products.map((item) => {
+              return (
+                <Card
+                  id={item.id}
+                  image={item.mainImage}
+                  name={item.name}
+                  price={item.price}
+                  handleModal={openModal}
+                  handleAddToCart={handleAddToCart}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
