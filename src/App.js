@@ -1,5 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import Footer from "./Components/Website/Footer";
+import Navbar from "./Components/Website/Navbar";
+import Profile from "./Components/Website/Profile";
 import Layout from "./Layout";
 import Cart from "./pages/Cart";
 import AddProducts from "./pages/Dashboard/AddProducts";
@@ -32,6 +35,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>

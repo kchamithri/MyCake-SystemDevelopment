@@ -57,9 +57,17 @@ const Navbar = () => {
             >
               <i className="fa fa-user-plus me-2"></i> Register{" "}
             </NavLink>
+
+            <NavLink to="/profile">
+              <i
+                className="fa fa-user-circle-o fa-lg mx-4"
+                aria-hidden="true"
+                style={{ color: "black" }}
+              ></i>
+            </NavLink>
             <NavLink to="/cart">
               <i
-                class="fa fa-shopping-cart fa-2x"
+                class="fa fa-shopping-cart fa-lg"
                 aria-hidden="true"
                 style={{ color: "black" }}
               ></i>

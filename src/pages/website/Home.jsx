@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../../Components/Website/Footer";
 import HomeCards from "../../Components/Website/HomeCards";
 import LongCard from "../../Components/Website/LongCard";
 
@@ -82,6 +83,8 @@ const Home = () => {
         image={"Assets/company.webp"}
       />
       <LongCard title={"Customize Your Cake"} image={"Assets/custom.jpg"} />
+
+      <Footer />
     </div>
   );
 };
