@@ -28,7 +28,7 @@ const AddIngredients = (props) => {
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustom01">
           <Form.Label>Ingredient Type</Form.Label>
-          <Form.Control required type="text" autoFocus />
+          <Form.Control required type="text" />
           <Form.Control.Feedback type="invalid">
             Please provide the Ingredient Type.
           </Form.Control.Feedback>

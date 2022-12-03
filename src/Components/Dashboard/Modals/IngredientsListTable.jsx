@@ -23,11 +23,11 @@ const IngredientsListTable = ({ show, openEditModal, closeModal }) => {
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Otto</td>
+              <td>Purchased</td>
+              <td>03/10/2022</td>
+              <td>04/10/2022</td>
+              <td>2kg</td>
+              <td>Rs.3000</td>
               <td>
                 <button
                   type="button"
@@ -48,18 +48,54 @@ const IngredientsListTable = ({ show, openEditModal, closeModal }) => {
               </td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-              <td>Otto</td>
+              <td>Purchased</td>
+              <td>03/10/2022</td>
+              <td>04/10/2022</td>
+              <td>2kg</td>
+              <td>Rs.3000</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
+                  onClick={() => {
+                    closeModal();
+                    openEditModal();
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-              <td>Otto</td>
+              <td>Purchased</td>
+              <td>03/10/2022</td>
+              <td>04/10/2022</td>
+              <td>2kg</td>
+              <td>Rs.3000</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
+                  onClick={() => {
+                    closeModal();
+                    openEditModal();
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           </tbody>
         </Table>

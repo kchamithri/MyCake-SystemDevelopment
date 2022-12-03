@@ -40,7 +40,7 @@ const CelebrationCake = () => {
     console.log(id);
     modalInfo = products.filter((item) => item.id === id);
 
-    console.log(modalInfo[0].mainImage);
+    console.log(modalInfo.mainImage);
     setModalOpen(true);
   };
 
@@ -49,36 +49,27 @@ const CelebrationCake = () => {
   };
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center mr-2">
-        <NavLink to="/cart">
-          <i
-            class="fa fa-shopping-cart fa-2x mx-2"
-            aria-hidden="true"
-            style={{ color: "black" }}
-          ></i>
-        </NavLink>
-      </div>
-      <div className="pageStyle container">
+      <div className="pageStyle container mt-4">
         <Alert key="info" variant="info" style={{ display: showAlert }}>
           Added to the cart
         </Alert>
 
         <ProductViewModal show={modalOpen} close={closeModal}>
           <ProductViewCard
-            image={modalInfo.mainImage}
-            optionalImages={["Assets/cake3.jpg", "Assets/cake4.jpg"]}
+            image={"Assets/birthday3.jpeg"}
+            optionalImages={["Assets/image6.webp", "Assets/cake4.jpg"]}
             name="Swan Chocolate Cake"
             price="Rs.5000"
-            description="lorem10"
+            description="A delicious all-in-one coffee sponge topped with smooth coffee buttercream. Simple to make and packed full of flavour."
             weight="3kg"
           />
         </ProductViewModal>
         <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
           <h2>Celebration Cakes</h2>
-          <p>
+          {/* <p>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab,
             voluptatem!
-          </p>
+          </p> */}
         </div>
         <div className="row">
           <div className="col-md-2">
