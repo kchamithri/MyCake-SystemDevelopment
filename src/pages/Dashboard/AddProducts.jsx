@@ -5,12 +5,16 @@ import { useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import AddProductForm from "../../Components/Dashboard/AddProductForm";
+import ProductsViewTable from "../../Components/Dashboard/ProductsViewTable";
 import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
 
 const AddProducts = () => {
   const [key, setKey] = useState("cake");
 
   const [buttonName, setButtonName] = useState("add");
+  const [show, setShow] = useState({
+    showTabs: false,
+  });
 
   useEffect(() => {
     setButtonName("add");
@@ -18,8 +22,13 @@ const AddProducts = () => {
 
   const handleButton = (event) => {
     setButtonName(event.target.value);
-    console.log(buttonName);
+
+    console.log(show.showTabs);
   };
+
+  useEffect(() => {
+    setShow({ ...show, showTabs: true });
+  }, [buttonName]);
 
   function cm(...args) {
     return args.filter((v) => v).join(" ");
@@ -41,7 +50,7 @@ const AddProducts = () => {
             Add
           </button>
         </div>
-        <div className="col-lg-2 col-sm-6">
+        {/* <div className="col-lg-2 col-sm-6">
           <button
             className={cm(
               buttonName,
@@ -54,23 +63,37 @@ const AddProducts = () => {
           >
             Update
           </button>
-        </div>
+        </div> */}
       </div>
-      <Tabs
-        id="controlled-tab-example"
-        activeKey={key}
-        onSelect={(k) => setKey(k)}
-        className="mb-3"
-        fill
-        justify
-      >
-        <Tab eventKey="cake" title="Cake">
-          {buttonName === "add" ? <AddProductForm /> : <UpdateProductForm />}
-        </Tab>
-        <Tab eventKey="partyPacks" title="Party Packs">
-          {buttonName === "add" ? <AddProductForm /> : <UpdateProductForm />}
-        </Tab>
-      </Tabs>
+      <div className="mt-4">
+        <ProductsViewTable handleButton={handleButton} />
+      </div>
+
+      <div className={show.showTabs ? "d-block" : "d-none"}>
+        <Tabs
+          id="controlled-tab-example"
+          activeKey={key}
+          onSelect={(k) => setKey(k)}
+          className="mb-3"
+          fill
+          justify
+        >
+          <Tab eventKey="cake" title="Cake">
+            {buttonName === "add" ? (
+              <AddProductForm category="cake" />
+            ) : (
+              <UpdateProductForm />
+            )}
+          </Tab>
+          <Tab eventKey="partyPacks" title="Party Packs">
+            {buttonName === "add" ? (
+              <AddProductForm category="partyPacks" />
+            ) : (
+              <UpdateProductForm />
+            )}
+          </Tab>
+        </Tabs>
+      </div>
     </div>
   );
 };

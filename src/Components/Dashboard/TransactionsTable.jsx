@@ -1,5 +1,5 @@
-import React from 'react'
-import { Table } from 'react-bootstrap';
+import React from "react";
+import { Table } from "react-bootstrap";
 
 const TransactionsTable = () => {
   return (
@@ -26,30 +26,30 @@ const TransactionsTable = () => {
         </thead>
         <tbody>
           <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>Otto</td>
+            <td>Sugar</td>
+            <td>D.S Wimal stores</td>
+            <td>22/03/2022</td>
+            <td>3kg</td>
+            <td>Rs. 2000</td>
           </tr>
           <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>Otto</td>
+            <td>Sugar</td>
+            <td>D.S Wimal stores</td>
+            <td>22/03/2022</td>
+            <td>3kg</td>
+            <td>Rs. 2000</td>
           </tr>
           <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>Otto</td>
+            <td>Sugar</td>
+            <td>D.S Wimal stores</td>
+            <td>22/03/2022</td>
+            <td>3kg</td>
+            <td>Rs. 2000</td>
           </tr>
         </tbody>
       </Table>
     </div>
   );
-}
+};
 
-export default TransactionsTable
+export default TransactionsTable;
