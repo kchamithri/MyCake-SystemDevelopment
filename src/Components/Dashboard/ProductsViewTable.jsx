@@ -1,13 +1,18 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 
-const ProductsViewTable = ({ handleButton }) => {
+const ProductsViewTable = ({
+  handleAdd,
+  products,
+  handleDelete,
+  handleEdit,
+}) => {
   return (
     <div>
       <Table>
         <thead>
           <tr style={{ color: "green" }}>
-            <th width="20%">Food Item</th>
+            <th width="15%">Food Item</th>
             <th>Category</th>
             <th>Type</th>
             <th>Weight</th>
@@ -17,105 +22,44 @@ const ProductsViewTable = ({ handleButton }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Swan Chocolate Cake</td>
-            <td>Cake</td>
-            <td>Birthday Cake</td>
-            <td>2kg</td>
-            <td>Rs.3000</td>
-            <td>abcssssd</td>
+          {products.map((data) => {
+            return (
+              <tr key={data._id}>
+                <td>{data.name}</td>
+                <td>{data.category}</td>
+                <td>{data.type}</td>
+                <td>{data.weight} kg</td>
+                <td> Rs. {data.price}</td>
+                <td>{data.description}</td>
 
-            <td align="right">
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
-                value="update"
-                onClick={handleButton}
-              >
-                View More
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
-                value="update"
-                onClick={handleButton}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Swan Chocolate Cake</td>
-            <td>Cake</td>
-            <td>Birthday Cake</td>
-            <td>2kg</td>
-            <td>Rs.3000</td>
-            <td>ABCD</td>
-
-            <td align="right">
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
-                value="update"
-                onClick={handleButton}
-              >
-                View More
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
-                value="update"
-                onClick={handleButton}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Swan Chocolate Cake</td>
-            <td>Cake</td>
-            <td>Birthday Cake</td>
-            <td>2kg</td>
-            <td>Rs.3000</td>
-            <td>abcd</td>
-
-            <td align="right">
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
-                value="update"
-                onClick={handleButton}
-              >
-                View More
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
-                value="update"
-                onClick={handleButton}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+                <td align="right">
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
+                    value="update"
+                    onClick={handleAdd}
+                  >
+                    View More
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm mx-1"
+                    value="update"
+                    onClick={() => handleEdit(data._id, data.category)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
+                    onClick={() => handleDelete(data._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </div>
