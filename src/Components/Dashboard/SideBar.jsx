@@ -7,7 +7,7 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
     <div className={sidebarOpen ? "sidebar_responsive" : ""} id="sidebar">
       <div className="sidebar__title">
         <div className="d-flex align-items-center">
-          <img src="Assets/mycakelogo.jpg" className="rounded-5 " alt="logo" />
+          <img src="/Assets/mycakelogo.jpg" className="rounded-5 " alt="logo" />
         </div>
         <i
           onClick={() => closeSidebar()}
