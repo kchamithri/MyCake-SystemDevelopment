@@ -1,12 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const AddProductForm = (props) => {
+  const navigate = useNavigate();
+
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({
     name: "",
-    category: "Cake",
+    category: props.category,
     type: "",
     flavor: "",
     weight: "",
@@ -56,8 +59,9 @@ const AddProductForm = (props) => {
       description,
       mainImage,
     } = product;
+
     try {
-      const res = await fetch("/admin/addProducts", {
+      const res = await fetch("/admin/products/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +83,7 @@ const AddProductForm = (props) => {
         window.alert("Successfully Added");
 
         console.log(event.target);
-        setProduct(!product);
+        props.handleShow();
       }
     } catch (error) {
       console.log("ERROR IS", error);
@@ -127,7 +131,7 @@ const AddProductForm = (props) => {
               onChange={handleInput}
               value={product.type}
             >
-              {props.category === "cake" ? (
+              {props.category === "Cake" ? (
                 <>
                   <option>Type</option>
                   <option value="Birthday Cake">Birthday Cake</option>

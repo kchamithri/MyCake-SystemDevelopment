@@ -29,7 +29,7 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
           </NavLink>
         </div>
         <div className="sidebar__link">
-          <NavLink to="addProducts">
+          <NavLink to="products">
             <i className="fa fa-plus-square-o"></i> Add Products
           </NavLink>
         </div>
