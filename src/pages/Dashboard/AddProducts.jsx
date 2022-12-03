@@ -9,26 +9,107 @@ import ProductsViewTable from "../../Components/Dashboard/ProductsViewTable";
 import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
 
 const AddProducts = () => {
-  const [key, setKey] = useState("cake");
+  const [key, setKey] = useState("Cake");
 
   const [buttonName, setButtonName] = useState("add");
-  const [show, setShow] = useState({
-    showTabs: false,
-  });
+  const [show, setShow] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [dataToUpdate, setDataToUpdate] = useState([]);
 
-  useEffect(() => {
-    setButtonName("add");
-  }, [key]);
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch("/admin/products/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+      if (res.status === 200) {
+        setProducts(products.filter((data) => data._id !== id));
+        window.alert("Successfully Deleted");
+      } else {
+        window.alert("Invalid Credentials");
+      }
+    } catch (error) {
+      console.log("ERROR IS", error);
+    }
+  };
 
-  const handleButton = (event) => {
-    setButtonName(event.target.value);
+  const handleEdit = async (id, category) => {
+    handleShow();
+    setButtonName("update");
+    setKey(category);
 
-    console.log(show.showTabs);
+    try {
+      const res = await fetch("/admin/products/view", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response;
+        })
+        .then((data) => {
+          console.log(data.products);
+          let arr = [];
+          arr.push(data.products);
+          console.log(arr);
+          setDataToUpdate(arr);
+        })
+        .catch((error) => {
+          console.log("error fetching:", error);
+        });
+    } catch (error) {
+      console.log("ERROR IS", error);
+    }
   };
 
   useEffect(() => {
-    setShow({ ...show, showTabs: true });
-  }, [buttonName]);
+    console.log(dataToUpdate);
+  }, [dataToUpdate]);
+
+  useEffect(() => {
+    fetch("/admin/products/view", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        console.log(data.products);
+        setProducts(data.products);
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   setButtonName("add");
+  // }, [key]);
+
+  const handleShow = () => {
+    setShow(!show);
+  };
+
+  const handleAdd = (event) => {
+    setButtonName("add");
+    handleShow();
+    console.log(show);
+  };
 
   function cm(...args) {
     return args.filter((v) => v).join(" ");
@@ -45,7 +126,7 @@ const AddProducts = () => {
                 "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
             )}
             value="add"
-            onClick={handleButton}
+            onClick={handleAdd}
           >
             Add
           </button>
@@ -59,17 +140,22 @@ const AddProducts = () => {
                 "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
             )}
             value="update"
-            onClick={handleButton}
+            onClick={handleAdd}
           >
             Update
           </button>
         </div> */}
       </div>
-      <div className="mt-4">
-        <ProductsViewTable handleButton={handleButton} />
+      <div className={show ? "d-none" : "mt-4"}>
+        <ProductsViewTable
+          handleAdd={handleAdd}
+          products={products}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
       </div>
 
-      <div className={show.showTabs ? "d-block" : "d-none"}>
+      <div className={show ? "" : "d-none"}>
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
@@ -78,18 +164,18 @@ const AddProducts = () => {
           fill
           justify
         >
-          <Tab eventKey="cake" title="Cake">
+          <Tab eventKey="Cake" title="Cake">
             {buttonName === "add" ? (
-              <AddProductForm category="cake" />
+              <AddProductForm category="Cake" handleShow={handleShow} />
             ) : (
-              <UpdateProductForm />
+              <UpdateProductForm dataToUpdate={dataToUpdate} />
             )}
           </Tab>
-          <Tab eventKey="partyPacks" title="Party Packs">
+          <Tab eventKey="Party Packs" title="Party Packs">
             {buttonName === "add" ? (
-              <AddProductForm category="partyPacks" />
+              <AddProductForm category="Party Packs" handleShow={handleShow} />
             ) : (
-              <UpdateProductForm />
+              <UpdateProductForm dataToUpdate={dataToUpdate} />
             )}
           </Tab>
         </Tabs>
