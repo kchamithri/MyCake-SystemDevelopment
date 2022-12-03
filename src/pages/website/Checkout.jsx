@@ -14,8 +14,10 @@ const Checkout = () => {
     setValidated(true);
   };
   return (
-    <Container className="mt-3">
-      <h4>Order Details</h4>
+    <Container className="mt-3 border border-darker ">
+      <h4 style={{ fontFamily: "monospace", fontSize: "20px" }}>
+        Please provide your Order Details
+      </h4>
       <Form
         noValidate
         validated={validated}

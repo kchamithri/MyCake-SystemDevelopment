@@ -5,22 +5,13 @@ import Card from "../../Components/Website/Card";
 const PartyPacks = () => {
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center mr-2">
-        <NavLink to="/cart">
-          <i
-            class="fa fa-shopping-cart fa-2x mx-2"
-            aria-hidden="true"
-            style={{ color: "black" }}
-          ></i>
-        </NavLink>
-      </div>
-      <div className="pageStyle container">
+      <div className="pageStyle container mt-4">
         <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
           <h2>Party Packs</h2>
-          <p>
+          {/* <p>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab,
             voluptatem!
-          </p>
+          </p> */}
         </div>
         <div className="row">
           <div className="col-md-2">
@@ -61,7 +52,7 @@ const PartyPacks = () => {
               </div>
             </div>
             <div className="d-flex flex-column mt-4">
-              <h4>Price</h4>
+              <h4>Flavor</h4>
               <div class="form-check">
                 <input
                   className="form-check-input"
@@ -70,7 +61,7 @@ const PartyPacks = () => {
                   id="defaultCheck1"
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  Default checkbox
+                  Chicken
                 </label>
               </div>
               <div class="form-check">
@@ -81,7 +72,7 @@ const PartyPacks = () => {
                   id="defaultCheck1"
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  Default checkbox
+                  Egg
                 </label>
               </div>
               <div class="form-check">
@@ -92,7 +83,7 @@ const PartyPacks = () => {
                   id="defaultCheck1"
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  Default checkbox
+                  Fish
                 </label>
               </div>
             </div>
@@ -100,46 +91,43 @@ const PartyPacks = () => {
           <div className="col-md-10">
             <div className="row row-cols-1 row-cols-md-4 g-4">
               <Card
-                image="Assets/cake2.jpg"
-                name="Swan Chocolate Cake"
-                price="Rs.5000"
+                image="Assets/sandwich.jpg"
+                name="Chicken Sandwich"
+                price="500"
+              />
+
+              <Card
+                image="Assets/cutlet.jpg"
+                altName="Fish Cutlet"
+                name="Fish Cutlet"
+                price="100"
               />
               <Card
-                image="Assets/cake3.jpg"
-                name="card title"
-                price="Rs.5000"
+                image="Assets/dinner_rolls.jpg"
+                name="Dinner Rolls"
+                price="50"
               />
               <Card
-                image="Assets/cake4.jpg"
-                altName="cake image"
-                name="card title"
-                price="Rs.5000"
+                image="Assets/puff_pastry.jpg"
+                name="Puff Pastry"
+                price="150"
+              />
+              <Card image="Assets/burger.jpg" name="Hamburger" price="300" />
+              <Card
+                image="Assets/eggsandwich.jpg"
+                name="Egg Sandwich"
+                price="350"
               />
               <Card
-                image="Assets/cake2.jpg"
-                name="card title"
-                price="Rs.5000"
+                image="Assets/rolls.jpg"
+                altName="Rolls"
+                name="Vegetable Rolls"
+                price="100"
               />
               <Card
-                image="Assets/cake2.jpg"
-                name="card title"
-                price="Rs.5000"
-              />
-              <Card
-                image="Assets/cake3.jpg"
-                name="card title"
-                price="Rs.5000"
-              />
-              <Card
-                image="Assets/cake4.jpg"
-                altName="cake image"
-                name="card title"
-                price="Rs.5000"
-              />
-              <Card
-                image="Assets/cake2.jpg"
-                name="card title"
-                price="Rs.5000"
+                image="Assets/burgerBun.jpg"
+                name="Chicken Burger"
+                price="500"
               />
             </div>
           </div>
