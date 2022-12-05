@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Alert } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import Card from "../../Components/Website/Card";
 import ProductViewCard from "../../Components/Website/ZoomProduct/ProductViewCard";
 import ProductViewModal from "../../Components/Website/ZoomProduct/ProductViewModal";
-import products from "../../Data/products";
+import { ReactNotifications, Store } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 const CelebrationCake = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [addToCart, setAddToCart] = useState([]);
   const [filter, setFilter] = useState([]);
-  const [showAlert, setShowAlert] = useState("none");
+  const [products, setProducts] = useState([]);
   let modalInfo = [];
+
+  useEffect(() => {
+    fetch("/celebrationCakes", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        setProducts(data.products);
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+    localStorage.clear();
+  }, []);
 
   const handleChecked = (e) => {
     let updatedList = [...filter];
@@ -25,15 +45,53 @@ const CelebrationCake = () => {
     console.log(filter);
   };
 
-  const handleAddToCart = (id) => {
-    const ID = id;
+  const handleAddToCart = async (productId, price) => {
+    const ID = productId;
     console.log(ID);
-    setShowAlert(true);
-    setAddToCart([...addToCart, { id }]);
-    console.log(addToCart);
-    setTimeout(() => {
-      setShowAlert("none");
-    }, 1000);
+
+    if (localStorage.getItem("userId")) {
+      try {
+        const res = await fetch("/cart/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user: "635ccda7eaf3329232ad3ad4",
+            products: [
+              {
+                productId: productId,
+                quantity: "1",
+                total: price,
+              },
+            ],
+          }),
+        });
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          Store.addNotification({
+            title: "Successfully Added!",
+
+            type: "info",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animated", "animate__fadeIn"],
+            animationOut: ["animated", "animate__fadeOut"],
+            dismiss: {
+              duration: 2000,
+            },
+          });
+        }
+      } catch (error) {
+        console.log("ERROR IS", error);
+      }
+    } else {
+      window.alert("you must login to the system");
+    }
+
+    // setAddToCart([...addToCart, { id }]);
+    // console.log(addToCart);
   };
 
   const openModal = (id) => {
@@ -49,11 +107,9 @@ const CelebrationCake = () => {
   };
   return (
     <div>
-      <div className="pageStyle container mt-4">
-        <Alert key="info" variant="info" style={{ display: showAlert }}>
-          Added to the cart
-        </Alert>
+      <ReactNotifications />
 
+      <div className="pageStyle container mt-4">
         <ProductViewModal show={modalOpen} close={closeModal}>
           <ProductViewCard
             image={"Assets/birthday3.jpeg"}
@@ -200,7 +256,7 @@ const CelebrationCake = () => {
               {products.map((item) => {
                 return (
                   <Card
-                    id={item.id}
+                    id={item._id}
                     image={item.mainImage}
                     name={item.name}
                     price={item.price}
