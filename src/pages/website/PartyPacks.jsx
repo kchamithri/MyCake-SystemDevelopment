@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Card from "../../Components/Website/Card";
 
 const PartyPacks = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch("/partyPacks", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        console.log(data.products);
+        setProducts(data.products);
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+  }, []);
+
   return (
     <div>
       <div className="pageStyle container mt-4">
@@ -90,45 +111,15 @@ const PartyPacks = () => {
           </div>
           <div className="col-md-10">
             <div className="row row-cols-1 row-cols-md-4 g-4">
-              <Card
-                image="Assets/sandwich.jpg"
-                name="Chicken Sandwich"
-                price="500"
-              />
-
-              <Card
-                image="Assets/cutlet.jpg"
-                altName="Fish Cutlet"
-                name="Fish Cutlet"
-                price="100"
-              />
-              <Card
-                image="Assets/dinner_rolls.jpg"
-                name="Dinner Rolls"
-                price="50"
-              />
-              <Card
-                image="Assets/puff_pastry.jpg"
-                name="Puff Pastry"
-                price="150"
-              />
-              <Card image="Assets/burger.jpg" name="Hamburger" price="300" />
-              <Card
-                image="Assets/eggsandwich.jpg"
-                name="Egg Sandwich"
-                price="350"
-              />
-              <Card
-                image="Assets/rolls.jpg"
-                altName="Rolls"
-                name="Vegetable Rolls"
-                price="100"
-              />
-              <Card
-                image="Assets/burgerBun.jpg"
-                name="Chicken Burger"
-                price="500"
-              />
+              {products.map((item) => {
+                return (
+                  <Card
+                    image={item.mainImage}
+                    name={item.name}
+                    price={item.price}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
