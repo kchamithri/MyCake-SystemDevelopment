@@ -43,35 +43,11 @@ const AddProducts = () => {
     setButtonName("update");
     setKey(category);
 
-    try {
-      const res = await fetch("/admin/products/view", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw response;
-        })
-        .then((data) => {
-          console.log(data.products);
-          let arr = [];
-          arr.push(data.products);
-          console.log(arr);
-          setDataToUpdate(arr);
-        })
-        .catch((error) => {
-          console.log("error fetching:", error);
-        });
-    } catch (error) {
-      console.log("ERROR IS", error);
-    }
+    setDataToUpdate(products.filter((data) => id === data._id));
+  };
+
+  const handleShow = () => {
+    setShow(!show);
   };
 
   useEffect(() => {
@@ -95,20 +71,15 @@ const AddProducts = () => {
       .catch((error) => {
         console.log("error fetching:", error);
       });
-  }, []);
+  }, [show]);
 
   // useEffect(() => {
   //   setButtonName("add");
   // }, [key]);
 
-  const handleShow = () => {
-    setShow(!show);
-  };
-
   const handleAdd = (event) => {
     setButtonName("add");
     handleShow();
-    console.log(show);
   };
 
   function cm(...args) {
@@ -117,7 +88,7 @@ const AddProducts = () => {
   return (
     <div className="mt-2">
       <div className="row justify-content-end my-2">
-        <div className="col-lg-1 col-sm-6 text-center">
+        <div className={show ? "d-none" : "col-lg-1 col-sm-6 text-center"}>
           <button
             className={cm(
               buttonName,
@@ -175,7 +146,10 @@ const AddProducts = () => {
             {buttonName === "add" ? (
               <AddProductForm category="Party Packs" handleShow={handleShow} />
             ) : (
-              <UpdateProductForm dataToUpdate={dataToUpdate} />
+              <UpdateProductForm
+                dataToUpdate={dataToUpdate}
+                handleShow={handleShow}
+              />
             )}
           </Tab>
         </Tabs>
