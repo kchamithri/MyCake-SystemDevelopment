@@ -1,18 +1,142 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  CardGroup,
+  Col,
+  Form,
+  Row,
+  Stack,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-const UpdateProductForm = () => {
+const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
+  const [data, setData] = useState({});
+  const [show, setShow] = useState({
+    showMain: true,
+    showOpt1: true,
+    showOpt2: true,
+  });
+  const [product, setProduct] = useState({});
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+  useEffect(() => {
+    setData(dataToUpdate[0]);
+    setProduct(dataToUpdate[0]);
+  }, []);
+
+  const handleInput = (event) => {
+    console.log(event.target.value);
+    let name = event.target.name;
+    let value = event.target.value;
+
+    setProduct({ ...product, [name]: value });
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleMainImages = async (event) => {
+    const file = event.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setProduct({ ...product, mainImage: base64 });
+  };
+
+  const handleOptionalImage1 = async (event) => {
+    const file = event.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setProduct({
+      ...product,
+      optionalImage1: base64,
+    });
+    // setProduct((prev) => ({
+    //   ...prev,
+    //   optionalImage: [...prev.optionalImage, "newImage"],
+    // }));
+  };
+
+  const handleOptionalImage2 = async (event) => {
+    const file = event.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setProduct({
+      ...product,
+      optionalImage2: base64,
+    });
+  };
+
+  const handleUploadShow = (event) => {
+    if (event.target.id === "main") {
+      setShow({ ...show, showMain: false });
+    } else if (event.target.id === "op1") {
+      setShow({ ...show, showOpt1: false });
+    } else if (event.target.id === "op2") {
+      setShow({ ...show, showOpt2: false });
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const {
+      _id,
+      name,
+      category,
+      type,
+      flavor,
+      weight,
+      price,
+      description,
+      mainImage,
+      optionalImage1,
+      optionalImage2,
+    } = product;
+
+    try {
+      const res = await fetch("/admin/products/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          _id,
+          name,
+          category,
+          type,
+          flavor,
+          weight,
+          price,
+          description,
+          mainImage,
+          optionalImage1,
+          optionalImage2,
+        }),
+      });
+      if (res.status === 400 || !res) {
+        window.alert("Invalid Credentials");
+      } else {
+        window.alert("Successfully Updated");
+      }
+    } catch (error) {
+      console.log("ERROR IS", error);
     }
 
-    setValidated(true);
+    handleShow();
   };
 
   return (
@@ -28,11 +152,64 @@ const UpdateProductForm = () => {
             Cake Name:
           </Form.Label>
           <Col lg={10}>
-            <Form.Control required type="text" placeholder="Cake name" />
+            <Form.Control
+              required
+              type="text"
+              name="name"
+              defaultValue={data.name}
+              onChange={handleInput}
+            />
+
             <Form.Control.Feedback type="invalid">
               Please provide a Cake Name.
             </Form.Control.Feedback>
           </Col>
+        </Form.Group>
+      </Row>
+      <Row className="mb-3">
+        <Form.Group as={Row} md="6" controlId="validationCustom01">
+          <Form.Label column lg={2}>
+            Type
+          </Form.Label>
+          <Col lg={4}>
+            <Form.Select
+              aria-label="Default select example"
+              name="type"
+              onChange={handleInput}
+            >
+              <option>{data.type}</option>
+              <option value="Birthday Cake">Birthday Cake</option>
+              <option value="Wedding Cakes">Wedding Cakes</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Kids Birthday">Kids Birthday</option>
+            </Form.Select>
+          </Col>
+          <Form.Control.Feedback type="invalid">
+            Please provide a Type
+          </Form.Control.Feedback>
+        </Form.Group>
+      </Row>
+
+      <Row className="mb-3">
+        <Form.Group as={Row} md="6" controlId="validationCustom01">
+          <Form.Label column lg={2}>
+            Flavor
+          </Form.Label>
+          <Col lg={4}>
+            <Form.Select
+              aria-label="Default select example"
+              name="flavor"
+              onChange={handleInput}
+            >
+              <option>{data.flavor}</option>
+              <option value="Milk Chocolate">Milk Chocolate</option>
+              <option value="Strawberry">Strawberry</option>
+              <option value="Vanilla">Vanilla</option>
+            </Form.Select>
+          </Col>
+          <Form.Control.Feedback type="invalid">
+            Please provide a Type
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
       <Row className="mb-3">
@@ -41,7 +218,14 @@ const UpdateProductForm = () => {
             Weight:
           </Form.Label>
           <Col lg={4}>
-            <Form.Control required type="text" placeholder="kg" />
+            <Form.Control
+              required
+              type="text"
+              name="weight"
+              placeholder="kg"
+              defaultValue={data.weight}
+              onChange={handleInput}
+            />
             <Form.Control.Feedback type="invalid">
               Please provide the weight.
             </Form.Control.Feedback>
@@ -55,7 +239,14 @@ const UpdateProductForm = () => {
             Price:
           </Form.Label>
           <Col lg={4}>
-            <Form.Control required type="text" placeholder="Rs." />
+            <Form.Control
+              required
+              type="text"
+              name="price"
+              placeholder="Rs."
+              defaultValue={data.price}
+              onChange={handleInput}
+            />
             <Form.Control.Feedback type="invalid">
               Please provide the Price.
             </Form.Control.Feedback>
@@ -71,8 +262,11 @@ const UpdateProductForm = () => {
             <Form.Control
               required
               as="textarea"
-              rows={3}
+              rows={2}
               placeholder="Product Description"
+              name="description"
+              defaultValue={data.description}
+              onChange={handleInput}
             />
             <Form.Control.Feedback type="invalid">
               Please provide a description.
@@ -81,28 +275,117 @@ const UpdateProductForm = () => {
         </Form.Group>
       </Row>
 
-      <Row className="mb-3">
-        <Form.Group as={Row} controlId="formFile" className="mb-3">
-          <Form.Label column lg={2}>
-            Main Image:
-          </Form.Label>
-          <Col lg={10}>
-            <Form.Control type="file" />
-          </Col>
-        </Form.Group>
-      </Row>
-      <Row className="mb-3">
-        <Form.Group as={Row} controlId="formFileMultiple" className="mb-3">
-          <Form.Label column lg={2}>
-            Optional Images:
-          </Form.Label>
-          <Col lg={10}>
-            <Form.Control type="file" multiple />
-          </Col>
-        </Form.Group>
+      <Row xs={1} md={3} className="g-4">
+        <Col>
+          <Card style={{ width: "18rem" }} border="light">
+            <Card.Body className="p-0 ">
+              <Card.Title className="fs-6">Main Image</Card.Title>
+            </Card.Body>
+            <Card.Img
+              style={{ height: "230px" }}
+              variant="bottom"
+              src={data.mainImage}
+            />
+            <Card.Title>
+              <Stack direction="horizontal">
+                <div className="ms-auto mt-1">
+                  <Button
+                    id="main"
+                    variant="secondary"
+                    type="submit"
+                    size="sm"
+                    className={show.showMain ? "block mt-1" : "d-none"}
+                    onClick={handleUploadShow}
+                  >
+                    Change Image
+                  </Button>
+                </div>
+              </Stack>
+
+              <Form.Control
+                type="file"
+                name="mainImage"
+                className={show.showMain ? "d-none" : "block mt-1"}
+                onClick={handleMainImages}
+              />
+            </Card.Title>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ width: "18rem" }} border="light">
+            <Card.Body className="p-0 ">
+              <Card.Title className="fs-6 ">Optional Image 1</Card.Title>
+            </Card.Body>
+            <Card.Img
+              style={{ height: "230px" }}
+              variant="bottom"
+              src={data.optionalImage1}
+            />
+            <Card.Title>
+              <Stack direction="horizontal">
+                <div className="ms-auto mt-1">
+                  <Button
+                    id="op1"
+                    variant="secondary"
+                    size="sm"
+                    className={show.showOpt1 ? "block mt-1" : "d-none"}
+                    onClick={handleUploadShow}
+                  >
+                    Change Image
+                  </Button>
+                </div>
+              </Stack>
+              <Form.Control
+                type="file"
+                name="optionalImage1"
+                className={show.showOpt1 ? "d-none" : "block mt-1"}
+                onClick={handleOptionalImage1}
+              />
+            </Card.Title>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ width: "18rem" }} border="light">
+            <Card.Body className="p-0 ">
+              <Card.Title className="fs-6 ">Optional Image 2</Card.Title>
+            </Card.Body>
+            <Card.Img
+              style={{ height: "230px" }}
+              variant="bottom"
+              src={data.optionalImage2}
+            />
+            <Card.Title>
+              <Stack direction="horizontal">
+                <div className="ms-auto mt-1">
+                  <Button
+                    id="op2"
+                    variant="secondary"
+                    size="sm"
+                    className={show.showOpt2 ? "block mt-1" : "d-none"}
+                    onClick={handleUploadShow}
+                  >
+                    Change Image
+                  </Button>
+                </div>
+              </Stack>
+              <Form.Control
+                type="file"
+                name="optionalImage2"
+                className={show.showOpt2 ? "d-none" : "block mt-1"}
+                onClick={handleOptionalImage2}
+              />
+            </Card.Title>
+          </Card>
+        </Col>
       </Row>
 
-      <Button type="submit">Update</Button>
+      <Stack direction="horizontal">
+        <div className="ms-auto mt-1">
+          <Button variant="info" type="submit">
+            Save Changes
+          </Button>
+        </div>
+      </Stack>
     </Form>
   );
 };
