@@ -227,29 +227,6 @@ const Profile = () => {
                             </Col>
                           </Form.Group>
                         </Row>
-                        <Row className="mb-3">
-                          <Form.Group
-                            as={Row}
-                            md="6"
-                            controlId="validationCustom02"
-                          >
-                            <Form.Label column lg={3}>
-                              Address:
-                            </Form.Label>
-                            <Col lg={9}>
-                              <Form.Control
-                                required
-                                type="text"
-                                name="address"
-                                value="No.24, 2nd lane, Horana"
-                                placeholder="Address"
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                Please provide the Address.
-                              </Form.Control.Feedback>
-                            </Col>
-                          </Form.Group>
-                        </Row>
 
                         <Row className="mb-3">
                           <Form.Group
