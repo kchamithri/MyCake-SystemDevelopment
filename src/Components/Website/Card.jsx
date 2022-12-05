@@ -19,7 +19,7 @@ const Card = (props) => {
         </div>
         <button
           className="btn btn-outline-info btn-sm"
-          onClick={() => props.handleAddToCart(props.id)}
+          onClick={() => props.handleAddToCart(props.id, props.price)}
         >
           Add to cart
         </button>

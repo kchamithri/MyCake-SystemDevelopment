@@ -91,18 +91,11 @@ const Checkout = () => {
         </Row>
         <h5>Sender's Information</h5>
         <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="validationCustom09">
-            <Form.Label>First name</Form.Label>
-            <Form.Control required type="text" placeholder="First name" />
+          <Form.Group as={Col} md="12" controlId="validationCustom09">
+            <Form.Label>Name</Form.Label>
+            <Form.Control required type="text" placeholder="Name" />
             <Form.Control.Feedback type="invalid">
-              Please provide your First Name.
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="validationCustom10">
-            <Form.Label>Last name</Form.Label>
-            <Form.Control required type="text" placeholder="Last name" />
-            <Form.Control.Feedback type="invalid">
-              Please provide your Last Name.
+              Please provide your Name.
             </Form.Control.Feedback>
           </Form.Group>
         </Row>

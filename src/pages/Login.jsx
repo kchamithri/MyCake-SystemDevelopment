@@ -20,26 +20,38 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = user;
-    try {
-      const res = await fetch("/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+
+    await fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          window.alert("Successfully logged");
+          localStorage.setItem("userId", res.user.id);
+          localStorage.setItem("name", res.user.name);
+          localStorage.setItem("email", res.user.email);
+          localStorage.setItem("contact", res.user.contact);
+          localStorage.setItem("token", res.token);
+
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally((e) => {
+        console.log("req completed");
       });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        window.alert("Successfully logged");
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
