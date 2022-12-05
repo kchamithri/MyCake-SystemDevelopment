@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Form, Row, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const AddProductForm = (props) => {
   const navigate = useNavigate();
 
   const [validated, setValidated] = useState(false);
+
   const [product, setProduct] = useState({
     name: "",
     category: props.category,
@@ -16,7 +17,8 @@ const AddProductForm = (props) => {
     price: "",
     description: "",
     mainImage: "",
-    // optionalImage: "",
+    optionalImage1: "",
+    optionalImage2: "",
   });
 
   const handleInput = (event) => {
@@ -39,12 +41,40 @@ const AddProductForm = (props) => {
     });
   };
 
-  const handleImages = async (event) => {
+  const handleMainImages = async (event) => {
     const file = event.target.files[0];
 
     const base64 = await convertToBase64(file);
     setProduct({ ...product, mainImage: base64 });
   };
+
+  const handleOptionalImage1 = async (event) => {
+    const file = event.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setProduct({
+      ...product,
+      optionalImage1: base64,
+    });
+    // setProduct((prev) => ({
+    //   ...prev,
+    //   optionalImage: [...prev.optionalImage, "newImage"],
+    // }));
+  };
+
+  const handleOptionalImage2 = async (event) => {
+    const file = event.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setProduct({
+      ...product,
+      optionalImage2: base64,
+    });
+  };
+
+  useEffect(() => {
+    console.log(product);
+  }, [product]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,6 +88,8 @@ const AddProductForm = (props) => {
       price,
       description,
       mainImage,
+      optionalImage1,
+      optionalImage2,
     } = product;
 
     try {
@@ -75,19 +107,32 @@ const AddProductForm = (props) => {
           price,
           description,
           mainImage,
+          optionalImage1,
+          optionalImage2,
         }),
       });
       if (res.status === 400 || !res) {
         window.alert("Invalid Credentials");
       } else {
         window.alert("Successfully Added");
+        setProduct(...product, {
+          name: "",
+          type: "",
+          flavor: "",
+          weight: "",
+          price: "",
+          description: "",
+          mainImage: "",
+          optionalImage1: "",
+          optionalImage2: "",
+        });
 
         console.log(event.target);
-        props.handleShow();
       }
     } catch (error) {
       console.log("ERROR IS", error);
     }
+    props.handleShow();
   };
 
   return (
@@ -154,6 +199,7 @@ const AddProductForm = (props) => {
           </Form.Control.Feedback>
         </Form.Group>
       </Row>
+
       <Row className="mb-3">
         <Form.Group as={Row} md="6" controlId="validationCustom01">
           <Form.Label column lg={2}>
@@ -228,7 +274,7 @@ const AddProductForm = (props) => {
             <Form.Control
               required
               as="textarea"
-              rows={3}
+              rows={2}
               placeholder="Product Description"
               name="description"
               value={product.description}
@@ -241,37 +287,76 @@ const AddProductForm = (props) => {
         </Form.Group>
       </Row>
 
-      <Row className="mb-3">
-        <Form.Group as={Row} controlId="formFile" className="mb-3">
-          <Form.Label column lg={2}>
-            Main Image:
-          </Form.Label>
-          <Col lg={10}>
-            <Form.Control
-              type="file"
-              name="mainImage"
-              onChange={handleImages}
+      <Row xs={1} md={3} className="g-4">
+        <Col>
+          <Card style={{ width: "18rem" }} border="light">
+            <Card.Body className="p-0 ">
+              <Card.Title className="fs-6">Main Image</Card.Title>
+            </Card.Body>
+            <Card.Img
+              style={{ height: "230px" }}
+              variant="bottom"
+              src={product.mainImage}
             />
-          </Col>
-        </Form.Group>
+            <Card.Title>
+              <Form.Control
+                type="file"
+                name="mainImage"
+                className="mt-1"
+                onChange={handleMainImages}
+              />
+            </Card.Title>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ width: "18rem" }} border="light">
+            <Card.Body className="p-0 ">
+              <Card.Title className="fs-6 ">Optional Image 1</Card.Title>
+            </Card.Body>
+            <Card.Img
+              style={{ height: "230px" }}
+              variant="bottom"
+              src={product.optionalImage1}
+            />
+            <Card.Title>
+              <Form.Control
+                type="file"
+                name="optionalImage1"
+                className="mt-1"
+                onChange={handleOptionalImage1}
+              />
+            </Card.Title>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ width: "18rem" }} border="light">
+            <Card.Body className="p-0 ">
+              <Card.Title className="fs-6 ">Optional Image 2</Card.Title>
+            </Card.Body>
+            <Card.Img
+              style={{ height: "230px" }}
+              variant="bottom"
+              src={product.optionalImage2}
+            />
+            <Card.Title>
+              <Form.Control
+                type="file"
+                name="optionalImage2"
+                className="mt-1"
+                onChange={handleOptionalImage2}
+              />
+            </Card.Title>
+          </Card>
+        </Col>
       </Row>
-      {/* <Row className="mb-3">
-        <Form.Group as={Row} controlId="formFileMultiple" className="mb-3">
-          <Form.Label column lg={2}>
-            Optional Images:
-          </Form.Label>
-          <Col lg={10}>
-            <Form.Control
-              type="file"
-              name="optionalImage"
-              multiple
-              onChange={handleImages}
-            />
-          </Col>
-        </Form.Group>
-      </Row> */}
 
-      <Button type="submit">Add</Button>
+      <Stack direction="horizontal">
+        <div className="ms-auto mt-1">
+          <Button variant="info" type="submit">
+            Add
+          </Button>
+        </div>
+      </Stack>
     </Form>
   );
 };
