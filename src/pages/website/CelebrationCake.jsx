@@ -1,23 +1,26 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Alert } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Card from "../../Components/Website/Card";
 import ProductViewCard from "../../Components/Website/ZoomProduct/ProductViewCard";
 import ProductViewModal from "../../Components/Website/ZoomProduct/ProductViewModal";
 import { ReactNotifications, Store } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import swal from "@sweetalert/with-react";
 
 const CelebrationCake = () => {
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [addToCart, setAddToCart] = useState([]);
   const [filter, setFilter] = useState([]);
   const [products, setProducts] = useState([]);
-  let modalInfo = [];
+  const [modalData, setModalData] = useState({});
 
   useEffect(() => {
     fetch("/celebrationCakes", {
       method: "POST",
+      content: "application/json",
     })
       .then((response) => {
         if (response.ok) {
@@ -31,7 +34,7 @@ const CelebrationCake = () => {
       .catch((error) => {
         console.log("error fetching:", error);
       });
-    localStorage.clear();
+    // localStorage.clear();
   }, []);
 
   const handleChecked = (e) => {
@@ -48,6 +51,7 @@ const CelebrationCake = () => {
   const handleAddToCart = async (productId, price) => {
     const ID = productId;
     console.log(ID);
+    console.log(localStorage.getItem("userId"));
 
     if (localStorage.getItem("userId")) {
       try {
@@ -57,14 +61,10 @@ const CelebrationCake = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            user: "635ccda7eaf3329232ad3ad4",
-            products: [
-              {
-                productId: productId,
-                quantity: "1",
-                total: price,
-              },
-            ],
+            user: localStorage.getItem("userId"),
+            product: productId,
+            quantity: "1",
+            total: price,
           }),
         });
         if (res.status === 400 || !res) {
@@ -87,20 +87,28 @@ const CelebrationCake = () => {
         console.log("ERROR IS", error);
       }
     } else {
-      window.alert("you must login to the system");
+      swal("Error", "You must Log In to the system!", "warning", {
+        button: false,
+        timer: 1500,
+      }).then((value) => {
+        navigate("/login");
+      });
     }
 
     // setAddToCart([...addToCart, { id }]);
     // console.log(addToCart);
   };
 
-  const openModal = (id) => {
-    console.log(id);
-    modalInfo = products.filter((item) => item.id === id);
+  const openModal = (item) => {
+    console.log(item);
+    setModalData(item);
 
-    console.log(modalInfo.mainImage);
     setModalOpen(true);
   };
+
+  useEffect(() => {
+    console.log(modalData);
+  }, [modalData]);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -112,20 +120,17 @@ const CelebrationCake = () => {
       <div className="pageStyle container mt-4">
         <ProductViewModal show={modalOpen} close={closeModal}>
           <ProductViewCard
-            image={"Assets/birthday3.jpeg"}
-            optionalImages={["Assets/image6.webp", "Assets/cake4.jpg"]}
-            name="Swan Chocolate Cake"
-            price="Rs.5000"
-            description="A delicious all-in-one coffee sponge topped with smooth coffee buttercream. Simple to make and packed full of flavour."
-            weight="3kg"
+            mainImage={modalData.mainImage}
+            optionalImage1={modalData.optionalImage1}
+            optionalImage2={modalData.optionalImage2}
+            name={modalData.name}
+            price={modalData.price}
+            description={modalData.description}
+            weight={modalData.weight}
           />
         </ProductViewModal>
         <div className="d-flex justify-content-center align-items-center flex-md-column mb-4">
           <h2>Celebration Cakes</h2>
-          {/* <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab,
-            voluptatem!
-          </p> */}
         </div>
         <div className="row">
           <div className="col-md-2">
@@ -260,7 +265,7 @@ const CelebrationCake = () => {
                     image={item.mainImage}
                     name={item.name}
                     price={item.price}
-                    handleModal={openModal}
+                    handleModal={() => openModal(item)}
                     handleAddToCart={handleAddToCart}
                   />
                 );

@@ -4,8 +4,9 @@ import { Container, Row, Col } from "react-bootstrap";
 import { QuantityPicker } from "react-qty-picker";
 
 const ProductViewCard = (props) => {
-  const [image, setMainImage] = useState(props.image);
-  const [optionalImage, setOptionalImage] = useState(props.optionalImages[0]);
+  const [mainImage, setMainImage] = useState(props.mainImage);
+  const [optionalImage1, setOptionalImage1] = useState(props.optionalImage1);
+  const [optionalImage2, setOptionalImage2] = useState(props.optionalImage2);
 
   const getPickerValue = (value) => {
     console.log(value);
@@ -17,7 +18,7 @@ const ProductViewCard = (props) => {
           <Row>
             <img
               className="rounded-1"
-              src={image}
+              src={mainImage}
               alt={props.name}
               style={{ height: "13rem" }}
             />
@@ -27,12 +28,12 @@ const ProductViewCard = (props) => {
             <Col className="d-flex justify-content-center align-items-center">
               <img
                 className="rounded-1"
-                src={optionalImage}
+                src={optionalImage1}
                 alt={props.name}
                 style={{ width: "8rem", marginTop: "1px" }}
                 onClick={() => {
-                  setMainImage(props.optionalImages[0]);
-                  setOptionalImage(image);
+                  setMainImage(optionalImage1);
+                  setOptionalImage1(mainImage);
                 }}
               />
             </Col>
@@ -40,12 +41,12 @@ const ProductViewCard = (props) => {
             <Col className="d-flex justify-content-center align-items-center">
               <img
                 className="rounded-1"
-                src={props.optionalImages[1]}
+                src={optionalImage2}
                 alt={props.name}
                 style={{ width: "8rem", marginTop: "1px" }}
                 onClick={() => {
-                  setMainImage(props.optionalImages[1]);
-                  setOptionalImage(image);
+                  setMainImage(optionalImage2);
+                  setOptionalImage2(mainImage);
                 }}
               />
             </Col>
@@ -54,8 +55,8 @@ const ProductViewCard = (props) => {
         <Col lg={7} xs={12} style={{ paddingLeft: "20px" }}>
           <h3>{props.name}</h3>
           <ul class="list-unstyled">
-            <li className="mb-2">{props.price} </li>
-            <li className="mb-2">Weight: {props.weight} </li>
+            <li className="mb-2">Rs. {props.price} </li>
+            <li className="mb-2">Weight: {props.weight}kg </li>
             <li className="mb-2">
               <QuantityPicker
                 smooth
