@@ -30,7 +30,7 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
         </div>
         <div className="sidebar__link">
           <NavLink to="products">
-            <i className="fa fa-plus-square-o"></i> Add Products
+            <i className="fa fa-plus-square-o"></i> Products
           </NavLink>
         </div>
 
@@ -42,6 +42,12 @@ const SideBar = ({ sidebarOpen, closeSidebar }) => {
         <div className="sidebar__link">
           <NavLink to="suppliers">
             <i className="fa fa-users"></i> Suppliers
+          </NavLink>
+        </div>
+
+        <div className="sidebar__link">
+          <NavLink to="products">
+            <i className="fa fa-plus-square-o"></i> Settings
           </NavLink>
         </div>
 

@@ -1,3 +1,4 @@
+import swal from "@sweetalert/with-react";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -26,6 +27,10 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
   useEffect(() => {
     setData(dataToUpdate[0]);
     setProduct(dataToUpdate[0]);
+  }, []);
+
+  useEffect(() => {
+    console.log(product);
   }, []);
 
   const handleInput = (event) => {
@@ -130,13 +135,16 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
       if (res.status === 400 || !res) {
         window.alert("Invalid Credentials");
       } else {
-        window.alert("Successfully Updated");
+        swal("Success", "Successfully Updated", "success", {
+          button: false,
+          timer: 1500,
+        }).then((value) => {
+          handleShow();
+        });
       }
     } catch (error) {
       console.log("ERROR IS", error);
     }
-
-    handleShow();
   };
 
   return (
@@ -156,7 +164,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
               required
               type="text"
               name="name"
-              defaultValue={data.name}
+              defaultValue={product.name}
               onChange={handleInput}
             />
 
@@ -177,7 +185,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
               name="type"
               onChange={handleInput}
             >
-              <option>{data.type}</option>
+              <option>{product.type}</option>
               <option value="Birthday Cake">Birthday Cake</option>
               <option value="Wedding Cakes">Wedding Cakes</option>
               <option value="Anniversary">Anniversary</option>
@@ -201,7 +209,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
               name="flavor"
               onChange={handleInput}
             >
-              <option>{data.flavor}</option>
+              <option>{product.flavor}</option>
               <option value="Milk Chocolate">Milk Chocolate</option>
               <option value="Strawberry">Strawberry</option>
               <option value="Vanilla">Vanilla</option>
@@ -223,7 +231,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
               type="text"
               name="weight"
               placeholder="kg"
-              defaultValue={data.weight}
+              defaultValue={product.weight}
               onChange={handleInput}
             />
             <Form.Control.Feedback type="invalid">
@@ -244,7 +252,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
               type="text"
               name="price"
               placeholder="Rs."
-              defaultValue={data.price}
+              defaultValue={product.price}
               onChange={handleInput}
             />
             <Form.Control.Feedback type="invalid">
@@ -265,7 +273,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
               rows={2}
               placeholder="Product Description"
               name="description"
-              defaultValue={data.description}
+              defaultValue={product.description}
               onChange={handleInput}
             />
             <Form.Control.Feedback type="invalid">
@@ -284,7 +292,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
             <Card.Img
               style={{ height: "230px" }}
               variant="bottom"
-              src={data.mainImage}
+              src={product.mainImage}
             />
             <Card.Title>
               <Stack direction="horizontal">
@@ -292,7 +300,6 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
                   <Button
                     id="main"
                     variant="secondary"
-                    type="submit"
                     size="sm"
                     className={show.showMain ? "block mt-1" : "d-none"}
                     onClick={handleUploadShow}
@@ -319,7 +326,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
             <Card.Img
               style={{ height: "230px" }}
               variant="bottom"
-              src={data.optionalImage1}
+              src={product.optionalImage1}
             />
             <Card.Title>
               <Stack direction="horizontal">
@@ -352,7 +359,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }, props) => {
             <Card.Img
               style={{ height: "230px" }}
               variant="bottom"
-              src={data.optionalImage2}
+              src={product.optionalImage2}
             />
             <Card.Title>
               <Stack direction="horizontal">

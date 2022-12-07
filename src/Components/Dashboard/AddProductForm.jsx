@@ -1,3 +1,4 @@
+import swal from "@sweetalert/with-react";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card, Col, Form, Row, Stack } from "react-bootstrap";
@@ -72,9 +73,9 @@ const AddProductForm = (props) => {
     });
   };
 
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
+  // useEffect(() => {
+  //   console.log(product);
+  // }, [product]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -114,7 +115,12 @@ const AddProductForm = (props) => {
       if (res.status === 400 || !res) {
         window.alert("Invalid Credentials");
       } else {
-        window.alert("Successfully Added");
+        swal("Success", "Successfully Added", "success", {
+          button: false,
+          timer: 1500,
+        }).then((value) => {
+          props.handleShow();
+        });
         setProduct(...product, {
           name: "",
           type: "",
@@ -132,7 +138,6 @@ const AddProductForm = (props) => {
     } catch (error) {
       console.log("ERROR IS", error);
     }
-    props.handleShow();
   };
 
   return (
