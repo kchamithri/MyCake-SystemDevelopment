@@ -44,6 +44,7 @@ const Login = () => {
           localStorage.setItem("token", res.token);
 
           navigate("/");
+          console.log(localStorage.getItem("name"));
         }
       })
       .catch((error) => {

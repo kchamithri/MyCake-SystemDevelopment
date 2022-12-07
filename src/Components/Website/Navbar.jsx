@@ -67,7 +67,7 @@ const Navbar = () => {
             </NavLink>
             <NavLink to="/cart">
               <i
-                class="fa fa-shopping-cart fa-lg"
+                className="fa fa-shopping-cart fa-lg"
                 aria-hidden="true"
                 style={{ color: "black" }}
               ></i>

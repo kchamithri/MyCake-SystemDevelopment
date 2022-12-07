@@ -56,7 +56,7 @@ const Home = () => {
             description="This rich and super smooth chocolate cake is full of chocolate ganache and soft chocolate sponge. An authentic chocolate truffle cake melts as soon as it goes in your mouth, leaving the taste of pure chocolate."
           />
           <HomeCards
-            image="Assets/cake5.jpg"
+            image="Assets/cake3.jpg"
             name=" Strawberry-Rose Snack Cake"
             description="It's always wine o' clock with this easy strawberry cake. The pretty pink comes from the freeze-dried strawberries and a generous splash of rosé. "
           />

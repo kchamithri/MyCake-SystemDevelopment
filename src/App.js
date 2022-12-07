@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdminLogin from "./Components/Dashboard/AdminLogin";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Footer from "./Components/Website/Footer";
 import Navbar from "./Components/Website/Navbar";
@@ -44,6 +45,8 @@ function App() {
             <Route path="products" element={<AddProducts />} />
             <Route path="inventory" element={<Inventory />} />
           </Route>
+
+          <Route path="/admin/login" element={<AdminLogin />}></Route>
 
           {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         </Routes>

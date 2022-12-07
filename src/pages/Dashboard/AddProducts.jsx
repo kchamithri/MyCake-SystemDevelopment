@@ -1,3 +1,4 @@
+import swal from "@sweetalert/with-react";
 import { Button } from "bootstrap";
 import React from "react";
 import { useEffect } from "react";
@@ -17,25 +18,41 @@ const AddProducts = () => {
   const [dataToUpdate, setDataToUpdate] = useState([]);
 
   const handleDelete = async (id) => {
-    try {
-      const res = await fetch("/admin/products/delete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      });
-      if (res.status === 200) {
-        setProducts(products.filter((data) => data._id !== id));
-        window.alert("Successfully Deleted");
-      } else {
-        window.alert("Invalid Credentials");
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        fetch("/admin/products/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === 200) {
+              window.alert("Invalid Credentials");
+            } else {
+              setProducts(products.filter((data) => data._id !== id));
+              swal("Deleted Successfully!", {
+                icon: "success",
+                button: false,
+                timer: 1000,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
-    }
+    });
   };
 
   const handleEdit = async (id, category) => {
@@ -139,7 +156,10 @@ const AddProducts = () => {
             {buttonName === "add" ? (
               <AddProductForm category="Cake" handleShow={handleShow} />
             ) : (
-              <UpdateProductForm dataToUpdate={dataToUpdate} />
+              <UpdateProductForm
+                dataToUpdate={dataToUpdate}
+                handleShow={handleShow}
+              />
             )}
           </Tab>
           <Tab eventKey="Party Packs" title="Party Packs">

@@ -1,3 +1,4 @@
+import swal from "@sweetalert/with-react";
 import { Button } from "bootstrap";
 import React from "react";
 import { useEffect } from "react";
@@ -42,19 +43,12 @@ const Register = () => {
       if (res.status === 400 || !res) {
         window.alert("Already used details");
       } else {
-        Store.addNotification({
-          title: "Successfully Registered!",
-
-          type: "info",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animated", "animate__fadeIn"],
-          animationOut: ["animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 1000,
-          },
+        swal("Success", "Successfully Registered", "success", {
+          button: false,
+          timer: 1500,
+        }).then((value) => {
+          navigate("/celebrationcakes");
         });
-        // navigate("/");
       }
     } catch (error) {
       console.log(error);
