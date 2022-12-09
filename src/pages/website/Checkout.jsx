@@ -3,6 +3,19 @@ import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 
 const Checkout = () => {
   const [validated, setValidated] = useState(false);
+  const [order, setOrder] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    contact: "",
+    deliverDate: "",
+    deliverTime: "",
+    message: "",
+    senderName: "",
+    senderContact: "",
+    senderEmail: "",
+  });
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;

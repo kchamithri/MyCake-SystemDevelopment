@@ -1,7 +1,9 @@
+import { Container, Grid } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "../../Styles/Dashboard.css";
+import Offcanvas from "../Offcanvas";
 import DashboardModal from "./DashboardModal";
 import InventoryTable from "./InventoryTable";
 import OrderDetailsModal from "./Modals/OrderDetailsModal";
@@ -18,7 +20,7 @@ const Dashboard = () => {
     setModalOpen(false);
   };
   return (
-    <div className="container">
+    <>
       <DashboardModal
         title="Order Details"
         show={modalOpen}
@@ -27,26 +29,29 @@ const Dashboard = () => {
         <OrderDetailsModal />
       </DashboardModal>
 
-      <div>
-        <h1 className="fs-5 mb-1" style={{ color: "#2e4a66" }}>
-          Hello Achini
-        </h1>
-        <p className="fs-6" style={{ color: "#a5aaad", fontWeight: "bold" }}>
-          Welcome to the dashboard
-        </p>
-      </div>
+      <Grid container spacing={2} marginBottom={2}>
+        <Grid item xs={6} md={6} lg={2}>
+          <Tile date="Today" title="Orders to dispatch" quantity="3" />
+        </Grid>
+        <Grid item xs={6} md={6} lg={2}>
+          <Tile date="Today" title="Orders Received" quantity="3" />
+        </Grid>
+        <Grid item xs={6} md={6} lg={2}>
+          <Tile date="Today" title="Customized Orders" quantity="3" />
+        </Grid>
+        <Grid item xs={6} md={6} lg={2}>
+          <Tile date="November" title="Total Orders" quantity="3" />
+        </Grid>
+        <Grid item xs={6} md={6} lg={2}>
+          <Tile date="November" title="Total Revenue" quantity="3" />
+        </Grid>
+        <Grid item xs={6} md={6} lg={2}>
+          <Tile title="Total customers" quantity="3" />
+        </Grid>
+      </Grid>
 
-      <div className="row row-cols-2 row-cols-lg-6">
-        <Tile date="Today" title="Orders to dispatch" quantity="3" />
-        <Tile date="Today" title="Orders Received" quantity="3" />
-        <Tile date="Today" title="Customized Orders" quantity="3" />
-        <Tile date="November" title="Total Orders" quantity="3" />
-        <Tile date="November" title="Total Revenue" quantity="3" />
-        <Tile title="Total customers" quantity="3" />
-      </div>
-
-      <div className="row my-2">
-        <div className="col-lg-8 col-sm-12">
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={8} lg={6}>
           <Table
             color="orange"
             tableName="Orders to dispatch"
@@ -56,14 +61,9 @@ const Dashboard = () => {
             closeModal={closeModal}
             displayButtons="none"
           />
-        </div>
-        <div className="col-lg-4 col-sm-12">
-          <InventoryTable tableName="Inventory" chartDisplay="none" />
-        </div>
-      </div>
+        </Grid>
 
-      <div className="row my-2">
-        <div className="col-lg-8 col-sm-12">
+        <Grid item xs={12} md={6} lg={6}>
           <Table
             color="brown"
             tableName="Customized Orders"
@@ -73,9 +73,12 @@ const Dashboard = () => {
             closeModal={closeModal}
             displayButtons="none"
           />
-        </div>
-      </div>
-    </div>
+        </Grid>
+        <Grid item xs={12} md={4} lg={6}>
+          <InventoryTable tableName="Inventory" chartDisplay="none" />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

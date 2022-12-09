@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminLogin from "./Components/Dashboard/AdminLogin";
+import AdminSideBar from "./Components/Dashboard/AdminSideBar";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Footer from "./Components/Website/Footer";
 import Navbar from "./Components/Website/Navbar";
@@ -39,14 +40,18 @@ function App() {
             <Route path="profile" element={<Profile />} />
           </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminSideBar />}>
             <Route index={true} element={<Dashboard />} />
-            <Route path="analytics" element={<Analytics />} />
+            <Route path="reports" element={<Analytics />} />
             <Route path="products" element={<AddProducts />} />
+            <Route path="suppliers" element={<Analytics />} />
+            <Route path="orders" element={<Analytics />} />
             <Route path="inventory" element={<Inventory />} />
+            <Route path="settings" element={<Analytics />} />
           </Route>
 
           <Route path="/admin/login" element={<AdminLogin />}></Route>
+          <Route path="/adminSidebar" element={<AdminSideBar />}></Route>
 
           {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         </Routes>

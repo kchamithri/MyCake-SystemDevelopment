@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import AddProductForm from "../../Components/Dashboard/AddProductForm";
 import ProductsViewTable from "../../Components/Dashboard/ProductsViewTable";
 import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
+import EnhancedTable from "../../Components/muiComponents/EnhancedTable";
 
 const AddProducts = () => {
   const [key, setKey] = useState("Cake");
@@ -135,12 +136,13 @@ const AddProducts = () => {
         </div> */}
       </div>
       <div className={show ? "d-none" : "mt-4"}>
-        <ProductsViewTable
+        {/* <ProductsViewTable
           handleAdd={handleAdd}
           products={products}
           handleDelete={handleDelete}
           handleEdit={handleEdit}
-        />
+        /> */}
+        <EnhancedTable rows={products} />
       </div>
 
       <div className={show ? "" : "d-none"}>
