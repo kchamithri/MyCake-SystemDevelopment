@@ -177,7 +177,12 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ rows, handleDelete, handleEdit }) {
+export default function EnhancedTable({
+  rows,
+  handleDelete,
+  handleEdit,
+  openModal,
+}) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("foodItems");
   const [selected, setSelected] = React.useState([]);
@@ -285,7 +290,7 @@ export default function EnhancedTable({ rows, handleDelete, handleEdit }) {
 
                       <TableCell align="right">
                         <Tooltip title="View more">
-                          <IconButton>
+                          <IconButton onClick={() => openModal(row.id)}>
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>

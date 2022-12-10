@@ -4,11 +4,9 @@ import { Button, Modal } from "react-bootstrap";
 const ProductViewModal = (props) => {
   return (
     <Modal centered size="lg" show={props.show} onHide={props.close}>
-      <Modal.Header closeButton>
-        
-      </Modal.Header>
+      <Modal.Header closeButton></Modal.Header>
       <Modal.Body>{props.children}</Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className={props.buttons ? "" : "d-none"}>
         <Button variant="secondary" onClick={props.close}>
           Add to cart
         </Button>

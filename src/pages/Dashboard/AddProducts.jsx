@@ -11,6 +11,8 @@ import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
 import EnhancedTable from "../../Components/muiComponents/EnhancedTable";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, Tooltip } from "@mui/material";
+import ProductViewModal from "../../Components/Website/ZoomProduct/ProductViewModal";
+import ProductViewCard from "../../Components/Website/ZoomProduct/ProductViewCard";
 
 const AddProducts = () => {
   const [key, setKey] = useState("Cake");
@@ -20,6 +22,8 @@ const AddProducts = () => {
   const [products, setProducts] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [dataToUpdate, setDataToUpdate] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
 
   function createData(
     id,
@@ -149,85 +153,112 @@ const AddProducts = () => {
     handleShow();
   };
 
+  const openModal = (id) => {
+    console.log(id);
+    const arr = products.filter((item) => item._id === id);
+    arr.map((item) => {
+      setModalData(item);
+    });
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   function cm(...args) {
     return args.filter((v) => v).join(" ");
   }
   return (
-    <div className="mt-2">
-      <div className="row justify-content-end my-2">
-        <div className={show ? "d-none" : "col-lg-1 col-sm-6 text-center"}>
-          <button
-            className={cm(
-              buttonName,
-              "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm",
-              buttonName === "add" &&
-                "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
-            )}
-            value="add"
-            onClick={handleAdd}
-          >
-            Add
-          </button>
+    <>
+      <ProductViewModal show={modalOpen} close={closeModal} buttons={false}>
+        <ProductViewCard
+          mainImage={modalData.mainImage}
+          optionalImage1={modalData.optionalImage1}
+          optionalImage2={modalData.optionalImage2}
+          name={modalData.name}
+          price={modalData.price}
+          description={modalData.description}
+          weight={modalData.weight}
+        />
+      </ProductViewModal>
+      <div className="mt-2">
+        <div className="row justify-content-end my-2">
+          <div className={show ? "d-none" : "col-lg-1 col-sm-6 text-center"}>
+            <button
+              className={cm(
+                buttonName,
+                "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm",
+                buttonName === "add" &&
+                  "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
+              )}
+              value="add"
+              onClick={handleAdd}
+            >
+              Add
+            </button>
+          </div>
         </div>
-      </div>
-      <div className={show ? "d-none" : "mt-4"}>
-        {/* <ProductsViewTable
+        <div className={show ? "d-none" : "mt-4"}>
+          {/* <ProductsViewTable
           handleAdd={handleAdd}
           products={products}
           handleDelete={handleDelete}
           handleEdit={handleEdit}
         /> */}
-        <EnhancedTable
-          rows={tableData}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-        />
-      </div>
+          <EnhancedTable
+            rows={tableData}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            openModal={openModal}
+          />
+        </div>
 
-      <div className={show ? "" : "d-none"}>
-        <>
-          <div className=" d-flex justify-content-between ">
-            <Tooltip title="Back">
-              <IconButton onClick={handleShow}>
-                <ArrowBackIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-          <Tabs
-            id="controlled-tab-example"
-            activeKey={key}
-            onSelect={(k) => setKey(k)}
-            className="mb-3"
-            fill
-            justify
-          >
-            <Tab eventKey="Cake" title="Cake">
-              {buttonName === "add" ? (
-                <AddProductForm category="Cake" handleShow={handleShow} />
-              ) : (
-                <UpdateProductForm
-                  dataToUpdate={dataToUpdate}
-                  handleShow={handleShow}
-                />
-              )}
-            </Tab>
-            <Tab eventKey="Party Packs" title="Party Packs">
-              {buttonName === "add" ? (
-                <AddProductForm
-                  category="Party Packs"
-                  handleShow={handleShow}
-                />
-              ) : (
-                <UpdateProductForm
-                  dataToUpdate={dataToUpdate}
-                  handleShow={handleShow}
-                />
-              )}
-            </Tab>
-          </Tabs>
-        </>
+        <div className={show ? "" : "d-none"}>
+          <>
+            <div className=" d-flex justify-content-between ">
+              <Tooltip title="Back">
+                <IconButton onClick={handleShow}>
+                  <ArrowBackIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+            <Tabs
+              id="controlled-tab-example"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+              className="mb-3"
+              fill
+              justify
+            >
+              <Tab eventKey="Cake" title="Cake">
+                {buttonName === "add" ? (
+                  <AddProductForm category="Cake" handleShow={handleShow} />
+                ) : (
+                  <UpdateProductForm
+                    dataToUpdate={dataToUpdate}
+                    handleShow={handleShow}
+                  />
+                )}
+              </Tab>
+              <Tab eventKey="Party Packs" title="Party Packs">
+                {buttonName === "add" ? (
+                  <AddProductForm
+                    category="Party Packs"
+                    handleShow={handleShow}
+                  />
+                ) : (
+                  <UpdateProductForm
+                    dataToUpdate={dataToUpdate}
+                    handleShow={handleShow}
+                  />
+                )}
+              </Tab>
+            </Tabs>
+          </>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
