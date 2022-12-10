@@ -21,33 +21,8 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
-
-function createData(foodItems, category, type, weight, price, description) {
-  return {
-    foodItems,
-    category,
-    type,
-    weight,
-    price,
-    description,
-  };
-}
-
-const rows = [
-  createData("Cupcake", 305, 3.7, 67, 4.3, 5, 6),
-  createData("Donut", 452, 25.0, 51, 4.9, 4.3, 5),
-  createData("Eclair", 262, 16.0, 24, 6.0, 4.3, 5),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0, 4.3, 5),
-  createData("Gingerbread", 356, 16.0, 49, 3.9, 4.3, 5),
-  createData("Honeycomb", 408, 3.2, 87, 6.5, 4.3, 5),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3, 5, 4.3),
-  createData("Jelly Bean", 375, 0.0, 94, 0.0, 4.3, 5),
-  createData("KitKat", 518, 26.0, 65, 7.0, 4.3, 5),
-  createData("Lollipop", 392, 0.2, 98, 0.0, 4.3, 5),
-  createData("Marshmallow", 318, 0, 81, 2.0, 4.3, 5),
-  createData("Nougat", 360, 19.0, 9, 37.0, 4.3, 5),
-  createData("Oreo", 437, 18.0, 63, 4.0, 4.3, 5),
-];
+import { useEffect } from "react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -202,9 +177,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ rows, handleDelete, handleEdit }) {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("foodItems");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -250,7 +225,7 @@ export default function EnhancedTable() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 5));
     setPage(0);
   };
 
@@ -288,17 +263,17 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
+                  console.log(row);
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.foodItems}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell align="right">{row.foodItems}</TableCell>
@@ -308,15 +283,21 @@ export default function EnhancedTable() {
                       <TableCell align="right">{row.price}</TableCell>
                       <TableCell align="right">{row.description}</TableCell>
 
-                      <TableCell align="right">{row.description}</TableCell>
                       <TableCell align="right">
-                        <Tooltip title="Delete">
+                        <Tooltip title="View more">
                           <IconButton>
+                            <VisibilityIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Edit">
+                          <IconButton
+                            onClick={() => handleEdit(row.id, row.category)}
+                          >
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
-                          <IconButton>
+                          <IconButton onClick={() => handleDelete(row.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
