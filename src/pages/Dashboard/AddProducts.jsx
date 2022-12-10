@@ -9,6 +9,8 @@ import AddProductForm from "../../Components/Dashboard/AddProductForm";
 import ProductsViewTable from "../../Components/Dashboard/ProductsViewTable";
 import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
 import EnhancedTable from "../../Components/muiComponents/EnhancedTable";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { IconButton, Tooltip } from "@mui/material";
 
 const AddProducts = () => {
   const [key, setKey] = useState("Cake");
@@ -16,7 +18,28 @@ const AddProducts = () => {
   const [buttonName, setButtonName] = useState("add");
   const [show, setShow] = useState(false);
   const [products, setProducts] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [dataToUpdate, setDataToUpdate] = useState([]);
+
+  function createData(
+    id,
+    foodItems,
+    category,
+    type,
+    weight,
+    price,
+    description
+  ) {
+    return {
+      id,
+      foodItems,
+      category,
+      type,
+      weight,
+      price,
+      description,
+    };
+  }
 
   const handleDelete = async (id) => {
     swal({
@@ -42,6 +65,19 @@ const AddProducts = () => {
               window.alert("Invalid Credentials");
             } else {
               setProducts(products.filter((data) => data._id !== id));
+              setTableData(
+                products.map((list) => {
+                  return createData(
+                    list._id,
+                    list.name,
+                    list.category,
+                    list.type,
+                    list.weight,
+                    list.price,
+                    list.description
+                  );
+                })
+              );
               swal("Deleted Successfully!", {
                 icon: "success",
                 button: false,
@@ -85,6 +121,19 @@ const AddProducts = () => {
       .then((data) => {
         console.log(data.products);
         setProducts(data.products);
+        setTableData(
+          data.products.map((list) => {
+            return createData(
+              list._id,
+              list.name,
+              list.category,
+              list.type,
+              list.weight,
+              list.price,
+              list.description
+            );
+          })
+        );
       })
       .catch((error) => {
         console.log("error fetching:", error);
@@ -120,20 +169,6 @@ const AddProducts = () => {
             Add
           </button>
         </div>
-        {/* <div className="col-lg-2 col-sm-6">
-          <button
-            className={cm(
-              buttonName,
-              "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm",
-              buttonName === "update" &&
-                "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
-            )}
-            value="update"
-            onClick={handleAdd}
-          >
-            Update
-          </button>
-        </div> */}
       </div>
       <div className={show ? "d-none" : "mt-4"}>
         {/* <ProductsViewTable
@@ -142,39 +177,55 @@ const AddProducts = () => {
           handleDelete={handleDelete}
           handleEdit={handleEdit}
         /> */}
-        <EnhancedTable rows={products} />
+        <EnhancedTable
+          rows={tableData}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
       </div>
 
       <div className={show ? "" : "d-none"}>
-        <Tabs
-          id="controlled-tab-example"
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
-          className="mb-3"
-          fill
-          justify
-        >
-          <Tab eventKey="Cake" title="Cake">
-            {buttonName === "add" ? (
-              <AddProductForm category="Cake" handleShow={handleShow} />
-            ) : (
-              <UpdateProductForm
-                dataToUpdate={dataToUpdate}
-                handleShow={handleShow}
-              />
-            )}
-          </Tab>
-          <Tab eventKey="Party Packs" title="Party Packs">
-            {buttonName === "add" ? (
-              <AddProductForm category="Party Packs" handleShow={handleShow} />
-            ) : (
-              <UpdateProductForm
-                dataToUpdate={dataToUpdate}
-                handleShow={handleShow}
-              />
-            )}
-          </Tab>
-        </Tabs>
+        <>
+          <div className=" d-flex justify-content-between ">
+            <Tooltip title="Back">
+              <IconButton onClick={handleShow}>
+                <ArrowBackIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <Tabs
+            id="controlled-tab-example"
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
+            className="mb-3"
+            fill
+            justify
+          >
+            <Tab eventKey="Cake" title="Cake">
+              {buttonName === "add" ? (
+                <AddProductForm category="Cake" handleShow={handleShow} />
+              ) : (
+                <UpdateProductForm
+                  dataToUpdate={dataToUpdate}
+                  handleShow={handleShow}
+                />
+              )}
+            </Tab>
+            <Tab eventKey="Party Packs" title="Party Packs">
+              {buttonName === "add" ? (
+                <AddProductForm
+                  category="Party Packs"
+                  handleShow={handleShow}
+                />
+              ) : (
+                <UpdateProductForm
+                  dataToUpdate={dataToUpdate}
+                  handleShow={handleShow}
+                />
+              )}
+            </Tab>
+          </Tabs>
+        </>
       </div>
     </div>
   );
