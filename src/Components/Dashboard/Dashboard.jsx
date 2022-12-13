@@ -51,19 +51,19 @@ const Dashboard = () => {
       </Grid>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8} lg={6}>
+        <Grid item xs={12} md={12} lg={12}>
           <Table
             color="orange"
             tableName="Orders to dispatch"
             tabDisplay={true}
-            tabs={["Today", "Pending", "All"]}
+            tabs={["Today", "Pending"]}
             openModal={openModal}
             closeModal={closeModal}
             displayButtons="none"
           />
         </Grid>
 
-        <Grid item xs={12} md={6} lg={6}>
+        {/* <Grid item xs={12} md={6} lg={6}>
           <Table
             color="brown"
             tableName="Customized Orders"
@@ -73,7 +73,7 @@ const Dashboard = () => {
             closeModal={closeModal}
             displayButtons="none"
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} md={4} lg={6}>
           <InventoryTable tableName="Inventory" chartDisplay="none" />
         </Grid>
