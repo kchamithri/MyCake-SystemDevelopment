@@ -79,7 +79,7 @@ const AdminSideBar = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="absolute" open={open}>
+      <AppBar position="absolute" open={open} style={{ zIndex: "2" }}>
         <Toolbar
           sx={{
             pr: "24px", // keep right padding when drawer closed
@@ -119,7 +119,7 @@ const AdminSideBar = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} style={{ zIndex: "3" }}>
         <Toolbar
           sx={{
             display: "flex",
