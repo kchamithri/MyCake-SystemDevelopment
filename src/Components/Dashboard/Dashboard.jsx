@@ -55,8 +55,6 @@ const Dashboard = () => {
           <Table
             color="orange"
             tableName="Orders to dispatch"
-            tabDisplay={true}
-            tabs={["Today", "Pending"]}
             openModal={openModal}
             closeModal={closeModal}
             displayButtons="none"
