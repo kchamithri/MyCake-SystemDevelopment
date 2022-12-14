@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+import { useEffect } from "react";
+import { Form, Tab, Tabs } from "react-bootstrap";
+import EnhancedTable from "../muiComponents/EnhancedTable";
+import OrderDispatchTable from "../muiComponents/OrderDispatchTable";
 import DashboardModal from "./DashboardModal";
 import OrderDetailsModal from "./Modals/OrderDetailsModal";
 import UpdateIngredients from "./Modals/UpdateIngredients";
@@ -15,6 +18,92 @@ const Table = ({
   displayButtons,
   displaySearch,
 }) => {
+  const [key, setKey] = useState("Today");
+  const current = new Date();
+  const today =
+    current.getFullYear() +
+    "-" +
+    (current.getMonth() + 1) +
+    "-" +
+    current.getDate();
+
+  const [pendingOrdersData, setpendingOrdersData] = useState([]);
+  const [todayDispatchOrderData, setTodayDispatchOrderData] = useState([]);
+  function createData(
+    id,
+    foodItems,
+    cusName,
+    deliverPlace,
+    deliverDate,
+    deliverTime,
+    status
+  ) {
+    return {
+      id,
+      foodItems,
+      cusName,
+      deliverPlace,
+      deliverDate,
+      deliverTime,
+      status,
+    };
+  }
+
+  useEffect(() => {
+    fetch("/orders/get", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        console.log(data.orders);
+
+        setTodayDispatchOrderData(
+          data.orders
+            .filter((item) => item.deliverDate === today)
+            .map((list) => {
+              let name = list.firstName + " " + list.lastName;
+              return createData(
+                list._id,
+                list.products,
+                name,
+                list.address,
+                list.deliverDate,
+                list.deliverTime,
+                list.status
+              );
+            })
+        );
+
+        setpendingOrdersData(
+          data.orders
+            .filter((item) => item.deliverDate !== today)
+            .map((list) => {
+              let name = list.firstName + " " + list.lastName;
+              return createData(
+                list._id,
+                list.products,
+                name,
+                list.address,
+                list.deliverDate,
+                list.deliverTime,
+                list.status
+              );
+            })
+        );
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(pendingOrdersData);
+  }, [pendingOrdersData]);
   return (
     <div className="card pb-2">
       <div
@@ -27,20 +116,33 @@ const Table = ({
       >
         {tableName}
       </div>
-      <ul
-        className="nav nav-tabs nav-fill"
-        style={{ display: tabDisplay ? tabDisplay : "none" }}
-      >
-        {tabs.map((tabName) => {
-          return (
-            <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
-                {tabName}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+      <>
+        <Tabs
+          id="controlled-tab-example"
+          activeKey={key}
+          onSelect={(k) => setKey(k)}
+          className="mb-3 mt-2"
+          fill
+          justify
+        >
+          <Tab eventKey="Today" title="Today">
+            <OrderDispatchTable
+              rows={todayDispatchOrderData}
+              // handleDelete={handleDelete}
+              // handleEdit={handleEdit}
+              openModal={openModal}
+            />
+          </Tab>
+          <Tab eventKey="Upcoming" title="Upcoming">
+            <OrderDispatchTable
+              rows={pendingOrdersData}
+              // handleDelete={handleDelete}
+              // handleEdit={handleEdit}
+              openModal={openModal}
+            />
+          </Tab>
+        </Tabs>
+      </>
       <div className="row my-2 d-flex flex-column justify-content-center align-items-center">
         <Form
           style={{
@@ -57,7 +159,7 @@ const Table = ({
         </Form>
       </div>
 
-      <div className="d-flex flex-column justify-content-center align-items-center">
+      {/* <div className="d-flex flex-column justify-content-center align-items-center">
         <div className="card mt-2" style={{ width: "98%" }}>
           <div className="card-body">
             <div className="d-flex justify-content-between">
@@ -133,7 +235,7 @@ const Table = ({
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

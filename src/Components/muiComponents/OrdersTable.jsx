@@ -23,6 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
 import { useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,40 +57,53 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "customerName",
+    numeric: true,
+    disablePadding: false,
+    label: "Customer Name",
+  },
+  {
     id: "foodItems",
     numeric: true,
     disablePadding: true,
     label: "Food Item",
   },
   {
-    id: "category",
+    id: "quantity",
     numeric: true,
     disablePadding: false,
-    label: "Category",
+    label: "Quantity",
   },
   {
-    id: "type",
+    id: "deliverAddress",
     numeric: true,
     disablePadding: false,
-    label: "Type",
+    label: "Deliver Address",
   },
   {
-    id: "weight",
+    id: "deliverDate",
     numeric: true,
     disablePadding: false,
-    label: "Weight",
+    label: "Deliver Date",
   },
   {
-    id: "price",
+    id: "deliverTime",
     numeric: true,
     disablePadding: false,
-    label: "Price",
+    label: "Deliver Time",
+  },
+
+  {
+    id: "status",
+    numeric: true,
+    disablePadding: false,
+    label: "Status",
   },
   {
-    id: "description",
+    id: "viewMore",
     numeric: true,
     disablePadding: false,
-    label: "Product Description",
+    label: "View More",
   },
 ];
 
@@ -112,7 +126,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align="right"
+            align="center"
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -167,7 +181,7 @@ function EnhancedTableToolbar(props) {
         id="tableTitle"
         component="div"
       >
-        Products
+        All Orders
       </Typography>
     </Toolbar>
   );
@@ -177,7 +191,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function OrdersTable({
+export default function OrderDispatchTable({
   rows,
   handleDelete,
   handleEdit,
@@ -189,6 +203,11 @@ export default function OrdersTable({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [status, setStatus] = React.useState("pending");
+
+  const handleChange = (event) => {
+    setStatus(event.target.value);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -281,29 +300,34 @@ export default function OrdersTable({
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell align="right">{row.foodItems}</TableCell>
-                      <TableCell align="right">{row.category}</TableCell>
-                      <TableCell align="right">{row.type}</TableCell>
-                      <TableCell align="right">{row.weight}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                      <TableCell align="right">{row.description}</TableCell>
+                      <TableCell align="center">{row.cusName}</TableCell>
+                      <TableCell align="center">
+                        {row.foodItems.map((item) => {
+                          return (
+                            <TableRow align="center">
+                              {item.product.name}
+                            </TableRow>
+                          );
+                        })}
+                      </TableCell>
 
-                      <TableCell align="right">
+                      <TableCell>
+                        {row.foodItems.map((item) => {
+                          return (
+                            <TableRow align="center">{item.quantity}</TableRow>
+                          );
+                        })}
+                      </TableCell>
+
+                      <TableCell align="center">{row.deliverPlace}</TableCell>
+                      <TableCell align="center">{row.deliverDate}</TableCell>
+                      <TableCell align="center">{row.deliverTime}</TableCell>
+                      <TableCell align="center">{row.status}</TableCell>
+
+                      <TableCell align="center">
                         <Tooltip title="View more">
                           <IconButton onClick={() => openModal(row.id)}>
                             <VisibilityIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit">
-                          <IconButton
-                            onClick={() => handleEdit(row.id, row.category)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                          <IconButton onClick={() => handleDelete(row.id)}>
-                            <DeleteIcon />
                           </IconButton>
                         </Tooltip>
                       </TableCell>

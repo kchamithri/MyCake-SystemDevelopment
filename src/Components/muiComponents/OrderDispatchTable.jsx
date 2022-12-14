@@ -57,6 +57,12 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "customerName",
+    numeric: true,
+    disablePadding: false,
+    label: "Customer Name",
+  },
+  {
     id: "foodItems",
     numeric: true,
     disablePadding: true,
@@ -69,22 +75,16 @@ const headCells = [
     label: "Quantity",
   },
   {
-    id: "customerName",
+    id: "deliverAddress",
     numeric: true,
     disablePadding: false,
-    label: "Customer Name",
+    label: "Deliver Address",
   },
   {
-    id: "weight",
+    id: "deliverDate",
     numeric: true,
     disablePadding: false,
-    label: "Weight",
-  },
-  {
-    id: "deliverPlace",
-    numeric: true,
-    disablePadding: false,
-    label: "Deliver Place",
+    label: "Deliver Date",
   },
   {
     id: "deliverTime",
@@ -96,7 +96,7 @@ const headCells = [
     id: "viewMore",
     numeric: true,
     disablePadding: false,
-    label: "",
+    label: "View More",
   },
   {
     id: "status",
@@ -202,10 +202,10 @@ export default function OrderDispatchTable({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [age, setAge] = React.useState("pending");
+  const [status, setStatus] = React.useState("Pending");
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setStatus(event.target.value);
   };
 
   const handleRequestSort = (event, property) => {
@@ -299,14 +299,30 @@ export default function OrderDispatchTable({
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell align="right">{row.foodItems}</TableCell>
-                      <TableCell align="right">{row.category}</TableCell>
-                      <TableCell align="right">{row.type}</TableCell>
-                      <TableCell align="right">{row.weight}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                      <TableCell align="right">{row.description}</TableCell>
+                      <TableCell align="center">{row.cusName}</TableCell>
+                      <TableCell align="center">
+                        {row.foodItems.map((item) => {
+                          return (
+                            <TableRow align="center">
+                              {item.product.name}
+                            </TableRow>
+                          );
+                        })}
+                      </TableCell>
 
-                      <TableCell align="right">
+                      <TableCell>
+                        {row.foodItems.map((item) => {
+                          return (
+                            <TableRow align="center">{item.quantity}</TableRow>
+                          );
+                        })}
+                      </TableCell>
+
+                      <TableCell align="center">{row.deliverPlace}</TableCell>
+                      <TableCell align="center">{row.deliverDate}</TableCell>
+                      <TableCell align="center">{row.deliverTime}</TableCell>
+
+                      <TableCell align="center">
                         <Tooltip title="View more">
                           <IconButton onClick={() => openModal(row.id)}>
                             <VisibilityIcon />
@@ -318,18 +334,15 @@ export default function OrderDispatchTable({
                           variant="standard"
                           sx={{ m: 1, minWidth: 120 }}
                         >
-                          <InputLabel id="demo-simple-select-standard-label">
-                            Status
-                          </InputLabel>
                           <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={age}
+                            value={status}
                             onChange={handleChange}
                             label="Status"
                           >
-                            <MenuItem value="pending">Pending</MenuItem>
-                            <MenuItem value="dispatched">Dispatched</MenuItem>
+                            <MenuItem value="Pending">Pending</MenuItem>
+                            <MenuItem value="Dispatched">Dispatched</MenuItem>
                           </Select>
                         </FormControl>
                       </TableCell>
