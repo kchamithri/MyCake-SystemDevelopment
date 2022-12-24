@@ -3,42 +3,42 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
 
-const AddSupplier = ({ handleModalClose }) => {
+const AddInventoryType = ({ handleModalClose }) => {
   const [validated, setValidated] = useState(false);
-  const [supplier, setSupplier] = useState({
+  const [type, setType] = useState({
     name: "",
-    company: "",
-    contact: "",
+    reorderQuantity: "",
+    total: 0,
   });
 
   const handleInput = (event) => {
     let name = event.target.name;
     let value = event.target.value;
 
-    setSupplier({ ...supplier, [name]: value });
+    setType({ ...type, [name]: value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { name, company, contact } = supplier;
+    const { name, reorderQuantity, total } = type;
 
     try {
-      const res = await fetch("/admin/supplier/add", {
+      const res = await fetch("/admin/inventory/type/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name,
-          company,
-          contact,
+          reorderQuantity,
+          total,
         }),
       });
       if (res.status === 400 || !res) {
         window.alert("Invalid Credentials");
       } else {
-        swal("Success", "Supplier Added Successfully", "success", {
+        swal("Success", "Inventory Type Added Successfully", "success", {
           button: false,
           timer: 1500,
         }).then((value) => {
@@ -54,7 +54,7 @@ const AddSupplier = ({ handleModalClose }) => {
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustom01">
-          <Form.Label>Supplier Name</Form.Label>
+          <Form.Label>Inventory Type</Form.Label>
           <Form.Control
             required
             type="text"
@@ -69,30 +69,16 @@ const AddSupplier = ({ handleModalClose }) => {
       </Row>
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustom01">
-          <Form.Label>Company Name</Form.Label>
+          <Form.Label>Reorder Quantity</Form.Label>
 
           <Form.Control
             required
             type="text"
-            name="company"
+            name="reorderQuantity"
             onChange={handleInput}
           />
           <Form.Control.Feedback type="invalid">
             Please provide a Company.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
-      <Row className="mb-3">
-        <Form.Group as={Col} md="12" controlId="validationCustom01">
-          <Form.Label>Contact</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            name="contact"
-            onChange={handleInput}
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a Contact Number.
           </Form.Control.Feedback>
         </Form.Group>
       </Row>
@@ -108,4 +94,4 @@ const AddSupplier = ({ handleModalClose }) => {
   );
 };
 
-export default AddSupplier;
+export default AddInventoryType;

@@ -12,17 +12,7 @@ const InventoryTable = ({ tableName, chartDisplay }) => {
           padding: "4px 0px 0px 4px",
         }}
       >
-        <div className="d-flex justify-content-between">
-          {tableName}
-          <button
-            type="button"
-            className="btn btn-link btn-sm"
-            style={{ textDecoration: "none", color: "white" }}
-          >
-            View All
-            <i className="fa fa-angle-double-right mx-1" aria-hidden="true" />
-          </button>
-        </div>
+        <div className="d-flex justify-content-between">{tableName}</div>
         <div
           className="rounded-top fs-6 fw-normal text-muted shadow"
           style={{ backgroundColor: "white", height: "10%", marginTop: "2%" }}

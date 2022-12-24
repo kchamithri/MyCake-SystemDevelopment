@@ -23,6 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
 import { useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,46 +57,29 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "foodItems",
+    id: "supplierName",
+    numeric: true,
+    disablePadding: false,
+    label: "Supplier Name",
+  },
+  {
+    id: "companyName",
     numeric: true,
     disablePadding: true,
-    label: "Food Item",
+    label: "Company Name",
   },
   {
-    id: "category",
+    id: "contact",
     numeric: true,
     disablePadding: false,
-    label: "Category",
+    label: "Contact",
   },
+
   {
-    id: "type",
+    id: "viewMore",
     numeric: true,
     disablePadding: false,
-    label: "Type",
-  },
-  {
-    id: "weight",
-    numeric: true,
-    disablePadding: false,
-    label: "Weight",
-  },
-  {
-    id: "price",
-    numeric: true,
-    disablePadding: false,
-    label: "Price",
-  },
-  {
-    id: "description",
-    numeric: true,
-    disablePadding: false,
-    label: "Product Description",
-  },
-  {
-    id: "actions",
-    numeric: true,
-    disablePadding: false,
-    label: "Action",
+    label: "View More",
   },
 ];
 
@@ -114,7 +98,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow sx={{ backgroundColor: "#439A97" }}>
+      <TableRow sx={{ backgroundColor: "#97DECE" }}>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -151,15 +135,13 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleAdd } = props;
+  const { numSelected } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        justifyContent: "flex-end",
-
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
             alpha(
@@ -168,7 +150,16 @@ function EnhancedTableToolbar(props) {
             ),
         }),
       }}
-    ></Toolbar>
+    >
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        All Orders
+      </Typography>
+    </Toolbar>
   );
 }
 
@@ -176,12 +167,11 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({
+export default function SuppliersTable({
   rows,
   handleDelete,
   handleEdit,
   openModal,
-  handleAdd,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("foodItems");
@@ -189,6 +179,11 @@ export default function EnhancedTable({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [status, setStatus] = React.useState("pending");
+
+  const handleChange = (event) => {
+    setStatus(event.target.value);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -247,11 +242,7 @@ export default function EnhancedTable({
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        {/* <EnhancedTableToolbar
-       
-          numSelected={selected.length}
-          handleAdd={handleAdd}
-        /> */}
+        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -285,28 +276,21 @@ export default function EnhancedTable({
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell align="center">{row.foodItems}</TableCell>
-                      <TableCell align="center">{row.category}</TableCell>
-                      <TableCell align="center">{row.type}</TableCell>
-                      <TableCell align="center">{row.weight}</TableCell>
-                      <TableCell align="center">{row.price}</TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">{row.name}</TableCell>
+
+                      <TableCell align="center">{row.company}</TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
 
                       <TableCell align="center">
-                        <Tooltip title="View more">
-                          <IconButton onClick={() => openModal(row.id)}>
-                            <VisibilityIcon />
-                          </IconButton>
-                        </Tooltip>
                         <Tooltip title="Edit">
-                          <IconButton
-                            onClick={() => handleEdit(row.id, row.category)}
-                          >
+                          <IconButton>
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
-                          <IconButton onClick={() => handleDelete(row.id)}>
+                          <IconButton
+                          // onClick={() => handleStocksDelete(row._id)}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>

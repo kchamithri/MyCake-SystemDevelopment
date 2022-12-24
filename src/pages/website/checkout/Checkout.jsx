@@ -72,7 +72,7 @@ export default function Checkout() {
     expDate: "",
     cvv: "",
     orderPlacedDate: today,
-    status: "pending",
+    status: "Pending",
     products: products,
   });
 

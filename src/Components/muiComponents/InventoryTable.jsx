@@ -56,46 +56,34 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "foodItems",
+    id: "name",
     numeric: true,
     disablePadding: true,
-    label: "Food Item",
+    label: "Inventory Name",
   },
   {
-    id: "category",
+    id: "supplier",
     numeric: true,
     disablePadding: false,
-    label: "Category",
+    label: "Total Quantity",
   },
   {
-    id: "type",
+    id: "initialQuantity",
     numeric: true,
     disablePadding: false,
-    label: "Type",
+    label: "Reorder Quantity",
   },
   {
-    id: "weight",
+    id: "reorderQuantity",
     numeric: true,
     disablePadding: false,
-    label: "Weight",
-  },
-  {
-    id: "price",
-    numeric: true,
-    disablePadding: false,
-    label: "Price",
-  },
-  {
-    id: "description",
-    numeric: true,
-    disablePadding: false,
-    label: "Product Description",
+    label: "Nearest stock Expiry Date",
   },
   {
     id: "actions",
     numeric: true,
     disablePadding: false,
-    label: "Action",
+    label: "Actions",
   },
 ];
 
@@ -151,15 +139,13 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleAdd } = props;
+  const { numSelected } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        justifyContent: "flex-end",
-
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
             alpha(
@@ -168,7 +154,16 @@ function EnhancedTableToolbar(props) {
             ),
         }),
       }}
-    ></Toolbar>
+    >
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        Inventory
+      </Typography>
+    </Toolbar>
   );
 }
 
@@ -176,12 +171,11 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({
+export default function InventoryTable({
   rows,
   handleDelete,
   handleEdit,
-  openModal,
-  handleAdd,
+  handleDetailedTableShow,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("foodItems");
@@ -247,11 +241,7 @@ export default function EnhancedTable({
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        {/* <EnhancedTableToolbar
-       
-          numSelected={selected.length}
-          handleAdd={handleAdd}
-        /> */}
+        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -285,28 +275,34 @@ export default function EnhancedTable({
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell align="center">{row.foodItems}</TableCell>
-                      <TableCell align="center">{row.category}</TableCell>
-                      <TableCell align="center">{row.type}</TableCell>
-                      <TableCell align="center">{row.weight}</TableCell>
-                      <TableCell align="center">{row.price}</TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-
+                      <TableCell align="center">
+                        {row.inventoryType.name}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.inventoryType.total}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.inventoryType.reorderQuantity}
+                      </TableCell>
+                      <TableCell align="center">{row.expiryDate}</TableCell>
                       <TableCell align="center">
                         <Tooltip title="View more">
-                          <IconButton onClick={() => openModal(row.id)}>
+                          <IconButton
+                            onClick={() =>
+                              handleDetailedTableShow(
+                                row.inventoryType.name,
+                                row.inventoryType._id
+                              )
+                            }
+                          >
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Edit">
-                          <IconButton
-                            onClick={() => handleEdit(row.id, row.category)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
+
                         <Tooltip title="Delete">
-                          <IconButton onClick={() => handleDelete(row.id)}>
+                          <IconButton
+                            onClick={() => handleDelete(row.inventoryType._id)}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>

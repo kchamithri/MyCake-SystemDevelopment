@@ -8,22 +8,49 @@ import AddSupplier from "./AddSupplier";
 import swal from "@sweetalert/with-react";
 import AddInventoryType from "./AddInventoryType";
 
-const AddIngredients = ({ handleFormShow }) => {
+const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
   const [validated, setValidated] = useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [inventoryModalOpen, setInventoryModalOpen] = React.useState(false);
+  const [status, setStatus] = useState("Order");
+  const [inventoryName, setInventoryName] = useState("");
+  const [supplierName, setSupplierName] = useState("");
 
-  const [stock, setStock] = useState({
-    inventoryType: "",
-    updatedDate: "",
-    supplierName: "",
-    borrowedQuantity: "",
-    expiryDate: "",
-    status: "Purchased",
-    description: "",
-  });
   const [suppliers, setSuppliers] = useState([]);
   const [inventoryType, setInventoryType] = useState([]);
+
+  const [stock, setStock] = useState({
+    id: "",
+    inventoryType: "",
+    updatedDate: "",
+    supplierName: supplierName ? supplierName : "63a178e23ea432020d8f7deb",
+    borrowedQuantity: "",
+    expiryDate: "",
+    status: status,
+    description: "",
+  });
+
+  useEffect(() => {
+    let inventoryName = "";
+    let supplier = "";
+
+    inventoryName = stockEditData.inventoryType._id;
+    supplier = stockEditData.supplier._id;
+    // stockEditData.supplierName.map((supplier) => (supplier = supplier._id));
+    setInventoryName(inventoryName);
+    setSupplierName(supplier);
+    setStock({
+      id: stockEditData.data._id,
+      inventoryType: inventoryName,
+      supplierName: supplier,
+      updatedDate: stockEditData.data.updatedDate,
+      borrowedQuantity: stockEditData.data.borrowedQuantity,
+      expiryDate: stockEditData.data.expiryDate,
+      status: stockEditData.data.status,
+      description: stockEditData.data.description,
+    });
+    setStatus(stockEditData.data.status);
+  }, [stockEditData]);
 
   useEffect(() => {
     fetch("/admin/supplier/get", {
@@ -42,7 +69,7 @@ const AddIngredients = ({ handleFormShow }) => {
       .catch((error) => {
         console.log("error fetching:", error);
       });
-  }, [modalOpen, handleFormShow]);
+  }, [modalOpen]);
 
   useEffect(() => {
     fetch("/admin/inventory/type/get", {
@@ -61,7 +88,7 @@ const AddIngredients = ({ handleFormShow }) => {
       .catch((error) => {
         console.log("error fetching:", error);
       });
-  }, [inventoryModalOpen, handleFormShow]);
+  }, [inventoryModalOpen]);
 
   const handleInput = (event) => {
     let name = event.target.name;
@@ -74,6 +101,7 @@ const AddIngredients = ({ handleFormShow }) => {
     event.preventDefault();
     console.log(event);
     const {
+      id,
       inventoryType,
       updatedDate,
       supplierName,
@@ -84,12 +112,13 @@ const AddIngredients = ({ handleFormShow }) => {
     } = stock;
 
     try {
-      const res = await fetch("/admin/inventory/stock/add", {
+      const res = await fetch("/admin/inventory/stock/addStocks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          id,
           inventoryType,
           updatedDate,
           supplierName,
@@ -102,16 +131,36 @@ const AddIngredients = ({ handleFormShow }) => {
       if (res.status === 400 || !res) {
         window.alert("Invalid Credentials");
       } else {
-        swal("Success", "Stock Added Successfully", "success", {
+        swal("Success", "Stock Updated  Successfully", "success", {
           button: false,
           timer: 1500,
         });
-        event.target.reset();
+        if (stock.id) {
+          handleUpdateFormShow(stock.id);
+          setStock({
+            id: "",
+            inventoryType: "",
+            supplierName: "",
+            updatedDate: "",
+            borrowedQuantity: "",
+            expiryDate: "",
+            status: "",
+            description: "",
+          });
+          event.target.reset();
+        } else {
+          event.target.reset();
+        }
       }
     } catch (error) {
       console.log("ERROR IS", error);
     }
   };
+
+  useEffect(() => {
+    console.log(stockEditData);
+    console.log(status);
+  }, [status, stockEditData]);
 
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
@@ -145,11 +194,15 @@ const AddIngredients = ({ handleFormShow }) => {
         >
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
-              <Form.Label>Inventory Type</Form.Label>
+              <Form.Label>Inventory Name</Form.Label>
               <Form.Select
                 aria-label="Default select example"
                 name="inventoryType"
-                onChange={handleInput}
+                onChange={(event) => {
+                  setInventoryName(event.target.value);
+                  handleInput(event);
+                }}
+                value={inventoryName}
               >
                 <option>Select</option>
                 {inventoryType.map((inventory) => {
@@ -163,58 +216,75 @@ const AddIngredients = ({ handleFormShow }) => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <div className="col-lg-6 d-flex justify-content-start align-items-end ">
-              <FormHelperText>
-                <Tooltip title="Add">
-                  <IconButton
-                    color="primary"
-                    onClick={handleInventoryModalOpen}
-                  >
-                    <AddIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                Inventory Type not available? Click the + to add new inventory
-              </FormHelperText>
-            </div>
-          </Row>
-
-          <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
-              <Form.Label>Supplier</Form.Label>
+              <Form.Label>Update Status</Form.Label>
               <Form.Select
                 aria-label="Default select example"
-                name="supplierName"
-                onChange={handleInput}
+                name="status"
+                onChange={(event) => {
+                  setStatus(event.target.value);
+                  handleInput(event);
+                }}
+                value={status}
               >
-                <option>Select</option>
-                {suppliers.map((supplier) => {
-                  return <option value={supplier._id}>{supplier.name}</option>;
-                })}
+                <option value="Order">Order</option>
+                <option value="Purchased">Purchased</option>
+                <option value="Discarded">Discarded</option>
               </Form.Select>
               <Form.Control.Feedback type="invalid">
-                Please provide the Supplier Name.
+                Please provide the Status.
               </Form.Control.Feedback>
             </Form.Group>
-
-            <div className="col-lg-6 d-flex justify-content-start align-items-end ">
-              <FormHelperText>
-                <Tooltip title="Add">
-                  <IconButton color="primary" onClick={handleModalOpen}>
-                    <AddIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                Supplier not available? Click the + to add new supplier
-              </FormHelperText>
-            </div>
           </Row>
+
+          {status === "Purchased" ? (
+            <Row className="mb-3">
+              <Form.Group as={Col} md="6" controlId="validationCustom01">
+                <Form.Label>Supplier</Form.Label>
+                <Form.Select
+                  aria-label="Default select example"
+                  name="supplierName"
+                  onChange={(event) => {
+                    setSupplierName(event.target.value);
+                    handleInput();
+                  }}
+                  value={supplierName}
+                >
+                  <option>Select</option>
+                  {suppliers.map((supplier) => {
+                    return (
+                      <option value={supplier._id}>{supplier.name}</option>
+                    );
+                  })}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Please provide the Supplier Name.
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <div className="col-lg-6 d-flex justify-content-start align-items-end ">
+                <FormHelperText>
+                  <Tooltip title="Add">
+                    <IconButton color="primary" onClick={handleModalOpen}>
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  Supplier not available? Click the + to add new supplier
+                </FormHelperText>
+              </div>
+            </Row>
+          ) : (
+            ""
+          )}
 
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
-              <Form.Label>Stock Borrowed Date</Form.Label>
+              <Form.Label> Update Date</Form.Label>
               <Form.Control
                 required
                 type="date"
                 placeholder="Received Date"
+                defaultValue={stockEditData.data.updatedDate}
                 name="updatedDate"
                 onChange={handleInput}
               />
@@ -223,29 +293,35 @@ const AddIngredients = ({ handleFormShow }) => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} md="6" controlId="validationCustom01">
-              <Form.Label> Stock Expiry Date</Form.Label>
-              <Form.Control
-                required
-                type="date"
-                placeholder="Expiry Date"
-                name="expiryDate"
-                onChange={handleInput}
-              />
-              <Form.Control.Feedback type="invalid">
-                Please provide a Date.
-              </Form.Control.Feedback>
-            </Form.Group>
+            {status === "Purchased" ? (
+              <Form.Group as={Col} md="6" controlId="validationCustom01">
+                <Form.Label> Stock Expiry Date</Form.Label>
+                <Form.Control
+                  required
+                  type="date"
+                  placeholder="Expiry Date"
+                  name="expiryDate"
+                  defaultValue={stockEditData.data.expiryDate}
+                  onChange={handleInput}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a Date.
+                </Form.Control.Feedback>
+              </Form.Group>
+            ) : (
+              ""
+            )}
           </Row>
 
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
-              <Form.Label>Quantity Added to Stock</Form.Label>
+              <Form.Label>Update Quantity </Form.Label>
               <Form.Control
                 required
                 type="text"
                 size="sm"
                 placeholder="kg"
+                defaultValue={stockEditData.data.borrowedQuantity}
                 name="borrowedQuantity"
                 onChange={handleInput}
               />
@@ -254,6 +330,7 @@ const AddIngredients = ({ handleFormShow }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Row>
+
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
               <Form.Label>Description</Form.Label>
@@ -262,6 +339,7 @@ const AddIngredients = ({ handleFormShow }) => {
                 type="text"
                 size="sm"
                 placeholder="description"
+                defaultValue={stockEditData.data.description}
                 name="description"
                 onChange={handleInput}
               />
@@ -281,4 +359,4 @@ const AddIngredients = ({ handleFormShow }) => {
   );
 };
 
-export default AddIngredients;
+export default UpdateStockForm;

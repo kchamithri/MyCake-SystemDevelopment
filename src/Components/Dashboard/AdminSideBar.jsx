@@ -45,7 +45,7 @@ const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   "& .MuiDrawer-paper": {
-    background: "#92A9BD",
+    background: "#227C70",
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,

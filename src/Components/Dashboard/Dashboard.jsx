@@ -29,16 +29,21 @@ const Dashboard = () => {
         <OrderDetailsModal />
       </DashboardModal>
 
-      <Grid container spacing={2} marginBottom={2}>
+      <Grid
+        container
+        spacing={2}
+        marginBottom={2}
+        justifyContent="space-between"
+      >
         <Grid item xs={6} md={6} lg={2}>
           <Tile date="Today" title="Orders to dispatch" quantity="3" />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
           <Tile date="Today" title="Orders Received" quantity="3" />
         </Grid>
-        <Grid item xs={6} md={6} lg={2}>
+        {/* <Grid item xs={6} md={6} lg={2}>
           <Tile date="Today" title="Customized Orders" quantity="3" />
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} md={6} lg={2}>
           <Tile date="November" title="Total Orders" quantity="3" />
         </Grid>
@@ -53,7 +58,7 @@ const Dashboard = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={12} lg={12}>
           <Table
-            color="orange"
+            color="#439A97"
             tableName="Orders to dispatch"
             openModal={openModal}
             closeModal={closeModal}
@@ -72,9 +77,9 @@ const Dashboard = () => {
             displayButtons="none"
           />
         </Grid> */}
-        <Grid item xs={12} md={4} lg={6}>
+        {/* <Grid item xs={12} md={4} lg={6}>
           <InventoryTable tableName="Inventory" chartDisplay="none" />
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );

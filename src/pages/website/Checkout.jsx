@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import swal from "@sweetalert/with-react";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  const navigate = useNavigate();
+
   const [validated, setValidated] = useState(false);
   const today = new Date();
   const [order, setOrder] = useState({
+    userId: localStorage.getItem("userId"),
     firstName: "",
     lastName: "",
     address: "",
@@ -18,6 +22,7 @@ const Checkout = () => {
     senderContact: "",
     senderEmail: "",
     orderPlacedDate: today,
+    status: "pending",
   });
 
   const handleInput = (event) => {
@@ -31,6 +36,7 @@ const Checkout = () => {
     event.preventDefault();
 
     const {
+      userId,
       firstName,
       lastName,
       address,
@@ -43,6 +49,7 @@ const Checkout = () => {
       senderContact,
       senderEmail,
       orderPlacedDate,
+      status,
     } = order;
 
     try {
@@ -52,6 +59,7 @@ const Checkout = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          userId,
           firstName,
           lastName,
           address,
@@ -64,14 +72,17 @@ const Checkout = () => {
           senderContact,
           senderEmail,
           orderPlacedDate,
+          status,
         }),
       });
       if (res.status === 400 || !res) {
         window.alert("Invalid Credentials");
       } else {
-        swal("Success", "Successfully Added", "success", {
+        swal("Success", "Your Order has been successfully placed", "success", {
           button: false,
           timer: 1500,
+        }).then((value) => {
+          navigate("/profile");
         });
         console.log(event.target);
       }
@@ -247,7 +258,6 @@ const Checkout = () => {
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
-
         <Button type="submit">Proceed</Button>
       </Form>
     </Container>

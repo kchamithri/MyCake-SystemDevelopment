@@ -11,11 +11,13 @@ import AddProducts from "./pages/Dashboard/AddProducts";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import Analytics from "./pages/Dashboard/Analytics";
 import Inventory from "./pages/Dashboard/Inventory";
+import Orders from "./pages/Dashboard/Orders";
+import Suppliers from "./pages/Dashboard/Suppliers";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/website/About";
 import CelebrationCake from "./pages/website/CelebrationCake";
-import Checkout from "./pages/website/Checkout";
+import Checkout from "./pages/website/checkout/Checkout";
 import DesignAcake from "./pages/website/DesignAcake";
 import Home from "./pages/website/Home";
 import PartyPacks from "./pages/website/PartyPacks";
@@ -44,8 +46,8 @@ function App() {
             <Route index={true} element={<Dashboard />} />
             <Route path="reports" element={<Analytics />} />
             <Route path="products" element={<AddProducts />} />
-            <Route path="suppliers" element={<Analytics />} />
-            <Route path="orders" element={<Analytics />} />
+            <Route path="suppliers" element={<Suppliers />} />
+            <Route path="orders" element={<Orders />} />
             <Route path="inventory" element={<Inventory />} />
             <Route path="settings" element={<Analytics />} />
           </Route>

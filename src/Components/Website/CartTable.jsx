@@ -37,6 +37,9 @@ const CartTable = ({ cartData }) => {
       price = price + data.total;
     });
     setTotalPrice(price);
+    //setting the remaining products in the cart in the localstorage for checkout
+    localStorage.setItem("cart", JSON.stringify(productDetails));
+    console.log(JSON.parse(localStorage.getItem("cart") || "[]"));
   }, [productDetails]);
 
   //remove items from the cart
@@ -45,9 +48,6 @@ const CartTable = ({ cartData }) => {
       (data) => data._id !== productId
     );
     setProductDetails(newProductArray);
-    //setting the remaining products in the cart in the localstorage for checkout
-    localStorage.setItem("cart", JSON.stringify(newProductArray));
-    console.log(JSON.parse(localStorage.getItem("cart") || "[]"));
 
     let deleteId = [];
 

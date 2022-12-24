@@ -1,5 +1,5 @@
 import swal from "@sweetalert/with-react";
-import { Button } from "bootstrap";
+
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -10,9 +10,19 @@ import ProductsViewTable from "../../Components/Dashboard/ProductsViewTable";
 import UpdateProductForm from "../../Components/Dashboard/UpdateProductForm";
 import EnhancedTable from "../../Components/muiComponents/EnhancedTable";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { IconButton, Tooltip } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  Tooltip,
+} from "@mui/material";
 import ProductViewModal from "../../Components/Website/ZoomProduct/ProductViewModal";
 import ProductViewCard from "../../Components/Website/ZoomProduct/ProductViewCard";
+import AddIcon from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
 
 const AddProducts = () => {
   const [key, setKey] = useState("Cake");
@@ -184,20 +194,66 @@ const AddProducts = () => {
       </ProductViewModal>
       <div className="mt-2">
         <div className="row justify-content-end my-2">
-          <div className={show ? "d-none" : "col-lg-1 col-sm-6 text-center"}>
-            <button
-              className={cm(
-                buttonName,
-                "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm",
-                buttonName === "add" &&
-                  "btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm active"
-              )}
-              value="add"
+          <div
+            className={show ? "d-none" : "col-lg-2 col-sm-6 text-center mb-2"}
+          >
+            <Button
+              sx={{
+                backgroundColor: "#439A97",
+              }}
+              variant="contained"
+              startIcon={<AddIcon />}
+              size="small"
               onClick={handleAdd}
             >
-              Add
-            </button>
+              Add product
+            </Button>
           </div>
+
+          <Grid container spacing={2} className={show ? "d-none" : ""}>
+            <Grid item xs={12} md={2} paddingRight={1}>
+              <FormControl fullWidth size="small">
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Category"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={10}>Cake</MenuItem>
+                  <MenuItem value={20}>Party Packs</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={2} paddingRight={1}>
+              <FormControl fullWidth size="small">
+                <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Type"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={10}>Anniversary</MenuItem>
+                  <MenuItem value={20}>Birthday Cakes</MenuItem>
+                  <MenuItem value={30}>Sandwiches</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={2}
+              paddingRight={1}
+              display="flex"
+              alignItems="center"
+              justifyContent="start"
+            >
+              <Button variant="outlined">Search</Button>
+            </Grid>
+          </Grid>
         </div>
         <div className={show ? "d-none" : "mt-4"}>
           {/* <ProductsViewTable

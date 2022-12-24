@@ -56,46 +56,46 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "foodItems",
-    numeric: true,
-    disablePadding: true,
-    label: "Food Item",
-  },
-  {
-    id: "category",
+    id: "status",
     numeric: true,
     disablePadding: false,
-    label: "Category",
+    label: "Status",
   },
   {
-    id: "type",
+    id: "updatedQuantity",
     numeric: true,
     disablePadding: false,
-    label: "Type",
+    label: "Updated Quantity",
   },
   {
-    id: "weight",
+    id: "updatedDate",
     numeric: true,
     disablePadding: false,
-    label: "Weight",
+    label: "Updated Date ",
   },
   {
-    id: "price",
+    id: "expiryDate",
     numeric: true,
     disablePadding: false,
-    label: "Price",
+    label: "Expiry Date ",
   },
   {
     id: "description",
     numeric: true,
     disablePadding: false,
-    label: "Product Description",
+    label: "Description",
   },
   {
-    id: "actions",
+    id: "totalQuantity",
     numeric: true,
     disablePadding: false,
-    label: "Action",
+    label: "Total Quantity",
+  },
+  {
+    id: "Actions",
+    numeric: true,
+    disablePadding: false,
+    label: "Actions",
   },
 ];
 
@@ -114,7 +114,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow sx={{ backgroundColor: "#439A97" }}>
+      <TableRow>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -151,15 +151,13 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleAdd } = props;
+  const { numSelected, type } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        justifyContent: "flex-end",
-
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
             alpha(
@@ -168,7 +166,16 @@ function EnhancedTableToolbar(props) {
             ),
         }),
       }}
-    ></Toolbar>
+    >
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        {type}
+      </Typography>
+    </Toolbar>
   );
 }
 
@@ -176,12 +183,12 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({
+export default function DetailedInventoryTable({
+  type,
   rows,
-  handleDelete,
-  handleEdit,
+  handleStocksDelete,
+  handleStockEdit,
   openModal,
-  handleAdd,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("foodItems");
@@ -247,11 +254,7 @@ export default function EnhancedTable({
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        {/* <EnhancedTableToolbar
-       
-          numSelected={selected.length}
-          handleAdd={handleAdd}
-        /> */}
+        <EnhancedTableToolbar numSelected={selected.length} type={type} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -282,31 +285,29 @@ export default function EnhancedTable({
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={row._id}
                       selected={isItemSelected}
                     >
-                      <TableCell align="center">{row.foodItems}</TableCell>
-                      <TableCell align="center">{row.category}</TableCell>
-                      <TableCell align="center">{row.type}</TableCell>
-                      <TableCell align="center">{row.weight}</TableCell>
-                      <TableCell align="center">{row.price}</TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-
+                      <TableCell align="center">{row.status}</TableCell>
                       <TableCell align="center">
-                        <Tooltip title="View more">
-                          <IconButton onClick={() => openModal(row.id)}>
-                            <VisibilityIcon />
-                          </IconButton>
-                        </Tooltip>
+                        {row.borrowedQuantity} kg
+                      </TableCell>
+                      <TableCell align="center">{row.updatedDate}</TableCell>
+                      <TableCell align="center">
+                        {row.expiryDate ? row.expiryDate : "-"}
+                      </TableCell>
+                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">totalQuantity</TableCell>
+                      <TableCell align="center">
                         <Tooltip title="Edit">
-                          <IconButton
-                            onClick={() => handleEdit(row.id, row.category)}
-                          >
+                          <IconButton onClick={() => handleStockEdit(row)}>
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
-                          <IconButton onClick={() => handleDelete(row.id)}>
+                          <IconButton
+                            onClick={() => handleStocksDelete(row._id)}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
