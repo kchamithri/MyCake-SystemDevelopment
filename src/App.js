@@ -12,6 +12,7 @@ import AdminLayout from "./pages/Dashboard/AdminLayout";
 import Analytics from "./pages/Dashboard/Analytics";
 import Inventory from "./pages/Dashboard/Inventory";
 import Orders from "./pages/Dashboard/Orders";
+import Reports from "./pages/Dashboard/Reports";
 import Suppliers from "./pages/Dashboard/Suppliers";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -44,7 +45,7 @@ function App() {
 
           <Route path="/admin" element={<AdminSideBar />}>
             <Route index={true} element={<Dashboard />} />
-            <Route path="reports" element={<Analytics />} />
+            <Route path="reports" element={<Reports />} />
             <Route path="products" element={<AddProducts />} />
             <Route path="suppliers" element={<Suppliers />} />
             <Route path="orders" element={<Orders />} />
