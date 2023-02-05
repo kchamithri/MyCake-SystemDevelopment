@@ -278,9 +278,7 @@ export default function InventoryTable({
                       <TableCell align="center">
                         {row.inventoryType.name}
                       </TableCell>
-                      <TableCell align="center">
-                        {row.inventoryType.total}
-                      </TableCell>
+                      <TableCell align="center">4kg</TableCell>
                       <TableCell align="center">
                         {row.inventoryType.reorderQuantity}
                       </TableCell>

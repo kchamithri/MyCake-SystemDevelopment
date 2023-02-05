@@ -207,7 +207,7 @@ const Inventory = () => {
 
   const handleDetailedTableShow = (inventoryName, inventoryid) => {
     let arr = [];
-
+    console.log(detailedTableDataFetch);
     arr = detailedTableDataFetch.filter(
       (data) => data.inventoryType._id === inventoryid
     );
@@ -311,7 +311,10 @@ const Inventory = () => {
               variant="contained"
               startIcon={<AddIcon />}
               size="small"
-              onClick={handleAdd}
+              onClick={() => {
+                setUpdateFormOpen(!updateFormOpen);
+                setShow(!show);
+              }}
             >
               update stocks
             </Button>

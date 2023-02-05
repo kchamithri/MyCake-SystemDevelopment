@@ -20,6 +20,7 @@ import OrderReceiverDetails from "./OrderReceiverDetails";
 import OrderSenderDetails from "./OrderSenderDetails";
 import OrderDetails from "./OrderDetails";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const steps = [
   "Sender Information",
@@ -37,6 +38,8 @@ export default function Checkout() {
   const [products, setProducts] = useState([]);
   const today = new Date();
 
+  let location = useLocation();
+
   useEffect(() => {
     let arr = [];
     JSON.parse(localStorage.getItem("cart") || "[]").map((item) => {
@@ -47,6 +50,7 @@ export default function Checkout() {
     });
     setProducts(arr);
     setOrder({ ...order, products: arr });
+    console.log(location.state.total);
   }, []);
 
   useEffect(() => {
@@ -71,7 +75,8 @@ export default function Checkout() {
     cardNumber: "",
     expDate: "",
     cvv: "",
-    orderPlacedDate: today,
+    total: location.state.total,
+    orderPlacedDate: today.toISOString().substring(0, 10),
     status: "Pending",
     products: products,
   });
@@ -112,6 +117,7 @@ export default function Checkout() {
       cardNumber,
       expDate,
       cvv,
+      total,
       orderPlacedDate,
       status,
       products,
@@ -141,6 +147,7 @@ export default function Checkout() {
           cardNumber,
           expDate,
           cvv,
+          total,
           orderPlacedDate,
           status,
           products,

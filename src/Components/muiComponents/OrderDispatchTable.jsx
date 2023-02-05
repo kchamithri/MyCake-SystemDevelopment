@@ -24,6 +24,7 @@ import { visuallyHidden } from "@mui/utils";
 import { useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import swal from "@sweetalert/with-react";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -202,10 +203,39 @@ export default function OrderDispatchTable({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [status, setStatus] = React.useState("Pending");
+  const [data, setData] = React.useState([]);
 
-  const handleChange = (event) => {
-    setStatus(event.target.value);
+  useEffect(() => {
+    setData(rows);
+  }, [rows]);
+
+  const handleChange = (event, id) => {
+    let value = event.target.value;
+    setData((prevState) => {
+      const data = [...prevState];
+      const index = data.findIndex((d) => d.id === id);
+      data[index].status = value;
+      return data;
+    });
+
+    try {
+      fetch("/admin/products/statusUpdate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          value,
+        }),
+      }).then((res) => {
+        if (res.status === 400) {
+          window.alert("Invalid Credentials");
+        }
+      });
+    } catch (error) {
+      console.log("ERROR IS", error);
+    }
   };
 
   const handleRequestSort = (event, property) => {
@@ -283,7 +313,7 @@ export default function OrderDispatchTable({
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.sort(getComparator(order, orderBy)).slice() */}
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(data, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   console.log(row);
@@ -337,8 +367,10 @@ export default function OrderDispatchTable({
                           <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={status}
-                            onChange={handleChange}
+                            value={row.status}
+                            onChange={(event) => {
+                              handleChange(event, row.id);
+                            }}
                             label="Status"
                           >
                             <MenuItem value="Pending">Pending</MenuItem>

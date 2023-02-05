@@ -182,6 +182,9 @@ const Checkout = () => {
               type="date"
               placeholder="Date to deliver"
               name="deliverDate"
+              inputProps={{
+                min: "2022-12-12",
+              }}
               onChange={handleInput}
               required
             />

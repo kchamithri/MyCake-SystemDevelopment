@@ -23,9 +23,9 @@ const Table = ({
   const today =
     current.getFullYear() +
     "-" +
-    (current.getMonth() + 1) +
+    ("0" + (current.getMonth() + 1)).slice(-2) +
     "-" +
-    current.getDate();
+    ("0" + current.getDate()).slice(-2);
 
   const [pendingOrdersData, setpendingOrdersData] = useState([]);
   const [todayDispatchOrderData, setTodayDispatchOrderData] = useState([]);
@@ -50,6 +50,7 @@ const Table = ({
   }
 
   useEffect(() => {
+    console.log(today);
     fetch("/orders/get", {
       method: "POST",
     })

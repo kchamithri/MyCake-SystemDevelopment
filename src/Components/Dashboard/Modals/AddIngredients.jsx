@@ -20,6 +20,7 @@ const AddIngredients = ({ handleFormShow }) => {
     borrowedQuantity: "",
     expiryDate: "",
     status: "Purchased",
+    expenditure: 0,
     description: "",
   });
   const [suppliers, setSuppliers] = useState([]);
@@ -80,6 +81,7 @@ const AddIngredients = ({ handleFormShow }) => {
       borrowedQuantity,
       expiryDate,
       status,
+      expenditure,
       description,
     } = stock;
 
@@ -96,6 +98,7 @@ const AddIngredients = ({ handleFormShow }) => {
           borrowedQuantity,
           expiryDate,
           status,
+          expenditure: parseInt(expenditure),
           description,
         }),
       });
@@ -251,6 +254,21 @@ const AddIngredients = ({ handleFormShow }) => {
               />
               <Form.Control.Feedback type="invalid">
                 Please provide a Quantity.
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group as={Col} md="6" controlId="validationCustom01">
+              <Form.Label>Expenditure(Rs.)</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                size="sm"
+                placeholder="kg"
+                name="expenditure"
+                onChange={handleInput}
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide the expenditure.
               </Form.Control.Feedback>
             </Form.Group>
           </Row>

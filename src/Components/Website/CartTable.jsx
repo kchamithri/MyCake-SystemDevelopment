@@ -166,6 +166,7 @@ const CartTable = ({ cartData }) => {
             <td className="fs-5" style={{ textAlign: "center" }}>
               <NavLink
                 to="/checkout"
+                state={{ total: totalPrice }}
                 className="btn btn-outline-dark ms-2 px-4 rounded-pill btn-sm"
               >
                 Checkout

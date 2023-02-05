@@ -26,6 +26,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
     supplierName: supplierName ? supplierName : "63a178e23ea432020d8f7deb",
     borrowedQuantity: "",
     expiryDate: "",
+    expenditure: 0,
     status: status,
     description: "",
   });
@@ -40,12 +41,13 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
     setInventoryName(inventoryName);
     setSupplierName(supplier);
     setStock({
-      id: stockEditData.data._id,
+      id: stockEditData ? stockEditData.data._id : "",
       inventoryType: inventoryName,
       supplierName: supplier,
       updatedDate: stockEditData.data.updatedDate,
       borrowedQuantity: stockEditData.data.borrowedQuantity,
       expiryDate: stockEditData.data.expiryDate,
+      expenditure: stockEditData.data.expenditure,
       status: stockEditData.data.status,
       description: stockEditData.data.description,
     });
@@ -100,6 +102,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(event);
+    console.log(stock.id);
     const {
       id,
       inventoryType,
@@ -107,6 +110,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
       supplierName,
       borrowedQuantity,
       expiryDate,
+      expenditure,
       status,
       description,
     } = stock;
@@ -124,6 +128,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
           supplierName,
           borrowedQuantity,
           expiryDate,
+          expenditure,
           status,
           description,
         }),
@@ -145,6 +150,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
             borrowedQuantity: "",
             expiryDate: "",
             status: "",
+            expenditure: "",
             description: "",
           });
           event.target.reset();
@@ -329,6 +335,25 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                 Please provide a Quantity.
               </Form.Control.Feedback>
             </Form.Group>
+            {status === "Purchased" ? (
+              <Form.Group as={Col} md="6" controlId="validationCustom01">
+                <Form.Label>Expenditure</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  size="sm"
+                  placeholder="kg"
+                  defaultValue={stockEditData.data.expenditure}
+                  name="expenditure"
+                  onChange={handleInput}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide the expenditure.
+                </Form.Control.Feedback>
+              </Form.Group>
+            ) : (
+              ""
+            )}
           </Row>
 
           <Row className="mb-3">
