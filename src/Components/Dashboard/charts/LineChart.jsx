@@ -1,80 +1,110 @@
+import { Paper } from "@mui/material";
 import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+import Chart from "react-apexcharts";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-const LineChart = () => {
+const LineChart = (props) => {
+  console.log(props);
   return (
-    <div className="chart-container">
-      <Line
-        data={{
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ],
-          datasets: [
-            {
-              label: "Revenue",
-              data: ["2", "50", "10"],
-              borderColor: "rgb(255, 99, 132)",
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-            {
-              label: "Profit",
-              data: ["21", "5", "100"],
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgba(53, 162, 235, 0.5)",
-            },
-            {
-              label: "Expenses",
-              data: ["15", "30", "8"],
-              borderColor: "rgb(0, 252, 71)",
-              backgroundColor: "rgba(0, 252, 71, 0.5)",
-            },
-          ],
-        }}
+    <Paper elevation={1}>
+      <Chart
+        type="line"
+        height={props.height}
         options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top",
+          chart: {
+            id: "basic-bar",
+            height: "200",
+            toolbar: {
+              show: props.isMobile && props.isMobile === true ? false : true,
+              zoom: true,
+              selection: true,
+              zoomin: true,
+              zoomout: true,
+              pan: true,
+              offsetX: 0,
+              offsetY: 0,
             },
-            title: {
-              display: true,
-              text: "Overall Statistics",
+          },
+          zoom: {
+            enabled: false,
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          stroke: {
+            width: [5, 7, 5],
+            curve: "straight",
+            dashArray: [0, 8, 5],
+          },
+          xaxis: {
+            type: "datetime",
+          },
+          yaxis: {
+            showForNullSeries: false,
+            labels: {
+              formatter: function (val) {
+                return val.toFixed(0);
+              },
+            },
+          },
+          legend: {
+            tooltipHoverFormatter: function (val, opts) {
+              return (
+                val +
+                " - " +
+                opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
+                ""
+              );
+            },
+          },
+          markers: {
+            size: 5,
+            hover: {
+              sizeOffset: 6,
+            },
+          },
+          title: {
+            text: props.title,
+            align: "left",
+            margin: 10,
+            offsetX: 0,
+            offsetY: 0,
+            floating: false,
+            style: {
+              fontSize: "14px",
+              fontWeight: "bold",
+              fontFamily: undefined,
+              color: "#263238",
+            },
+          },
+          noData: {
+            text: "No Data Available",
+            align: "center",
+            verticalAlign: "middle",
+            offsetX: 0,
+            offsetY: 0,
+            style: {
+              color: "black",
+              fontSize: "14px",
+              fontFamily: undefined,
             },
           },
         }}
+        series={[
+          {
+            name: props.series1,
+            data: props.series1Data,
+          },
+          {
+            name: props.series2,
+            data: props.series2Data,
+          },
+          {
+            name: props.series3,
+            data: props.series3Data,
+          },
+        ]}
       />
-    </div>
+    </Paper>
   );
 };
 
