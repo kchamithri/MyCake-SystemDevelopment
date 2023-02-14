@@ -1,4 +1,5 @@
-import React from "react";
+import swal from "@sweetalert/with-react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Accordion, Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
@@ -9,13 +10,142 @@ const Profile = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [infoButton, setInfoButton] = useState(false);
   const [passwordButton, setPasswordButton] = useState(true);
+  const [pendingOrdersData, setpendingOrdersData] = useState([]);
+  const [dispatchedOrdersData, setdispatchedOrdersData] = useState([]);
 
-  const handleInfoSaveButton = () => {
-    setInfoButton(true);
+  const [user, setUser] = useState({
+    name: localStorage.getItem("name") ? localStorage.getItem("name") : "",
+    email: localStorage.getItem("email") ? localStorage.getItem("email") : "",
+    contact: localStorage.getItem("contact")
+      ? localStorage.getItem("contact")
+      : "",
+  });
+  const [password, setPassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+  });
+  const [userDetails, setUserDetails] = useState({
+    name: localStorage.getItem("name") ? localStorage.getItem("name") : "",
+    email: localStorage.getItem("email") ? localStorage.getItem("email") : "",
+    contact: localStorage.getItem("contact")
+      ? localStorage.getItem("contact")
+      : "",
+  });
+
+  const handleInput = (event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+
+    setUser({ ...user, [name]: value });
   };
-  const handlePasswordSaveButton = () => {
-    setPasswordButton(false);
+
+  const handlePasswordInput = (event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+
+    setPassword({ ...password, [name]: value });
   };
+
+  const handleProfileSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: localStorage.getItem("userId")
+            ? localStorage.getItem("userId")
+            : "",
+          name: user.name,
+          email: user.email,
+          contact: user.contact,
+        }),
+      });
+      if (res.status === 400 || !res) {
+        window.alert("Invalid Credentials");
+      } else {
+        setUserDetails(user);
+        swal("Success", "User Updated Successfully", "success", {
+          button: false,
+          timer: 1500,
+        });
+        event.target.reset();
+      }
+    } catch (error) {
+      console.log("ERROR IS", error);
+    }
+  };
+  const handlePasswordSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: localStorage.getItem("userId")
+            ? localStorage.getItem("userId")
+            : "",
+          password: password.newPassword,
+        }),
+      });
+      if (res.status === 400 || !res) {
+        window.alert("Invalid Credentials");
+      } else {
+        swal("Success", "Password Updated Successfully", "success", {
+          button: false,
+          timer: 1500,
+        });
+        event.target.reset();
+      }
+    } catch (error) {
+      console.log("ERROR IS", error);
+    }
+  };
+
+  useEffect(() => {
+    fetch("/orders/get", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        let pendingOrders = [];
+        let dispatchedOrders = [];
+        data.orders.map((order) => {
+          if (order.status === "Pending") {
+            pendingOrders.push(order);
+          } else {
+            dispatchedOrders.push(order);
+          }
+        });
+
+        setpendingOrdersData(pendingOrders);
+        setdispatchedOrdersData(dispatchedOrders);
+        console.log(data.orders);
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(pendingOrdersData);
+  }, [pendingOrdersData, dispatchedOrdersData]);
+
   return (
     <div>
       <div className="container mt-5">
@@ -25,21 +155,21 @@ const Profile = () => {
           </div>
           <div className="col-lg-4 col-sm-6">
             <ul style={{ listStyleType: "none" }}>
-              <li>Kosala Chamithri</li>
-              <li>kosala@gmail.com</li>
-              <li>0785643567</li>
+              <li>{userDetails.name}</li>
+              <li>{userDetails.email}</li>
+              <li>{userDetails.contact}</li>
             </ul>
           </div>
           <div className="col-lg-3 col-sm-6 ">
             <ul style={{ listStyleType: "none", textAlign: "center" }}>
               <li className="h4"> Pending Orders</li>
-              <li className="h4">1</li>
+              <li className="h4">{pendingOrdersData.length}</li>
             </ul>
           </div>
           <div className="col-lg-3 col-sm-6">
             <ul style={{ listStyleType: "none", textAlign: "center" }}>
               <li className="h4"> Delivered Orders</li>
-              <li className="h4">2</li>
+              <li className="h4">{dispatchedOrdersData.length}</li>
             </ul>
           </div>
         </div>
@@ -97,64 +227,76 @@ const Profile = () => {
           </div>
           {showPendingOrders ? (
             <div className="col-lg-8 col-sm-6">
-              <div className="row">
-                <div className="col-lg-3">
-                  <ul style={{ listStyleType: "none", fontSize: "18px" }}>
-                    <li className="mb-2"> Order Placed On: </li>
-                    <li className="mb-2">Order Number:</li>
-                    <li className="mb-2">Recepient:</li>
-                    <li className="mb-2">Recepient Contact:</li>
-                    <li className="mb-2">Delivery Date:</li>
-                    <li className="mb-2">Delivery Address:</li>
-                    <li className="mb-2">Delivery Message:</li>
-                    <li className="mb-2">Total(Rs):</li>
-                  </ul>
-                </div>
-                <div className="col-lg-6">
-                  <ul style={{ listStyleType: "none", fontSize: "18px" }}>
-                    <li className="mb-2">23/11/2022 </li>
-                    <li className="mb-2">12</li>
-                    <li className="mb-2">Imasha Nanayakkara</li>
-                    <li className="mb-2">0763456789</li>
-                    <li className="mb-2">23/11/2022</li>
-                    <li className="mb-2">Horana, Kalutara</li>
-                    <li className="mb-2">Happy Birthday Imasha!!</li>
-                    <li className="mb-2">4000</li>
-                  </ul>
-                </div>
-              </div>
+              {pendingOrdersData.map((order) => {
+                return (
+                  <div className="row">
+                    <div className="col-lg-3">
+                      <ul style={{ listStyleType: "none", fontSize: "18px" }}>
+                        <li className="mb-2"> Order Placed On: </li>
+                        <li className="mb-2">Order Number:</li>
+                        <li className="mb-2">Recepient:</li>
+                        <li className="mb-2">Recepient Contact:</li>
+                        <li className="mb-2">Delivery Date:</li>
+                        <li className="mb-2">Delivery Address:</li>
+                        <li className="mb-2">Delivery Message:</li>
+                        <li className="mb-2">Total(Rs):</li>
+                      </ul>
+                    </div>
+                    <div className="col-lg-6">
+                      <ul style={{ listStyleType: "none", fontSize: "18px" }}>
+                        <li className="mb-2">{order.orderPlacedDate} </li>
+                        <li className="mb-2">{order._id}</li>
+                        <li className="mb-2">
+                          {order.firstName + "" + order.lastName}
+                        </li>
+                        <li className="mb-2">{order.contact}</li>
+                        <li className="mb-2">{order.deliverDate}</li>
+                        <li className="mb-2">{order.address}</li>
+                        <li className="mb-2">{order.message}</li>
+                        <li className="mb-2">Rs. 4000</li>
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             ""
           )}
           {showDeliveredOrders ? (
             <div className="col-lg-8 col-sm-6">
-              <div className="row">
-                <div className="col-lg-3">
-                  <ul style={{ listStyleType: "none", fontSize: "18px" }}>
-                    <li className="mb-2"> Order Placed On: </li>
-                    <li className="mb-2">Order Number:</li>
-                    <li className="mb-2">Recepient:</li>
-                    <li className="mb-2">Recepient Contact:</li>
-                    <li className="mb-2">Delivery Date:</li>
-                    <li className="mb-2">Delivery Address:</li>
-                    <li className="mb-2">Delivery Message:</li>
-                    <li className="mb-2">Total(Rs):</li>
-                  </ul>
-                </div>
-                <div className="col-lg-6">
-                  <ul style={{ listStyleType: "none", fontSize: "18px" }}>
-                    <li className="mb-2">09/03/2022 </li>
-                    <li className="mb-2">3</li>
-                    <li className="mb-2">Kosala Chamithri</li>
-                    <li className="mb-2">0763456789</li>
-                    <li className="mb-2">12/03/2022</li>
-                    <li className="mb-2">Horana, Kalutara</li>
-                    <li className="mb-2">Happy Birthday Kosala!!</li>
-                    <li className="mb-2">5000</li>
-                  </ul>
-                </div>
-              </div>
+              {dispatchedOrdersData.map((order) => {
+                return (
+                  <div className="row">
+                    <div className="col-lg-3">
+                      <ul style={{ listStyleType: "none", fontSize: "18px" }}>
+                        <li className="mb-2"> Order Placed On: </li>
+                        <li className="mb-2">Order Number:</li>
+                        <li className="mb-2">Recepient:</li>
+                        <li className="mb-2">Recepient Contact:</li>
+                        <li className="mb-2">Delivery Date:</li>
+                        <li className="mb-2">Delivery Address:</li>
+                        <li className="mb-2">Delivery Message:</li>
+                        <li className="mb-2">Total(Rs):</li>
+                      </ul>
+                    </div>
+                    <div className="col-lg-6">
+                      <ul style={{ listStyleType: "none", fontSize: "18px" }}>
+                        <li className="mb-2">{order.orderPlacedDate} </li>
+                        <li className="mb-2">{order._id}</li>
+                        <li className="mb-2">
+                          {order.firstName + "" + order.lastName}
+                        </li>
+                        <li className="mb-2">{order.contact}</li>
+                        <li className="mb-2">{order.deliverDate}</li>
+                        <li className="mb-2">{order.address}</li>
+                        <li className="mb-2">{order.message}</li>
+                        <li className="mb-2">Rs. 4000</li>
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             ""
@@ -172,7 +314,7 @@ const Profile = () => {
                         noValidate
                         // validated={validated}
                         method="POST"
-                        // onSubmit={handleSubmit}
+                        onSubmit={handleProfileSubmit}
                         enctype="multipart/form-data"
                       >
                         <Row className="mb-3">
@@ -190,7 +332,8 @@ const Profile = () => {
                                 required
                                 type="text"
                                 name="name"
-                                value="Kosala Chamithri"
+                                value={user.name}
+                                onChange={handleInput}
                                 placeholder="Name"
                               />
                               <Form.Control.Feedback type="invalid">
@@ -211,19 +354,20 @@ const Profile = () => {
                             <Col lg={9}>
                               <Form.Control
                                 required
-                                disabled
                                 type="text"
-                                name="name"
+                                name="email"
+                                value={user.email}
+                                onChange={handleInput}
                                 placeholder="kosala@gmail.com"
                               />
-                              <Form.Text id="passwordHelpBlock" muted>
+                              {/* <Form.Text id="passwordHelpBlock" muted>
                                 <i
                                   class="fa fa-exclamation-circle"
                                   aria-hidden="true"
                                   style={{ color: "red" }}
                                 ></i>
                                 Your email cannot be changed
-                              </Form.Text>
+                              </Form.Text> */}
                             </Col>
                           </Form.Group>
                         </Row>
@@ -242,8 +386,9 @@ const Profile = () => {
                                 required
                                 type="text"
                                 name="contact"
-                                value="0785643567"
                                 placeholder="Contact"
+                                value={user.contact}
+                                onChange={handleInput}
                               />
                               <Form.Control.Feedback type="invalid">
                                 Please provide the contact number.
@@ -272,7 +417,7 @@ const Profile = () => {
                         noValidate
                         // validated={validated}
                         method="POST"
-                        // onSubmit={handleSubmit}
+                        onSubmit={handlePasswordSubmit}
                         enctype="multipart/form-data"
                       >
                         <Row className="mb-3">
@@ -288,7 +433,8 @@ const Profile = () => {
                               <Form.Control
                                 required
                                 type="password"
-                                name="password"
+                                name="currentPassword"
+                                onChange={handlePasswordInput}
                               />
                               <Form.Control.Feedback type="invalid">
                                 Please provide a Password.
@@ -309,8 +455,8 @@ const Profile = () => {
                               <Form.Control
                                 required
                                 type="password"
-                                name="password"
-                                // onChange={handlePasswordSaveButton}
+                                name="newPassword"
+                                onChange={handlePasswordInput}
                               />
                               <Form.Control.Feedback type="invalid">
                                 Please provide a Password.
