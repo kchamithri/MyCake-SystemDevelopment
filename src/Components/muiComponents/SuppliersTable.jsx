@@ -157,7 +157,7 @@ function EnhancedTableToolbar(props) {
         id="tableTitle"
         component="div"
       >
-        All Orders
+        Suppliers
       </Typography>
     </Toolbar>
   );

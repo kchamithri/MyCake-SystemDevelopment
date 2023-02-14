@@ -13,6 +13,7 @@ import Analytics from "./pages/Dashboard/Analytics";
 import Inventory from "./pages/Dashboard/Inventory";
 import Orders from "./pages/Dashboard/Orders";
 import Reports from "./pages/Dashboard/Reports";
+import Settings from "./pages/Dashboard/Settings";
 import Suppliers from "./pages/Dashboard/Suppliers";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -50,7 +51,7 @@ function App() {
             <Route path="suppliers" element={<Suppliers />} />
             <Route path="orders" element={<Orders />} />
             <Route path="inventory" element={<Inventory />} />
-            <Route path="settings" element={<Analytics />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
 
           <Route path="/admin/login" element={<AdminLogin />}></Route>

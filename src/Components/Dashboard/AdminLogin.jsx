@@ -38,6 +38,9 @@ const AdminLogin = () => {
         if (res.status === 400 || !res) {
           window.alert("Invalid Credentials");
         } else {
+          localStorage.setItem("adminId", res.admin.id);
+          localStorage.setItem("adminName", res.admin.name);
+          localStorage.setItem("adminEmail", res.admin.email);
           swal("Success", "Successfully Logged into the System", "success", {
             button: false,
             timer: 2000,

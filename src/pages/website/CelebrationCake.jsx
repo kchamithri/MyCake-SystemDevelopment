@@ -13,8 +13,13 @@ const CelebrationCake = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [addToCart, setAddToCart] = useState([]);
-  const [filter, setFilter] = useState([]);
+  const [filterItems, setFilter] = useState({
+    type: [],
+    flavor: [],
+    price: [],
+  });
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [modalData, setModalData] = useState({});
 
   useEffect(() => {
@@ -30,6 +35,7 @@ const CelebrationCake = () => {
       })
       .then((data) => {
         setProducts(data.products);
+        setFilteredProducts(data.products);
       })
       .catch((error) => {
         console.log("error fetching:", error);
@@ -37,16 +43,66 @@ const CelebrationCake = () => {
     // localStorage.clear();
   }, []);
 
-  const handleChecked = (e) => {
-    let updatedList = [...filter];
+  const handleTypeChecked = (e) => {
+    let updatedList = { ...filterItems };
     if (e.target.checked) {
-      updatedList = [...filter, e.target.value];
+      updatedList.type.push(e.target.value);
     } else {
-      updatedList.splice(filter.indexOf(e.target.value), 1);
+      let typeList = updatedList.type.filter((val) => val !== e.target.value);
+      updatedList.type = typeList;
     }
-    setFilter(updatedList);
-    console.log(filter);
+    setFilter({ ...filterItems, type: updatedList.type });
   };
+
+  const handleFalvorChecked = (e) => {
+    let updatedList = { ...filterItems };
+    if (e.target.checked) {
+      updatedList.flavor.push(e.target.value);
+    } else {
+      let flavorList = updatedList.flavor.filter(
+        (val) => val !== e.target.value
+      );
+      updatedList.flavor = flavorList;
+    }
+    setFilter({ ...filterItems, flavor: updatedList.flavor });
+  };
+
+  const handlePriceChecked = (e) => {
+    let updatedList = { ...filterItems };
+    if (e.target.checked) {
+      updatedList.price.push(e.target.value);
+    } else {
+      let priceList = updatedList.price.filter((val) => val !== e.target.value);
+      updatedList.price = priceList;
+    }
+    setFilter({ ...filterItems, price: updatedList.price });
+  };
+
+  useEffect(() => {
+    console.log(filterItems);
+  }, [filterItems]);
+
+  useEffect(() => {
+    let arr = [];
+    products.map((product) => {
+      filterItems.type.map((type) => {
+        if (type === product.type) {
+          arr.push(product);
+          setFilteredProducts(arr);
+        }
+      });
+    });
+
+    if (filterItems.type.length === 0) {
+      if (filterItems.flavor.length === 0) {
+        if (filterItems.price.length === 0) {
+          setFilteredProducts(products);
+        }
+      }
+    }
+
+    console.log(arr);
+  }, [filterItems]);
 
   const handleAddToCart = async (productId, price) => {
     const ID = productId;
@@ -140,8 +196,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="Milk Chocolate"
-                  onChange={handleChecked}
+                  value="Birthday Cake"
+                  onChange={handleTypeChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   Birthday Cakes
@@ -151,9 +207,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="Strawberry"
-                  id="defaultCheck2"
-                  onChange={handleChecked}
+                  value="Wedding Cakes"
+                  onChange={handleTypeChecked}
                 />
                 <label class="form-check-label" for="defaultCheck2">
                   Wedding Cakes
@@ -163,8 +218,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="Kids Birthday"
+                  onChange={handleTypeChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   Kids Birthday Cakes
@@ -174,8 +229,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="Anniversary"
+                  onChange={handleTypeChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   Anniversary Cakes
@@ -189,7 +244,7 @@ const CelebrationCake = () => {
                   className="form-check-input"
                   type="checkbox"
                   value="Milk Chocolate"
-                  onChange={handleChecked}
+                  onChange={handleFalvorChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   Milk Chocolate
@@ -201,7 +256,7 @@ const CelebrationCake = () => {
                   type="checkbox"
                   value="Strawberry"
                   id="defaultCheck2"
-                  onChange={handleChecked}
+                  onChange={handleFalvorChecked}
                 />
                 <label class="form-check-label" for="defaultCheck2">
                   Strawberry
@@ -211,8 +266,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="Cheesecake"
+                  onChange={handleFalvorChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   Cheesecake
@@ -225,8 +280,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="900"
+                  onChange={handlePriceChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   900 - 1500
@@ -236,8 +291,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="1500"
+                  onChange={handlePriceChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   1500 - 2000
@@ -247,8 +302,8 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="2000"
+                  onChange={handlePriceChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   2000 - 2500
@@ -258,7 +313,7 @@ const CelebrationCake = () => {
           </div>
           <div className="col-md-10">
             <div className="row row-cols-1 row-cols-md-4 g-4">
-              {products.map((item) => {
+              {filteredProducts.map((item) => {
                 return (
                   <Card
                     id={item._id}

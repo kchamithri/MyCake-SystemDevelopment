@@ -34,11 +34,7 @@ const Navbar = () => {
                   Party Packs
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/designacake">
-                  Design a Cake
-                </NavLink>
-              </li>
+
               <li className="nav-item">
                 <NavLink className="nav-link" to="/about">
                   About Us

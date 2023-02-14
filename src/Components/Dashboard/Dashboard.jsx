@@ -36,22 +36,22 @@ const Dashboard = () => {
         justifyContent="space-between"
       >
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="Today" title="Orders to dispatch" quantity="3" />
+          <Tile date="Today" title="Orders to dispatch" quantity="1" />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="Today" title="Orders Received" quantity="3" />
+          <Tile date="Today" title="Orders Received" quantity="10" />
         </Grid>
         {/* <Grid item xs={6} md={6} lg={2}>
           <Tile date="Today" title="Customized Orders" quantity="3" />
         </Grid> */}
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="November" title="Total Orders" quantity="3" />
+          <Tile date="January" title="Total Orders" quantity="4" />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="November" title="Total Revenue" quantity="3" />
+          <Tile date="January" title="Total Revenue" quantity="Rs. 4500" />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile title="Total customers" quantity="3" />
+          <Tile title="Total customers" quantity="5" />
         </Grid>
       </Grid>
 
