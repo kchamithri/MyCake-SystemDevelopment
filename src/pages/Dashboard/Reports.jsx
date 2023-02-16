@@ -56,7 +56,7 @@ const Data = [
 
 const Reports = () => {
   //overall statistics
-  const [yearValue, setYearValue] = useState(dayjs("2022"));
+  const [yearValue, setYearValue] = useState(dayjs("2023"));
   const [yearMonthValue, setYearMonthValue] = useState("");
   const [revenue, setRevenue] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -98,8 +98,8 @@ const Reports = () => {
   ]);
 
   //sales statistics
-  const [toValue, setToValue] = useState("2023-02-04T18:58:25.593Z");
-  const [fromValue, setFromValue] = useState("2022-02-04T18:58:25.593Z");
+  const [toValue, setToValue] = useState("2023-03-17T18:58:25.593Z");
+  const [fromValue, setFromValue] = useState("2023-02-15T18:58:25.593Z");
   const [partyPacks, setPartyPacks] = useState([]);
   const [cakes, setCakes] = useState([]);
   const [salesLabels, setSalesLabels] = useState([]);
@@ -113,6 +113,7 @@ const Reports = () => {
   const [pFlavorLabels, setpFlavorLabels] = useState([]);
   const [inventoryLabels, setInventoryLabels] = useState([]);
   const [inventoryData, setInventoryData] = useState([]);
+  const [lowInStock, setLowInStock] = useState([]);
 
   useEffect(() => {}, [fromValue, toValue]);
 
@@ -194,26 +195,6 @@ const Reports = () => {
   // }, [yearValue, revenue]);
 
   useEffect(() => {
-    // setStatisticDataSet([
-    //   {
-    //     label: "Revenue",
-    //     data: revenue.data,
-    //     borderColor: "rgb(255, 99, 132)",
-    //     backgroundColor: "rgba(255, 99, 132, 0.5)",
-    //   },
-    //   {
-    //     label: "Profit",
-    //     data: profit.data,
-    //     borderColor: "rgb(53, 162, 235)",
-    //     backgroundColor: "rgba(53, 162, 235, 0.5)",
-    //   },
-    //   {
-    //     label: "Expenses",
-    //     data: expenses.data,
-    //     borderColor: "rgb(0, 252, 71)",
-    //     backgroundColor: "rgba(0, 252, 71, 0.5)",
-    //   },
-    // ]);
     console.log(revenue);
     console.log(expenses);
   }, [expenses, revenue, profit]);
@@ -230,7 +211,6 @@ const Reports = () => {
         body: JSON.stringify({
           chart: "sales",
           chartType: "lineChart",
-
           startDate: new Date(fromValue),
           endDate: new Date(toValue),
         }),
@@ -368,6 +348,14 @@ const Reports = () => {
             inventoryLabels.push(data.name);
             inventoryData.push(data.quantity);
           });
+          data.result.map((type) => {
+            let obj = data.inventory.find(
+              (inventory) => inventory.name === type.name
+            );
+            if (obj.reorderQuantity >= type.quantity) {
+              lowInStock.push(type);
+            }
+          });
           setInventoryLabels(inventoryLabels);
           setInventoryData(inventoryData);
         })
@@ -385,6 +373,7 @@ const Reports = () => {
     console.log(cakes);
     console.log(partyPacks);
     console.log(pCategoryLabels);
+    console.log(lowInStock);
   }, [
     cakes,
     partyPacks,
@@ -396,6 +385,7 @@ const Reports = () => {
     pCategoryLabels,
     pFlavorData,
     pFlavorLabels,
+    lowInStock,
   ]);
 
   // useEffect(() => {
@@ -487,6 +477,7 @@ const Reports = () => {
         <InventoryReport
           inventoryData={inventoryData}
           inventoryLabels={inventoryLabels}
+          lowInStock={lowInStock}
         />
       </Grid>
     </>
