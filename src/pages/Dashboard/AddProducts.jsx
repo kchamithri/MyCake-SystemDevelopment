@@ -79,19 +79,7 @@ const AddProducts = () => {
               window.alert("Invalid Credentials");
             } else {
               setProducts(products.filter((data) => data._id !== id));
-              setTableData(
-                products.map((list) => {
-                  return createData(
-                    list._id,
-                    list.name,
-                    list.category,
-                    list.type,
-                    list.weight,
-                    list.price,
-                    list.description
-                  );
-                })
-              );
+
               swal("Deleted Successfully!", {
                 icon: "success",
                 button: false,
@@ -105,6 +93,22 @@ const AddProducts = () => {
       }
     });
   };
+
+  useEffect(() => {
+    setTableData(
+      products.map((list) => {
+        return createData(
+          list._id,
+          list.name,
+          list.category,
+          list.type,
+          list.weight,
+          list.price,
+          list.description
+        );
+      })
+    );
+  }, [products]);
 
   const handleEdit = async (id, category) => {
     handleShow();

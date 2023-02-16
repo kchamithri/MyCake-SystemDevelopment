@@ -247,7 +247,7 @@ const Profile = () => {
                         <li className="mb-2">{order.orderPlacedDate} </li>
                         <li className="mb-2">{order._id}</li>
                         <li className="mb-2">
-                          {order.firstName + "" + order.lastName}
+                          {order.firstName + " " + order.lastName}
                         </li>
                         <li className="mb-2">{order.contact}</li>
                         <li className="mb-2">{order.deliverDate}</li>

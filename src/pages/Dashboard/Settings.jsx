@@ -13,6 +13,14 @@ const Settings = () => {
       ? localStorage.getItem("adminEmail")
       : "",
   });
+  const [adminDetails, setAdminDetails] = useState({
+    name: localStorage.getItem("adminName")
+      ? localStorage.getItem("adminName")
+      : "",
+    email: localStorage.getItem("adminEmail")
+      ? localStorage.getItem("adminEmail")
+      : "",
+  });
   const [password, setPassword] = useState({
     currentPassword: "",
     newPassword: "",
@@ -41,7 +49,7 @@ const Settings = () => {
           button: false,
           timer: 1500,
         });
-        event.target.reset();
+        setAdminDetails(admin);
       }
     } catch (error) {
       console.log("ERROR IS", error);
@@ -104,8 +112,8 @@ const Settings = () => {
           </div>
           <div className="col-lg-4 col-sm-6">
             <ul style={{ listStyleType: "none" }}>
-              <li>Achini Ranasinghe</li>
-              <li>achini@gmail.com</li>
+              <li>{adminDetails.name}</li>
+              <li>{adminDetails.email}</li>
             </ul>
           </div>
         </div>
@@ -141,6 +149,7 @@ const Settings = () => {
                               type="text"
                               name="name"
                               placeholder="Name"
+                              value={admin.name}
                               onChange={handleInput}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -163,7 +172,7 @@ const Settings = () => {
                               required
                               type="text"
                               name="email"
-                              value="achini@gmail.com"
+                              value={admin.email}
                               placeholder="achini@gmail.com"
                               onChange={handleInput}
                             />
