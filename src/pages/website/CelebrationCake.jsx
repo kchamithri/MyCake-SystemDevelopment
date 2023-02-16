@@ -20,6 +20,8 @@ const CelebrationCake = () => {
   });
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [cakeTypes, setCakeTypes] = useState([]);
+  const [cakeFlavors, setcakeFlavors] = useState([]);
   const [modalData, setModalData] = useState({});
 
   useEffect(() => {
@@ -34,6 +36,17 @@ const CelebrationCake = () => {
         throw response;
       })
       .then((data) => {
+        let types = [];
+        let flavors = [];
+        data.products.map((product) => {
+          types.push(product.type);
+          flavors.push(product.flavor);
+        });
+
+        let uniqueTypes = [...new Set(types)];
+        let uniqueFlavors = [...new Set(flavors)];
+        setCakeTypes(uniqueTypes);
+        setcakeFlavors(uniqueFlavors);
         setProducts(data.products);
         setFilteredProducts(data.products);
       })
@@ -83,15 +96,21 @@ const CelebrationCake = () => {
   }, [filterItems]);
 
   useEffect(() => {
-    let arr = [];
-    products.map((product) => {
-      filterItems.type.map((type) => {
-        if (type === product.type) {
-          arr.push(product);
-          setFilteredProducts(arr);
-        }
-      });
+    const newFilteredArray = products.filter((product) => {
+      // Check if all the values in the query match the corresponding values in the product
+      return (
+        filterItems.type.every((type) => product.type.includes(type)) &&
+        filterItems.flavor.every((flavor) => product.flavor.includes(flavor)) &&
+        filterItems.price.every((priceRange) => {
+          const [min, max] = priceRange.split("-");
+          const productPrice = parseFloat(product.price);
+          return (
+            productPrice >= parseFloat(min) && productPrice <= parseFloat(max)
+          );
+        })
+      );
     });
+    setFilteredProducts(newFilteredArray);
 
     if (filterItems.type.length === 0) {
       if (filterItems.flavor.length === 0) {
@@ -100,8 +119,6 @@ const CelebrationCake = () => {
         }
       }
     }
-
-    console.log(arr);
   }, [filterItems]);
 
   const handleAddToCart = async (productId, price) => {
@@ -192,87 +209,39 @@ const CelebrationCake = () => {
           <div className="col-md-2">
             <div className="d-flex flex-column">
               <h4>Type</h4>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Birthday Cake"
-                  onChange={handleTypeChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  Birthday Cakes
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Wedding Cakes"
-                  onChange={handleTypeChecked}
-                />
-                <label class="form-check-label" for="defaultCheck2">
-                  Wedding Cakes
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Kids Birthday"
-                  onChange={handleTypeChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  Kids Birthday Cakes
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Anniversary"
-                  onChange={handleTypeChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  Anniversary Cakes
-                </label>
-              </div>
+              {cakeTypes.map((type) => {
+                return (
+                  <div class="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={type}
+                      onChange={handleTypeChecked}
+                    />
+                    <label class="form-check-label" for="defaultCheck1">
+                      {type}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
             <div className="d-flex flex-column mt-4">
               <h4>Flavor</h4>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Milk Chocolate"
-                  onChange={handleFalvorChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  Milk Chocolate
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Strawberry"
-                  id="defaultCheck2"
-                  onChange={handleFalvorChecked}
-                />
-                <label class="form-check-label" for="defaultCheck2">
-                  Strawberry
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="Cheesecake"
-                  onChange={handleFalvorChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  Cheesecake
-                </label>
-              </div>
+              {cakeFlavors.map((flavor) => {
+                return (
+                  <div class="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={flavor}
+                      onChange={handleFalvorChecked}
+                    />
+                    <label class="form-check-label" for="defaultCheck1">
+                      {flavor}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
             <div className="d-flex flex-column mt-4">
               <h4>Price (LKR)</h4>
@@ -280,7 +249,7 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="900"
+                  value="900-1500"
                   onChange={handlePriceChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
@@ -291,22 +260,22 @@ const CelebrationCake = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="1500"
+                  value="1500-2500"
                   onChange={handlePriceChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  1500 - 2000
+                  1500 - 2500
                 </label>
               </div>
               <div class="form-check">
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="2000"
+                  value="2500-4000"
                   onChange={handlePriceChecked}
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  2000 - 2500
+                  2500 - 4000
                 </label>
               </div>
             </div>
