@@ -12,15 +12,58 @@ import { useState } from "react";
 import { Button, Card, Col, Form, Row, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import { useRef } from "react";
 
 const AddProductForm = (props) => {
   const navigate = useNavigate();
+  const formRef = useRef();
 
   const [validated, setValidated] = useState(false);
   const [cakeTypes, setCakeTypes] = useState([]);
   const [cakeFlavors, setCakeFlavors] = useState([]);
   const [partyPackTypes, setPartyPackTypes] = useState([]);
   const [partyPackFlavors, setPartyPackFlavors] = useState([]);
+  //validations
+  const [updateFormError, setUpdateFormError] = useState({
+    nameErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    typeErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    flavorErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    weightErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    priceErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    descriptionErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    mainImageErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    optionalImage1ErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    optionalImage2ErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+  const [typeError, setTypeError] = useState("");
+  const [flavorError, setFlavorError] = useState("");
 
   const [product, setProduct] = useState({
     name: "",
@@ -112,8 +155,235 @@ const AddProductForm = (props) => {
     // localStorage.clear();
   }, []);
 
+  const validateProductInput = () => {
+    let updateFormErrors = updateFormError;
+
+    if (product.name.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "Please Enter The Product Name",
+          isVisible: true,
+        },
+      };
+    } else if (/\d+/.test(product.name)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "Name Cannot Contain Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),.?":{}|<>]/.test(product.name)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "Product Name Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.type.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        typeErrorMsg: {
+          message: "Please Enter The Product Type",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        typeErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.flavor.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        flavorErrorMsg: {
+          message: "Please Enter The Product Flavor",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        flavorErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.weight.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        weightErrorMsg: {
+          message: "Please Enter The Product Weight",
+          isVisible: true,
+        },
+      };
+    } else if (
+      /[a-zA-Z]/.test(product.weight) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(product.weight)
+    ) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        weightErrorMsg: {
+          message: "Product Weight Can Be A Numeric Value Only",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        weightErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.price.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "Please Enter The Product Price",
+          isVisible: true,
+        },
+      };
+    } else if (
+      /[a-zA-Z]/.test(product.price) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(product.price)
+    ) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "Product Price Can Be A Numeric Value Only",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.description.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        descriptionErrorMsg: {
+          message: "Please Enter The Product Description",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        descriptionErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.mainImage.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        mainImageErrorMsg: {
+          message: "Please Enter The Main Product Image",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        mainImageErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.optionalImage1.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        optionalImage1ErrorMsg: {
+          message: "Please Enter The Optional Product Image",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        optionalImage1ErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (product.optionalImage2.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        optionalImage2ErrorMsg: {
+          message: "Please Enter The Optional Product Image",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        optionalImage2ErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    setUpdateFormError(updateFormErrors);
+    return (
+      updateFormErrors.nameErrorMsg.isVisible ||
+      updateFormErrors.typeErrorMsg.isVisible ||
+      updateFormErrors.flavorErrorMsg.isVisible ||
+      updateFormErrors.weightErrorMsg.isVisible ||
+      updateFormErrors.priceErrorMsg.isVisible ||
+      updateFormErrors.descriptionErrorMsg.isVisible ||
+      updateFormErrors.mainImageErrorMsg.isVisible ||
+      updateFormErrors.optionalImage1ErrorMsg.isVisible ||
+      updateFormErrors.optionalImage2ErrorMsg.isVisible
+    );
+  };
+  useEffect(() => {
+    console.log(
+      updateFormError.nameErrorMsg.message,
+      updateFormError.nameErrorMsg.isVisible
+    );
+  }, [updateFormError]);
+  useEffect(() => {
+    console.log(props.category);
+  }, [props.category]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let validated = validateProductInput();
 
     const {
       name,
@@ -128,50 +398,53 @@ const AddProductForm = (props) => {
       optionalImage2,
     } = product;
 
-    try {
-      const res = await fetch("/admin/products/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          category,
-          type,
-          flavor,
-          weight,
-          price,
-          description,
-          mainImage,
-          optionalImage1,
-          optionalImage2,
-        }),
-      });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        swal("Success", "Successfully Added", "success", {
-          button: false,
-          timer: 1500,
-        }).then((value) => {
-          props.handleShow();
+    if (!validated) {
+      setValidated(true);
+      try {
+        const res = await fetch("/admin/products/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            category,
+            type,
+            flavor,
+            weight,
+            price,
+            description,
+            mainImage,
+            optionalImage1,
+            optionalImage2,
+          }),
         });
-        setProduct(...product, {
-          name: "",
-          type: "",
-          flavor: "",
-          weight: "",
-          price: "",
-          description: "",
-          mainImage: "",
-          optionalImage1: "",
-          optionalImage2: "",
-        });
-
-        console.log(event.target);
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          swal("Success", "Successfully Added", "success", {
+            button: false,
+            timer: 1500,
+          }).then((value) => {
+            props.handleShow();
+          });
+          setProduct({
+            name: "",
+            type: "",
+            flavor: "",
+            weight: "",
+            price: "",
+            description: "",
+            mainImage: "",
+            optionalImage1: "",
+            optionalImage2: "",
+          });
+          formRef.current.reset();
+          setValidated(false);
+        }
+      } catch (error) {
+        console.log("ERROR IS", error);
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
     }
   };
 
@@ -203,38 +476,72 @@ const AddProductForm = (props) => {
     event.preventDefault();
     const { cakeType, cakeFlavour, partyPackType, partyPackFlavor } =
       typeAndFlavors;
-    if (props.category === "Cake") {
-      cakeTypes.push(cakeType);
-      handleTypeClose();
-    } else {
-      partyPackTypes.push(partyPackType);
-      handleTypeClose();
+
+    if (typeError.length === 0) {
+      swal("Added Successfully!", {
+        icon: "success",
+        button: false,
+        timer: 1000,
+      });
+      if (props.category === "Cake") {
+        cakeTypes.push(cakeType);
+        handleTypeClose();
+      } else {
+        partyPackTypes.push(partyPackType);
+        handleTypeClose();
+      }
     }
   };
   const handleTypeAdd = (event) => {
     let name = event.target.name;
     let value = event.target.value;
+    if (value.length === 0) {
+      setTypeError("Please Enter A New Type");
+    } else if (/\d+/.test(value)) {
+      setTypeError("Type Cannot Contain Numbers");
+    } else if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      setTypeError("Type Cannot Contain Special Characters");
+    } else {
+      setTypeError("");
+      setTypesAndFlavors({ ...typeAndFlavors, [name]: value });
+    }
     console.log(value);
-    setTypesAndFlavors({ ...typeAndFlavors, [name]: value });
   };
   const handleSubmitFlavorAdd = async (event) => {
     event.preventDefault();
     const { cakeType, cakeFlavour, partyPackType, partyPackFlavor } =
       typeAndFlavors;
-    if (props.category === "Cake") {
-      cakeFlavors.push(cakeFlavour);
-      handleFlavorClose();
-    } else {
-      partyPackFlavors.push(partyPackFlavor);
-      handleFlavorClose();
+
+    if (flavorError.length === 0) {
+      swal("Added Successfully!", {
+        icon: "success",
+        button: false,
+        timer: 1000,
+      });
+      if (props.category === "Cake") {
+        cakeFlavors.push(cakeFlavour);
+        handleFlavorClose();
+      } else {
+        partyPackFlavors.push(partyPackFlavor);
+        handleFlavorClose();
+      }
     }
   };
 
   const handleFlavorAdd = (event) => {
     let name = event.target.name;
     let value = event.target.value;
+    if (value.length === 0) {
+      setFlavorError("Please Enter A New Type");
+    } else if (/\d+/.test(value)) {
+      setFlavorError("Type Cannot Contain Numbers");
+    } else if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      setFlavorError("Type Cannot Contain Special Characters");
+    } else {
+      setFlavorError("");
+      setTypesAndFlavors({ ...typeAndFlavors, [name]: value });
+    }
     console.log(value);
-    setTypesAndFlavors({ ...typeAndFlavors, [name]: value });
   };
 
   return (
@@ -268,9 +575,10 @@ const AddProductForm = (props) => {
                     }
                     placeholder="New Type"
                     onChange={handleTypeAdd}
+                    isInvalid={typeError.length !== 0}
                   />
                   <Form.Control.Feedback type="invalid">
-                    Please provide a New Type.
+                    {typeError}
                   </Form.Control.Feedback>
                 </Col>
               </Form.Group>
@@ -317,9 +625,11 @@ const AddProductForm = (props) => {
                     }
                     placeholder="New Flavor"
                     onChange={handleFlavorAdd}
+                    isInvalid={flavorError.length !== 0}
                   />
+
                   <Form.Control.Feedback type="invalid">
-                    Please provide a New Flavor.
+                    {flavorError}
                   </Form.Control.Feedback>
                 </Col>
               </Form.Group>
@@ -342,6 +652,7 @@ const AddProductForm = (props) => {
         onSubmit={handleSubmit}
         enctype="multipart/form-data"
         style={{ margin: "2% 5% " }}
+        ref={formRef}
       >
         <Row className="mb-3">
           <Form.Group as={Row} md="6" controlId="validationCustom01">
@@ -356,9 +667,11 @@ const AddProductForm = (props) => {
                 placeholder="Food name"
                 value={product.name}
                 onChange={handleInput}
+                isInvalid={updateFormError.nameErrorMsg.isVisible}
               />
+
               <Form.Control.Feedback type="invalid">
-                Please provide a Cake Name.
+                {updateFormError.nameErrorMsg.message}
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
@@ -375,6 +688,7 @@ const AddProductForm = (props) => {
                 name="type"
                 onChange={handleInput}
                 value={product.type}
+                isInvalid={updateFormError.typeErrorMsg.isVisible}
               >
                 {props.category === "Cake" ? (
                   <>
@@ -392,6 +706,9 @@ const AddProductForm = (props) => {
                   </>
                 )}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {updateFormError.typeErrorMsg.message}
+              </Form.Control.Feedback>
             </Col>
             <Col lg={6}>
               <FormHelperText>
@@ -403,9 +720,6 @@ const AddProductForm = (props) => {
                 Your product type is not available? Click the + to add new type
               </FormHelperText>
             </Col>
-            <Form.Control.Feedback type="invalid">
-              Please provide a Type
-            </Form.Control.Feedback>
           </Form.Group>
         </Row>
 
@@ -420,6 +734,7 @@ const AddProductForm = (props) => {
                 name="flavor"
                 onChange={handleInput}
                 value={product.flavor}
+                isInvalid={updateFormError.flavorErrorMsg.isVisible}
               >
                 {props.category === "Cake" ? (
                   <>
@@ -437,6 +752,9 @@ const AddProductForm = (props) => {
                   </>
                 )}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {updateFormError.flavorErrorMsg.message}
+              </Form.Control.Feedback>
             </Col>
             <Col lg={6}>
               <FormHelperText>
@@ -467,9 +785,10 @@ const AddProductForm = (props) => {
                 placeholder="kg"
                 value={product.weight}
                 onChange={handleInput}
+                isInvalid={updateFormError.weightErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide the weight.
+                {updateFormError.weightErrorMsg.message}
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
@@ -488,9 +807,10 @@ const AddProductForm = (props) => {
                 placeholder="Rs."
                 value={product.price}
                 onChange={handleInput}
+                isInvalid={updateFormError.priceErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide the Price.
+                {updateFormError.priceErrorMsg.message}
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
@@ -509,9 +829,10 @@ const AddProductForm = (props) => {
                 name="description"
                 value={product.description}
                 onChange={handleInput}
+                isInvalid={updateFormError.descriptionErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide a description.
+                {updateFormError.descriptionErrorMsg.message}
               </Form.Control.Feedback>
             </Col>
           </Form.Group>
@@ -534,7 +855,13 @@ const AddProductForm = (props) => {
                   name="mainImage"
                   className="mt-1"
                   onChange={handleMainImages}
+                  isInvalid={updateFormError.mainImageErrorMsg.isVisible}
                 />
+                <Form.Control.Feedback type="invalid">
+                  <div style={{ fontSize: "15px" }}>
+                    {updateFormError.mainImageErrorMsg.message}
+                  </div>
+                </Form.Control.Feedback>
               </Card.Title>
             </Card>
           </Col>
@@ -554,7 +881,13 @@ const AddProductForm = (props) => {
                   name="optionalImage1"
                   className="mt-1"
                   onChange={handleOptionalImage1}
+                  isInvalid={updateFormError.optionalImage1ErrorMsg.isVisible}
                 />
+                <Form.Control.Feedback type="invalid">
+                  <div style={{ fontSize: "15px" }}>
+                    {updateFormError.optionalImage1ErrorMsg.message}
+                  </div>
+                </Form.Control.Feedback>
               </Card.Title>
             </Card>
           </Col>
@@ -574,7 +907,13 @@ const AddProductForm = (props) => {
                   name="optionalImage2"
                   className="mt-1"
                   onChange={handleOptionalImage2}
+                  isInvalid={updateFormError.optionalImage2ErrorMsg.isVisible}
                 />
+                <Form.Control.Feedback type="invalid">
+                  <div style={{ fontSize: "15px" }}>
+                    {updateFormError.optionalImage2ErrorMsg.message}
+                  </div>
+                </Form.Control.Feedback>
               </Card.Title>
             </Card>
           </Col>

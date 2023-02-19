@@ -23,7 +23,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
     id: "",
     inventoryType: "",
     updatedDate: "",
-    supplierName: supplierName ? supplierName : "63a178e23ea432020d8f7deb",
+    supplierName: "",
     borrowedQuantity: "",
     expiryDate: "",
     expenditure: 0,
@@ -31,27 +31,235 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
     description: "",
   });
 
+  //validations
+  const [updateFormError, setUpdateFormError] = useState({
+    inventoryTypeErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    supplierErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    borrowedDateErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    expiryDateErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    quantityErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    priceErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    descriptionErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
   useEffect(() => {
-    let inventoryName = "";
-    let supplier = "";
+    console.log(stockEditData);
+  }, [stockEditData]);
+  const validateProductInput = () => {
+    let updateFormErrors = updateFormError;
 
-    inventoryName = stockEditData.inventoryType._id;
-    supplier = stockEditData.supplier._id;
-    // stockEditData.supplierName.map((supplier) => (supplier = supplier._id));
-    setInventoryName(inventoryName);
-    setSupplierName(supplier);
+    if (stock.inventoryType.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        inventoryTypeErrorMsg: {
+          message: "Please Enter The Product Name",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        inventoryTypeErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+    if (status === "Purchased") {
+      if (stock.supplierName.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          supplierErrorMsg: {
+            message: "Please Enter The Product Name",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          supplierErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+      }
+    }
+
+    if (stock.updatedDate.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        borrowedDateErrorMsg: {
+          message: "Please Enter The Product Type",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        borrowedDateErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (status === "Purchased") {
+      if (stock.expiryDate.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          expiryDateErrorMsg: {
+            message: "Please Enter The Product Flavor",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          expiryDateErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+      }
+    }
+
+    if (stock.borrowedQuantity.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        quantityErrorMsg: {
+          message: "Please Enter The Product Weight",
+          isVisible: true,
+        },
+      };
+    } else if (
+      /[a-zA-Z]/.test(stock.borrowedQuantity) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(stock.borrowedQuantity)
+    ) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        quantityErrorMsg: {
+          message: "Product Weight Can Be A Numeric Value Only",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        quantityErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+    if (status === "Purchased") {
+      if (stock.expenditure.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          priceErrorMsg: {
+            message: "Please Enter The Product Price",
+            isVisible: true,
+          },
+        };
+      } else if (stock.expenditure === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          priceErrorMsg: {
+            message: "Please Enter The Price",
+            isVisible: true,
+          },
+        };
+      } else if (
+        /[a-zA-Z]/.test(stock.expenditure) ||
+        /[!@#$%^&*(),.?":{}|<>]/.test(stock.expenditure)
+      ) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          priceErrorMsg: {
+            message: "Product Price Can Be A Numeric Value Only",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          priceErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+      }
+    }
+
+    if (stock.description.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        descriptionErrorMsg: {
+          message: "Please Enter The Product Description",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        descriptionErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    setUpdateFormError(updateFormErrors);
+    return (
+      updateFormErrors.inventoryTypeErrorMsg.isVisible ||
+      updateFormErrors.supplierErrorMsg.isVisible ||
+      updateFormErrors.borrowedDateErrorMsg.isVisible ||
+      updateFormErrors.expiryDateErrorMsg.isVisible ||
+      updateFormErrors.quantityErrorMsg.isVisible ||
+      updateFormErrors.priceErrorMsg.isVisible ||
+      updateFormErrors.descriptionErrorMsg.isVisible
+    );
+  };
+
+  useEffect(() => {
+    let dataToUpdate = stockEditData.data;
+    let inventoryName = stockEditData.inventoryType
+      ? stockEditData.inventoryType._id
+      : "";
+    let supplier = stockEditData.supplier ? stockEditData.supplier._id : null;
     setStock({
-      id: stockEditData ? stockEditData.data._id : "",
-      inventoryType: inventoryName,
-      supplierName: supplier,
-      updatedDate: stockEditData.data.updatedDate,
-      borrowedQuantity: stockEditData.data.borrowedQuantity,
-      expiryDate: stockEditData.data.expiryDate,
-      expenditure: stockEditData.data.expenditure,
-      status: stockEditData.data.status,
-      description: stockEditData.data.description,
+      id: dataToUpdate ? dataToUpdate._id : "",
+      inventoryType: stockEditData.inventoryType ? inventoryName : "",
+      supplierName: stockEditData.supplier ? supplier : null,
+      updatedDate: dataToUpdate.updatedDate ? dataToUpdate.updatedDate : "",
+      borrowedQuantity: dataToUpdate.borrowedQuantity
+        ? dataToUpdate.borrowedQuantity
+        : "",
+      expiryDate: dataToUpdate.expiryDate ? dataToUpdate.expiryDate : "",
+      expenditure: dataToUpdate.expenditure ? dataToUpdate.expenditure : 0,
+      status: dataToUpdate.status ? dataToUpdate.status : status,
+      description: dataToUpdate.description ? dataToUpdate.description : "",
     });
-    setStatus(stockEditData.data.status);
+    setStatus(dataToUpdate.status);
   }, [stockEditData]);
 
   useEffect(() => {
@@ -101,6 +309,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let validated = validateProductInput();
     console.log(event);
     console.log(stock.id);
     const {
@@ -115,51 +324,53 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
       description,
     } = stock;
 
-    try {
-      const res = await fetch("/admin/inventory/stock/addStocks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          inventoryType,
-          updatedDate,
-          supplierName,
-          borrowedQuantity,
-          expiryDate,
-          expenditure,
-          status,
-          description,
-        }),
-      });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        swal("Success", "Stock Updated  Successfully", "success", {
-          button: false,
-          timer: 1500,
+    if (!validated) {
+      try {
+        const res = await fetch("/admin/inventory/stock/addStocks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+            inventoryType,
+            updatedDate,
+            supplierName,
+            borrowedQuantity,
+            expiryDate,
+            expenditure,
+            status,
+            description,
+          }),
         });
-        if (stock.id) {
-          handleUpdateFormShow(stock.id);
-          setStock({
-            id: "",
-            inventoryType: "",
-            supplierName: "",
-            updatedDate: "",
-            borrowedQuantity: "",
-            expiryDate: "",
-            status: "",
-            expenditure: "",
-            description: "",
-          });
-          event.target.reset();
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
         } else {
-          event.target.reset();
+          swal("Success", "Stock Updated  Successfully", "success", {
+            button: false,
+            timer: 1500,
+          });
+          if (stock.id) {
+            handleUpdateFormShow(stock.id);
+            setStock({
+              id: "",
+              inventoryType: "",
+              supplierName: "",
+              updatedDate: "",
+              borrowedQuantity: "",
+              expiryDate: "",
+              status: "",
+              expenditure: "",
+              description: "",
+            });
+            event.target.reset();
+          } else {
+            event.target.reset();
+          }
         }
+      } catch (error) {
+        console.log("ERROR IS", error);
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
     }
   };
 
@@ -181,7 +392,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
         show={modalOpen}
         closeModal={handleModalClose}
       >
-        <AddSupplier handleModalClose={handleModalClose} />
+        <AddSupplier handleModalClose={handleModalClose} buttonText="Add" />
       </DashboardModal>
 
       <DashboardModal
@@ -195,8 +406,9 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
         <Form
           noValidate
           validated={validated}
+          method="POST"
           onSubmit={handleSubmit}
-          // id="addInventory"
+          enctype="multipart/form-data"
         >
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -208,7 +420,8 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                   setInventoryName(event.target.value);
                   handleInput(event);
                 }}
-                value={inventoryName}
+                value={stock.inventoryType}
+                isInvalid={updateFormError.inventoryTypeErrorMsg.isVisible}
               >
                 <option>Select</option>
                 {inventoryType.map((inventory) => {
@@ -218,7 +431,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                 })}
               </Form.Select>
               <Form.Control.Feedback type="invalid">
-                Please provide the Inventory Name.
+                {updateFormError.inventoryTypeErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -231,7 +444,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                   setStatus(event.target.value);
                   handleInput(event);
                 }}
-                value={status}
+                value={stock.status}
               >
                 <option value="Order">Order</option>
                 <option value="Purchased">Purchased</option>
@@ -254,7 +467,8 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                     setSupplierName(event.target.value);
                     handleInput();
                   }}
-                  value={supplierName}
+                  value={stock.supplierName}
+                  isInvalid={updateFormError.supplierErrorMsg.isVisible}
                 >
                   <option>Select</option>
                   {suppliers.map((supplier) => {
@@ -264,7 +478,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                   })}
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
-                  Please provide the Supplier Name.
+                  {updateFormError.supplierErrorMsg.message}
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -290,12 +504,13 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                 required
                 type="date"
                 placeholder="Received Date"
-                defaultValue={stockEditData.data.updatedDate}
+                value={stock.updatedDate}
                 name="updatedDate"
                 onChange={handleInput}
+                isInvalid={updateFormError.borrowedDateErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide a Date.
+                {updateFormError.borrowedDateErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -307,11 +522,12 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                   type="date"
                   placeholder="Expiry Date"
                   name="expiryDate"
-                  defaultValue={stockEditData.data.expiryDate}
+                  value={stock.expiryDate}
                   onChange={handleInput}
+                  isInvalid={updateFormError.expiryDateErrorMsg.isVisible}
                 />
                 <Form.Control.Feedback type="invalid">
-                  Please provide a Date.
+                  {updateFormError.expiryDateErrorMsg.message}
                 </Form.Control.Feedback>
               </Form.Group>
             ) : (
@@ -327,12 +543,13 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                 type="text"
                 size="sm"
                 placeholder="kg"
-                defaultValue={stockEditData.data.borrowedQuantity}
+                value={stock.borrowedQuantity}
                 name="borrowedQuantity"
                 onChange={handleInput}
+                isInvalid={updateFormError.quantityErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide a Quantity.
+                {updateFormError.quantityErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
             {status === "Purchased" ? (
@@ -342,13 +559,14 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                   required
                   type="text"
                   size="sm"
-                  placeholder="kg"
-                  defaultValue={stockEditData.data.expenditure}
+                  placeholder="Rs."
+                  value={stock.expenditure}
                   name="expenditure"
                   onChange={handleInput}
+                  isInvalid={updateFormError.priceErrorMsg.isVisible}
                 />
                 <Form.Control.Feedback type="invalid">
-                  Please provide the expenditure.
+                  {updateFormError.priceErrorMsg.message}
                 </Form.Control.Feedback>
               </Form.Group>
             ) : (
@@ -364,10 +582,14 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                 type="text"
                 size="sm"
                 placeholder="description"
-                defaultValue={stockEditData.data.description}
+                defaultValue={stock.description}
                 name="description"
                 onChange={handleInput}
+                isInvalid={updateFormError.descriptionErrorMsg.isVisible}
               />
+              <Form.Control.Feedback type="invalid">
+                {updateFormError.descriptionErrorMsg.message}
+              </Form.Control.Feedback>
             </Form.Group>
           </Row>
 

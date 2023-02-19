@@ -23,6 +23,39 @@ const AddIngredients = ({ handleFormShow }) => {
     expenditure: 0,
     description: "",
   });
+  //validations
+  const [updateFormError, setUpdateFormError] = useState({
+    inventoryTypeErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    supplierErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    borrowedDateErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    expiryDateErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    quantityErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    priceErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    descriptionErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+  const [typeError, setTypeError] = useState("");
+  const [supplierError, setSupplierError] = useState("");
   const [suppliers, setSuppliers] = useState([]);
   const [inventoryType, setInventoryType] = useState([]);
 
@@ -71,9 +104,180 @@ const AddIngredients = ({ handleFormShow }) => {
     setStock({ ...stock, [name]: value });
   };
 
+  const validateProductInput = () => {
+    let updateFormErrors = updateFormError;
+
+    if (stock.inventoryType.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        inventoryTypeErrorMsg: {
+          message: "Please Enter The Product Name",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        inventoryTypeErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (stock.supplierName.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        supplierErrorMsg: {
+          message: "Please Enter The Product Name",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        supplierErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (stock.updatedDate.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        borrowedDateErrorMsg: {
+          message: "Please Enter The Product Type",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        borrowedDateErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (stock.expiryDate.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        expiryDateErrorMsg: {
+          message: "Please Enter The Product Flavor",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        expiryDateErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (stock.borrowedQuantity.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        quantityErrorMsg: {
+          message: "Please Enter The Product Weight",
+          isVisible: true,
+        },
+      };
+    } else if (
+      /[a-zA-Z]/.test(stock.borrowedQuantity) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(stock.borrowedQuantity)
+    ) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        quantityErrorMsg: {
+          message: "Product Weight Can Be A Numeric Value Only",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        quantityErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (stock.expenditure.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "Please Enter The Product Price",
+          isVisible: true,
+        },
+      };
+    } else if (stock.expenditure === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "Please Enter The Price",
+          isVisible: true,
+        },
+      };
+    } else if (
+      /[a-zA-Z]/.test(stock.expenditure) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(stock.expenditure)
+    ) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "Product Price Can Be A Numeric Value Only",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        priceErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (stock.description.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        descriptionErrorMsg: {
+          message: "Please Enter The Product Description",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        descriptionErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    setUpdateFormError(updateFormErrors);
+    return (
+      updateFormErrors.inventoryTypeErrorMsg.isVisible ||
+      updateFormErrors.supplierErrorMsg.isVisible ||
+      updateFormErrors.borrowedDateErrorMsg.isVisible ||
+      updateFormErrors.expiryDateErrorMsg.isVisible ||
+      updateFormErrors.quantityErrorMsg.isVisible ||
+      updateFormErrors.priceErrorMsg.isVisible ||
+      updateFormErrors.descriptionErrorMsg.isVisible
+    );
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(event);
+    let validated = validateProductInput();
     const {
       inventoryType,
       updatedDate,
@@ -85,34 +289,36 @@ const AddIngredients = ({ handleFormShow }) => {
       description,
     } = stock;
 
-    try {
-      const res = await fetch("/admin/inventory/stock/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inventoryType,
-          updatedDate,
-          supplierName,
-          borrowedQuantity,
-          expiryDate,
-          status,
-          expenditure: parseInt(expenditure),
-          description,
-        }),
-      });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        swal("Success", "Stock Added Successfully", "success", {
-          button: false,
-          timer: 1500,
+    if (!validated) {
+      try {
+        const res = await fetch("/admin/inventory/stock/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventoryType,
+            updatedDate,
+            supplierName,
+            borrowedQuantity,
+            expiryDate,
+            status,
+            expenditure: parseInt(expenditure),
+            description,
+          }),
         });
-        event.target.reset();
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          swal("Success", "Stock Added Successfully", "success", {
+            button: false,
+            timer: 1500,
+          });
+          event.target.reset();
+        }
+      } catch (error) {
+        console.log("ERROR IS", error);
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
     }
   };
 
@@ -129,7 +335,7 @@ const AddIngredients = ({ handleFormShow }) => {
         show={modalOpen}
         closeModal={handleModalClose}
       >
-        <AddSupplier handleModalClose={handleModalClose} />
+        <AddSupplier handleModalClose={handleModalClose} buttonText="Add" />
       </DashboardModal>
 
       <DashboardModal
@@ -143,8 +349,9 @@ const AddIngredients = ({ handleFormShow }) => {
         <Form
           noValidate
           validated={validated}
+          method="POST"
+          enctype="multipart/form-data"
           onSubmit={handleSubmit}
-          // id="addInventory"
         >
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -153,6 +360,8 @@ const AddIngredients = ({ handleFormShow }) => {
                 aria-label="Default select example"
                 name="inventoryType"
                 onChange={handleInput}
+                value={stock.inventoryType}
+                isInvalid={updateFormError.inventoryTypeErrorMsg.isVisible}
               >
                 <option>Select</option>
                 {inventoryType.map((inventory) => {
@@ -162,7 +371,7 @@ const AddIngredients = ({ handleFormShow }) => {
                 })}
               </Form.Select>
               <Form.Control.Feedback type="invalid">
-                Please provide the Inventory Name.
+                {updateFormError.inventoryTypeErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -188,6 +397,8 @@ const AddIngredients = ({ handleFormShow }) => {
                 aria-label="Default select example"
                 name="supplierName"
                 onChange={handleInput}
+                value={stock.supplierName}
+                isInvalid={updateFormError.supplierErrorMsg.isVisible}
               >
                 <option>Select</option>
                 {suppliers.map((supplier) => {
@@ -195,7 +406,7 @@ const AddIngredients = ({ handleFormShow }) => {
                 })}
               </Form.Select>
               <Form.Control.Feedback type="invalid">
-                Please provide the Supplier Name.
+                {updateFormError.supplierErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -220,9 +431,11 @@ const AddIngredients = ({ handleFormShow }) => {
                 placeholder="Received Date"
                 name="updatedDate"
                 onChange={handleInput}
+                value={stock.updatedDate}
+                isInvalid={updateFormError.borrowedDateErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide a Date.
+                {updateFormError.borrowedDateErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -234,9 +447,11 @@ const AddIngredients = ({ handleFormShow }) => {
                 placeholder="Expiry Date"
                 name="expiryDate"
                 onChange={handleInput}
+                value={stock.expiryDate}
+                isInvalid={updateFormError.expiryDateErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide a Date.
+                {updateFormError.expiryDateErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
           </Row>
@@ -250,10 +465,12 @@ const AddIngredients = ({ handleFormShow }) => {
                 size="sm"
                 placeholder="kg"
                 name="borrowedQuantity"
+                value={stock.borrowedQuantity}
                 onChange={handleInput}
+                isInvalid={updateFormError.quantityErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide a Quantity.
+                {updateFormError.quantityErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -265,10 +482,12 @@ const AddIngredients = ({ handleFormShow }) => {
                 size="sm"
                 placeholder="kg"
                 name="expenditure"
+                value={stock.expenditure}
                 onChange={handleInput}
+                isInvalid={updateFormError.priceErrorMsg.isVisible}
               />
               <Form.Control.Feedback type="invalid">
-                Please provide the expenditure.
+                {updateFormError.priceErrorMsg.message}
               </Form.Control.Feedback>
             </Form.Group>
           </Row>
@@ -281,8 +500,13 @@ const AddIngredients = ({ handleFormShow }) => {
                 size="sm"
                 placeholder="description"
                 name="description"
+                value={stock.description}
                 onChange={handleInput}
+                isInvalid={updateFormError.descriptionErrorMsg.isVisible}
               />
+              <Form.Control.Feedback type="invalid">
+                {updateFormError.descriptionErrorMsg.message}
+              </Form.Control.Feedback>
             </Form.Group>
           </Row>
 
