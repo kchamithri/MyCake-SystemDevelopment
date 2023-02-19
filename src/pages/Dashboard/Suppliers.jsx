@@ -1,9 +1,11 @@
-import { Button } from "@mui/material";
+import { Button, Grid, IconButton, Tooltip } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import SuppliersTable from "../../Components/muiComponents/SuppliersTable";
-import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import swal from "@sweetalert/with-react";
+import AddSupplier from "../../Components/Dashboard/Modals/AddSupplier";
 
 const Suppliers = () => {
   function createData(id, name, company, contact) {
@@ -15,7 +17,10 @@ const Suppliers = () => {
     };
   }
   const [suppliers, setSuppliers] = useState([]);
+  const [supplierToEdit, setSupplierToEdit] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [buttonText, setButtonText] = useState("Update");
 
   useEffect(() => {
     fetch("supplier/get", {
@@ -28,7 +33,7 @@ const Suppliers = () => {
         throw response;
       })
       .then((data) => {
-        console.log(data.suppliers);
+        setSuppliers(data.suppliers);
         // setOrders(data.orders);
         setTableData(
           data.suppliers.map((list) => {
@@ -39,29 +44,95 @@ const Suppliers = () => {
       .catch((error) => {
         console.log("error fetching:", error);
       });
-  }, []);
+  }, [showForm]);
+
+  const handleDelete = async (id) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        fetch("/admin/supplier/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === 200) {
+              window.alert("Invalid Credentials");
+            } else {
+              let newData = suppliers.filter((data) => data._id !== id);
+              setTableData(
+                newData.map((list) => {
+                  return createData(
+                    list._id,
+                    list.name,
+                    list.company,
+                    list.contact
+                  );
+                })
+              );
+
+              swal("Deleted Successfully!", {
+                icon: "success",
+                button: false,
+                timer: 1000,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  };
+
+  const handleEdit = async (id) => {
+    let supplier = suppliers.filter((supplier) => supplier._id === id);
+    setSupplierToEdit(supplier[0]);
+    setShowForm(true);
+  };
 
   return (
     <>
-      <div className="mt-2">
-        <div className="row justify-content-end my-2">
-          <div className="col-lg-2 col-sm-6 text-center mb-2">
-            <Button
-              sx={{
-                backgroundColor: "#439A97",
-              }}
-              variant="contained"
-              startIcon={<AddIcon />}
-              size="small"
-              //   onClick={handleAdd}
-            >
-              Add supplier
-            </Button>
-          </div>
+      {showForm ? (
+        <>
+          <Grid container direction="row" marginY={2}>
+            <Grid item xs={12} sx={{ justifyContent: "between" }}>
+              <Tooltip title="Back">
+                <IconButton onClick={() => setShowForm(false)}>
+                  <ArrowBackIcon />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={7}>
+              <AddSupplier
+                supplierToEdit={supplierToEdit}
+                buttonText="Update"
+                setShowForm={setShowForm}
+              />
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <div className="mt-2">
+          <SuppliersTable
+            rows={tableData}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
         </div>
-
-        <SuppliersTable rows={tableData} />
-      </div>
+      )}
     </>
   );
 };

@@ -263,7 +263,6 @@ export default function SuppliersTable({
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  console.log(row);
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -284,13 +283,11 @@ export default function SuppliersTable({
                       <TableCell align="center">
                         <Tooltip title="Edit">
                           <IconButton>
-                            <EditIcon />
+                            <EditIcon onClick={() => handleEdit(row.id)} />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
-                          <IconButton
-                          // onClick={() => handleStocksDelete(row._id)}
-                          >
+                          <IconButton onClick={() => handleDelete(row.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>

@@ -87,10 +87,10 @@ const headCells = [
     label: "Deliver Date",
   },
   {
-    id: "deliverTime",
+    id: "orderPlacedDate",
     numeric: true,
     disablePadding: false,
-    label: "Deliver Time",
+    label: "Order Placed Date",
   },
 
   {
@@ -321,7 +321,9 @@ export default function OrderDispatchTable({
 
                       <TableCell align="center">{row.deliverPlace}</TableCell>
                       <TableCell align="center">{row.deliverDate}</TableCell>
-                      <TableCell align="center">{row.deliverTime}</TableCell>
+                      <TableCell align="center">
+                        {row.orderPlacedDate}
+                      </TableCell>
                       <TableCell align="center">{row.status}</TableCell>
 
                       <TableCell align="center">

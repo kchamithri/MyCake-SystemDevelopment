@@ -26,7 +26,6 @@ import Button from "@mui/material/Button";
 
 const AddProducts = () => {
   const [key, setKey] = useState("Cake");
-
   const [buttonName, setButtonName] = useState("add");
   const [show, setShow] = useState(false);
   const [products, setProducts] = useState([]);
@@ -34,6 +33,9 @@ const AddProducts = () => {
   const [dataToUpdate, setDataToUpdate] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [cakeTypes, setCakeTypes] = useState([]);
+  const [partyPackTypes, setpartyPackTypes] = useState([]);
+  const [types, setTypes] = useState([]);
 
   function createData(
     id,
@@ -152,15 +154,65 @@ const AddProducts = () => {
             );
           })
         );
+        let cake = [];
+        let partyPacks = [];
+        data.products.map((product) => {
+          if (product.category === "Cake") {
+            cake.push(product.type);
+          } else {
+            partyPacks.push(product.type);
+          }
+        });
+        setCakeTypes([...new Set(cake)]);
+        setpartyPackTypes([...new Set(partyPacks)]);
       })
       .catch((error) => {
         console.log("error fetching:", error);
       });
   }, [show]);
 
-  // useEffect(() => {
-  //   setButtonName("add");
-  // }, [key]);
+  const handleChange = (event) => {
+    let name = event.target.value;
+    if (name === "Cake") {
+      setTypes([...cakeTypes]);
+    } else if (name === "Party Packs") {
+      setTypes([...partyPackTypes]);
+    } else {
+      setTableData(
+        products.map((list) => {
+          return createData(
+            list._id,
+            list.name,
+            list.category,
+            list.type,
+            list.weight,
+            list.price,
+            list.description
+          );
+        })
+      );
+      setTypes([]);
+    }
+  };
+
+  const handleTypeChange = (event) => {
+    let type = event.target.value;
+
+    let filteredProducts = products.filter((product) => product.type === type);
+    setTableData(
+      filteredProducts.map((list) => {
+        return createData(
+          list._id,
+          list.name,
+          list.category,
+          list.type,
+          list.weight,
+          list.price,
+          list.description
+        );
+      })
+    );
+  };
 
   const handleAdd = (event) => {
     setButtonName("add");
@@ -214,19 +266,19 @@ const AddProducts = () => {
             </Button>
           </div>
 
-          <Grid container spacing={2} className={show ? "d-none" : ""}>
+          <Grid container className={show ? "d-none" : ""}>
             <Grid item xs={12} md={2} paddingRight={1}>
               <FormControl fullWidth size="small">
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  // value={age}
                   label="Category"
-                  // onChange={handleChange}
+                  onChange={handleChange}
                 >
-                  <MenuItem value={10}>Cake</MenuItem>
-                  <MenuItem value={20}>Party Packs</MenuItem>
+                  <MenuItem value="Cake">Cake</MenuItem>
+                  <MenuItem value="Party Packs">Party Packs</MenuItem>
+                  <MenuItem value="All">All</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -236,17 +288,16 @@ const AddProducts = () => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  // value={age}
                   label="Type"
-                  // onChange={handleChange}
+                  onChange={handleTypeChange}
                 >
-                  <MenuItem value={10}>Anniversary</MenuItem>
-                  <MenuItem value={20}>Birthday Cakes</MenuItem>
-                  <MenuItem value={30}>Sandwiches</MenuItem>
+                  {types.map((type) => {
+                    return <MenuItem value={type}>{type}</MenuItem>;
+                  })}
                 </Select>
               </FormControl>
             </Grid>
-            <Grid
+            {/* <Grid
               item
               xs={12}
               md={2}
@@ -256,7 +307,7 @@ const AddProducts = () => {
               justifyContent="start"
             >
               <Button variant="outlined">Search</Button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </div>
         <div className={show ? "d-none" : "mt-4"}>
@@ -298,6 +349,7 @@ const AddProducts = () => {
                   <UpdateProductForm
                     dataToUpdate={dataToUpdate}
                     handleShow={handleShow}
+                    key={key}
                   />
                 )}
               </Tab>
@@ -311,6 +363,7 @@ const AddProducts = () => {
                   <UpdateProductForm
                     dataToUpdate={dataToUpdate}
                     handleShow={handleShow}
+                    key={key}
                   />
                 )}
               </Tab>

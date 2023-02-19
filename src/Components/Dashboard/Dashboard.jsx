@@ -1,5 +1,5 @@
 import { Container, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "../../Styles/Dashboard.css";
@@ -12,6 +12,18 @@ import Tile from "./Tile";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [todayDispatchCount, setTodayDispatchCount] = useState(0);
+  const [todayOrders, setTodayOrders] = useState(0);
+  const current = new Date();
+  const today =
+    current.getFullYear() +
+    "-" +
+    ("0" + (current.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + current.getDate()).slice(-2);
+
+  const [pendingOrdersData, setpendingOrdersData] = useState([]);
+  const [todayDispatchOrderData, setTodayDispatchOrderData] = useState([]);
   const openModal = () => {
     setModalOpen(true);
   };
@@ -19,6 +31,88 @@ const Dashboard = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  function createData(
+    id,
+    foodItems,
+    cusName,
+    deliverPlace,
+    deliverDate,
+    deliverTime,
+    status
+  ) {
+    return {
+      id,
+      foodItems,
+      cusName,
+      deliverPlace,
+      deliverDate,
+      deliverTime,
+      status,
+    };
+  }
+
+  useEffect(() => {
+    console.log(today);
+    fetch("/orders/get", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        console.log(data.orders);
+
+        setTodayDispatchOrderData(
+          data.orders
+            .filter((item) => item.deliverDate === today)
+            .map((list) => {
+              let name = list.firstName + " " + list.lastName;
+              return createData(
+                list._id,
+                list.products,
+                name,
+                list.address,
+                list.deliverDate,
+                list.deliverTime,
+                list.status
+              );
+            })
+        );
+        setTodayDispatchCount(
+          data.orders.filter((item) => item.deliverDate === today).length
+        );
+        setTodayOrders(
+          data.orders.filter(
+            (item) => item.orderPlacedDate.split("T")[0] === today
+          ).length
+        );
+
+        setpendingOrdersData(
+          data.orders
+            .filter((item) => item.deliverDate > today)
+            .map((list) => {
+              let name = list.firstName + " " + list.lastName;
+              return createData(
+                list._id,
+                list.products,
+                name,
+                list.address,
+                list.deliverDate,
+                list.deliverTime,
+                list.status
+              );
+            })
+        );
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+  }, []);
+
   return (
     <>
       <DashboardModal
@@ -36,10 +130,14 @@ const Dashboard = () => {
         justifyContent="space-between"
       >
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="Today" title="Orders to dispatch" quantity="1" />
+          <Tile
+            date="Today"
+            title="Orders to dispatch"
+            quantity={todayDispatchCount}
+          />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="Today" title="Orders Received" quantity="10" />
+          <Tile date="Today" title="Orders Received" quantity={todayOrders} />
         </Grid>
         {/* <Grid item xs={6} md={6} lg={2}>
           <Tile date="Today" title="Customized Orders" quantity="3" />
@@ -63,6 +161,8 @@ const Dashboard = () => {
             openModal={openModal}
             closeModal={closeModal}
             displayButtons="none"
+            pendingOrdersData={pendingOrdersData}
+            todayDispatchOrderData={todayDispatchOrderData}
           />
         </Grid>
 

@@ -270,12 +270,7 @@ const Inventory = () => {
       });
   }, [show]);
 
-  // useEffect(() => {
-  //   setButtonName("add");
-  // }, [key]);
-
   const handleAdd = (event) => {
-    // setButtonName("add");
     handleFormShow();
   };
 
