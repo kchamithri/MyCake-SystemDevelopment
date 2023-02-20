@@ -5,6 +5,7 @@ import { Accordion, Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 const Profile = () => {
+  const [validated, setValidated] = useState(false);
   const [showPendingOrders, setShowPendingOrders] = useState(true);
   const [showDeliveredOrders, setShowDeliveredOrders] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -31,6 +32,204 @@ const Profile = () => {
       ? localStorage.getItem("contact")
       : "",
   });
+  //validations
+  const [userFormError, setUserFormError] = useState({
+    nameErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    emailErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    contactErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+  const [passwordFormError, setPasswordFormError] = useState({
+    curPasswordErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    newPasswordErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+
+  const validateUserInput = () => {
+    let updateFormErrors = userFormError;
+
+    if (user.name.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "Please Enter The User Name",
+          isVisible: true,
+        },
+      };
+    } else if (/\d+/.test(user.name)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "Name Cannot Contain Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),.?":{}|<>]/.test(user.name)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "Name Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        nameErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (user.email.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "Please Enter The Email",
+          isVisible: true,
+        },
+      };
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "Please Enter A Valid Email",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (user.contact.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Please Enter The Contact Number",
+          isVisible: true,
+        },
+      };
+    } else if (/[a-zA-Z]/.test(user.contact)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Contact Can Contain Only Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(user.contact)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Contact Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else if (user.contact.length > 10 || user.contact.length < 10) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Contact Should Be A 10 Digit Number",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+    setUserFormError(updateFormErrors);
+    return (
+      updateFormErrors.nameErrorMsg.isVisible ||
+      updateFormErrors.emailErrorMsg.isVisible ||
+      updateFormErrors.contactErrorMsg.isVisible
+    );
+  };
+  const validatePasswordInput = () => {
+    let updateFormErrors = passwordFormError;
+
+    if (password.currentPassword.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        curPasswordErrorMsg: {
+          message: "Please Enter The Current Password",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        curPasswordErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (password.newPassword.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        newPasswordErrorMsg: {
+          message: "Please Enter The New Password",
+          isVisible: true,
+        },
+      };
+    } else if (password.newPassword.length < 8) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        newPasswordErrorMsg: {
+          message: "Password must be at least 8 characters",
+          isVisible: true,
+        },
+      };
+    } else if (!/[!@#$%^&*(),?":{}|<>]/.test(password.newPassword)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        newPasswordErrorMsg: {
+          message: "Password must at least contain A Special Character",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        newPasswordErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    setPasswordFormError(updateFormErrors);
+    return (
+      updateFormErrors.curPasswordErrorMsg.isVisible ||
+      updateFormErrors.newPasswordErrorMsg.isVisible
+    );
+  };
 
   const handleInput = (event) => {
     let name = event.target.name;
@@ -42,67 +241,75 @@ const Profile = () => {
   const handlePasswordInput = (event) => {
     let name = event.target.name;
     let value = event.target.value;
+    console.log(name, value);
 
     setPassword({ ...password, [name]: value });
   };
 
   const handleProfileSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const res = await fetch("/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: localStorage.getItem("userId")
-            ? localStorage.getItem("userId")
-            : "",
-          name: user.name,
-          email: user.email,
-          contact: user.contact,
-        }),
-      });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        setUserDetails(user);
-        swal("Success", "User Updated Successfully", "success", {
-          button: false,
-          timer: 1500,
+    let validated = validateUserInput();
+    if (!validated) {
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: localStorage.getItem("userId")
+              ? localStorage.getItem("userId")
+              : "",
+            name: user.name,
+            email: user.email,
+            contact: user.contact,
+          }),
         });
-        event.target.reset();
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          setUserDetails(user);
+          swal("Success", "User Updated Successfully", "success", {
+            button: false,
+            timer: 1500,
+          });
+          event.target.reset();
+        }
+      } catch (error) {
+        console.log("ERROR IS", error);
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
     }
   };
   const handlePasswordSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const res = await fetch("/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: localStorage.getItem("userId")
-            ? localStorage.getItem("userId")
-            : "",
-          password: password.newPassword,
-        }),
-      });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        swal("Success", "Password Updated Successfully", "success", {
-          button: false,
-          timer: 1500,
+    let validated = validatePasswordInput();
+    console.log(validated);
+    if (!validated) {
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: localStorage.getItem("userId")
+              ? localStorage.getItem("userId")
+              : "",
+            password: password.newPassword,
+          }),
         });
-        event.target.reset();
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          swal("Success", "Password Updated Successfully", "success", {
+            button: false,
+            timer: 1500,
+          });
+          event.target.reset();
+        }
+      } catch (error) {
+        console.log("ERROR IS", error);
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
     }
   };
 
@@ -312,7 +519,7 @@ const Profile = () => {
                     <Accordion.Body>
                       <Form
                         noValidate
-                        // validated={validated}
+                        validated={validated}
                         method="POST"
                         onSubmit={handleProfileSubmit}
                         enctype="multipart/form-data"
@@ -335,9 +542,10 @@ const Profile = () => {
                                 value={user.name}
                                 onChange={handleInput}
                                 placeholder="Name"
+                                isInvalid={userFormError.nameErrorMsg.isVisible}
                               />
                               <Form.Control.Feedback type="invalid">
-                                Please provide your Name.
+                                {userFormError.nameErrorMsg.message}
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>
@@ -359,7 +567,13 @@ const Profile = () => {
                                 value={user.email}
                                 onChange={handleInput}
                                 placeholder="kosala@gmail.com"
+                                isInvalid={
+                                  userFormError.emailErrorMsg.isVisible
+                                }
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {userFormError.emailErrorMsg.message}
+                              </Form.Control.Feedback>
                               {/* <Form.Text id="passwordHelpBlock" muted>
                                 <i
                                   class="fa fa-exclamation-circle"
@@ -389,9 +603,12 @@ const Profile = () => {
                                 placeholder="Contact"
                                 value={user.contact}
                                 onChange={handleInput}
+                                isInvalid={
+                                  userFormError.contactErrorMsg.isVisible
+                                }
                               />
                               <Form.Control.Feedback type="invalid">
-                                Please provide the contact number.
+                                {userFormError.contactErrorMsg.message}
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>
@@ -415,7 +632,7 @@ const Profile = () => {
                     <Accordion.Body>
                       <Form
                         noValidate
-                        // validated={validated}
+                        validated={validated}
                         method="POST"
                         onSubmit={handlePasswordSubmit}
                         enctype="multipart/form-data"
@@ -435,9 +652,13 @@ const Profile = () => {
                                 type="password"
                                 name="currentPassword"
                                 onChange={handlePasswordInput}
+                                isInvalid={
+                                  passwordFormError.curPasswordErrorMsg
+                                    .isVisible
+                                }
                               />
                               <Form.Control.Feedback type="invalid">
-                                Please provide a Password.
+                                {passwordFormError.curPasswordErrorMsg.message}
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>
@@ -457,9 +678,13 @@ const Profile = () => {
                                 type="password"
                                 name="newPassword"
                                 onChange={handlePasswordInput}
+                                isInvalid={
+                                  passwordFormError.newPasswordErrorMsg
+                                    .isVisible
+                                }
                               />
                               <Form.Control.Feedback type="invalid">
-                                Please provide a Password.
+                                {passwordFormError.newPasswordErrorMsg.message}
                               </Form.Control.Feedback>
                             </Col>
                           </Form.Group>

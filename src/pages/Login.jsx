@@ -1,3 +1,4 @@
+import swal from "@sweetalert/with-react";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,86 @@ const Login = () => {
     email: "",
     password: "",
   });
+  //validations
+  const [userFormError, setUserFormError] = useState({
+    emailErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    passwordErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+
+  const validateUserInput = () => {
+    let updateFormErrors = userFormError;
+
+    if (user.email.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "Please Enter The Email",
+          isVisible: true,
+        },
+      };
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "Please Enter A Valid Email",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (user.password.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "Please Enter The Password",
+          isVisible: true,
+        },
+      };
+    } else if (user.password.length < 8) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "Password must be at least 8 characters",
+          isVisible: true,
+        },
+      };
+    } else if (!/[!@#$%^&*(),?":{}|<>]/.test(user.password)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "Password must at least contain A Special Character",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+    setUserFormError(updateFormErrors);
+    return (
+      updateFormErrors.emailErrorMsg.isVisible ||
+      updateFormErrors.passwordErrorMsg.isVisible
+    );
+  };
 
   const handleInput = (event) => {
     let name = event.target.name;
@@ -19,40 +100,48 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let validated = validateUserInput();
+    console.log(validated);
     const { email, password } = user;
-
-    await fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.status === 400 || !res) {
-          window.alert("Invalid Credentials");
-        } else {
-          window.alert("Successfully logged");
-          localStorage.setItem("userId", res.user.id);
-          localStorage.setItem("name", res.user.name);
-          localStorage.setItem("email", res.user.email);
-          localStorage.setItem("contact", res.user.contact);
-          localStorage.setItem("token", res.token);
-
-          navigate("/");
-          console.log(localStorage.getItem("name"));
-        }
+    if (!validated) {
+      await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally((e) => {
-        console.log("req completed");
-      });
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === 400 || !res) {
+            window.alert("Invalid Credentials");
+          } else {
+            localStorage.setItem("userId", res.user.id);
+            localStorage.setItem("name", res.user.name);
+            localStorage.setItem("email", res.user.email);
+            localStorage.setItem("contact", res.user.contact);
+            localStorage.setItem("token", res.token);
+
+            swal("Success", "Successfully Logged ", "success", {
+              button: false,
+              timer: 1500,
+            }).then((value) => {
+              navigate("/");
+            });
+
+            console.log(localStorage.getItem("name"));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally((e) => {
+          console.log("req completed");
+        });
+    }
   };
 
   return (
@@ -79,7 +168,7 @@ const Login = () => {
                   Email address
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
@@ -88,6 +177,16 @@ const Login = () => {
                   value={user.email}
                   onChange={handleInput}
                 />
+                {userFormError.emailErrorMsg.isVisible && (
+                  <div className="form-text text-danger">
+                    <i
+                      class="fa fa-exclamation-circle"
+                      aria-hidden="true"
+                      style={{ color: "red" }}
+                    ></i>
+                    {" " + userFormError.emailErrorMsg.message}
+                  </div>
+                )}
               </div>
               <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">
@@ -101,6 +200,16 @@ const Login = () => {
                   value={user.password}
                   onChange={handleInput}
                 />
+                {userFormError.passwordErrorMsg.isVisible && (
+                  <div className="form-text text-danger">
+                    <i
+                      class="fa fa-exclamation-circle"
+                      aria-hidden="true"
+                      style={{ color: "red" }}
+                    ></i>
+                    {" " + userFormError.passwordErrorMsg.message}
+                  </div>
+                )}
               </div>
               <div class="mb-3 form-check">
                 <input
