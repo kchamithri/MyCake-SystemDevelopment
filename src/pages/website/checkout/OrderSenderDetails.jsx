@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
-const OrderSenderDetails = ({ handleInput }) => {
+const OrderSenderDetails = ({ handleInput, updateFormError }) => {
+  useEffect(() => {
+    console.log(updateFormError.firstNameErrorMsg.isVisible);
+  }, [updateFormError]);
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -21,6 +24,8 @@ const OrderSenderDetails = ({ handleInput }) => {
             autoComplete="name"
             variant="standard"
             onChange={handleInput}
+            error={updateFormError.senderNameErrorMsg.isVisible}
+            helperText={updateFormError.senderNameErrorMsg.message}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -34,6 +39,8 @@ const OrderSenderDetails = ({ handleInput }) => {
             required
             autoComplete="senderContact"
             onChange={handleInput}
+            error={updateFormError.senderContactErrorMsg.isVisible}
+            helperText={updateFormError.senderContactErrorMsg.message}
           />
         </Grid>
 
@@ -48,6 +55,8 @@ const OrderSenderDetails = ({ handleInput }) => {
             autoComplete="senderEmail"
             variant="standard"
             onChange={handleInput}
+            error={updateFormError.senderEmailErrorMsg.isVisible}
+            helperText={updateFormError.senderEmailErrorMsg.message}
           />
         </Grid>
       </Grid>

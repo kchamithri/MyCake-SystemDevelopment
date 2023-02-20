@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { Col, Form } from "react-bootstrap";
 import {
   FormControl,
+  FormHelperText,
   Input,
   InputAdornment,
   InputLabel,
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-const OrderDetails = ({ handleInput }) => {
+const OrderDetails = ({ handleInput, updateFormError }) => {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -36,7 +37,13 @@ const OrderDetails = ({ handleInput }) => {
                 </InputAdornment>
               }
               required
+              error={updateFormError.deliverDateErrorMsg.isVisible}
             />
+            {updateFormError.deliverDateErrorMsg.message && (
+              <FormHelperText error>
+                {updateFormError.deliverDateErrorMsg.message}
+              </FormHelperText>
+            )}
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -51,6 +58,7 @@ const OrderDetails = ({ handleInput }) => {
             onChange={handleInput}
             helperText="Please select Preferred deliver Time"
             variant="standard"
+            error={updateFormError.deliverTimeErrorMsg.isVisible}
           >
             <MenuItem key="morning" value="Morning">
               Morning
@@ -62,6 +70,11 @@ const OrderDetails = ({ handleInput }) => {
               Night
             </MenuItem>
           </TextField>
+          {updateFormError.deliverTimeErrorMsg.message && (
+            <FormHelperText error>
+              {updateFormError.deliverTimeErrorMsg.message}
+            </FormHelperText>
+          )}
         </Grid>
 
         <Grid item xs={12}>

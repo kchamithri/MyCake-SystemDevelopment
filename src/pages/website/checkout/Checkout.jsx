@@ -37,25 +37,9 @@ export default function Checkout() {
   const [validated, setValidated] = useState(false);
   const [products, setProducts] = useState([]);
   const today = new Date();
+  const [isformValid, setisFormValid] = useState(false);
 
   let location = useLocation();
-
-  useEffect(() => {
-    let arr = [];
-    JSON.parse(localStorage.getItem("cart") || "[]").map((item) => {
-      arr.push({
-        product: item.product._id,
-        quantity: item.quantity,
-      });
-    });
-    setProducts(arr);
-    setOrder({ ...order, products: arr });
-    console.log(location.state.total);
-  }, []);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   const [order, setOrder] = useState({
     userId: localStorage.getItem("userId"),
@@ -80,6 +64,387 @@ export default function Checkout() {
     status: "Pending",
     products: products,
   });
+  //validations
+  const [updateFormError, setUpdateFormError] = useState({
+    senderNameErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    senderContactErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    senderEmailErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    firstNameErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    lastNameErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    addressErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    cityErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    contactErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    deliverDateErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    deliverTimeErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    messageErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+
+  useEffect(() => {
+    let arr = [];
+    JSON.parse(localStorage.getItem("cart") || "[]").map((item) => {
+      arr.push({
+        product: item.product._id,
+        quantity: item.quantity,
+      });
+    });
+    setProducts(arr);
+    setOrder({ ...order, products: arr });
+    console.log(location.state.total);
+  }, []);
+
+  useEffect(() => {
+    console.log(products);
+    // console.log(today.toISOString().substring(0, 10));
+    // let d = today.getDate() + 2;
+    // today.setDate(d);
+    // // console.log(today.getDate() + 2);
+    // console.log(today.toISOString().substring(0, 10));
+  }, [products, today]);
+
+  const validateProductInput = () => {
+    let updateFormErrors = updateFormError;
+
+    if (order.senderName.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderNameErrorMsg: {
+          message: "Please Enter The Sender's Name",
+          isVisible: true,
+        },
+      };
+    } else if (/\d+/.test(order.senderName)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderNameErrorMsg: {
+          message: "Name Cannot Contain Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(order.senderName)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderNameErrorMsg: {
+          message: "Sender's Name Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderNameErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.senderContact.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderContactErrorMsg: {
+          message: "Please Enter The Contact Number",
+          isVisible: true,
+        },
+      };
+    } else if (/[a-zA-Z]/.test(order.senderContact)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderContactErrorMsg: {
+          message: "Contact Can Contain Only Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(order.senderContact)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderContactErrorMsg: {
+          message: "Contact Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else if (
+      order.senderContact.length > 10 ||
+      order.senderContact.length < 10
+    ) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderContactErrorMsg: {
+          message: "Contact Should Be A 10 Digit Number",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderContactErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.senderEmail.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderEmailErrorMsg: {
+          message: "Please Enter The Sender's Email",
+          isVisible: true,
+        },
+      };
+    } else if (!/\S+@\S+\.\S+/.test(order.senderEmail)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderEmailErrorMsg: {
+          message: "Please Enter A Valid Email",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        senderEmailErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.firstName.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        firstNameErrorMsg: {
+          message: "Please Enter The Name",
+          isVisible: true,
+        },
+      };
+    } else if (/\d+/.test(order.firstName)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        firstNameErrorMsg: {
+          message: "Name Cannot Contain Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(order.firstName)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        firstNameErrorMsg: {
+          message: "Name Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        firstNameErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.lastName.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        lastNameErrorMsg: {
+          message: "Please Enter The Name",
+          isVisible: true,
+        },
+      };
+    } else if (/\d+/.test(order.lastName)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        lastNameErrorMsg: {
+          message: "Name Cannot Contain Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(order.lastName)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        lastNameErrorMsg: {
+          message: "Name Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        lastNameErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.address.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        addressErrorMsg: {
+          message: "Please Enter The Address",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*()?":{}|<>]/.test(order.address)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        addressErrorMsg: {
+          message: "Address Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        addressErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.city.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        cityErrorMsg: {
+          message: "Please Enter The City",
+          isVisible: true,
+        },
+      };
+    } else if (/\d+/.test(order.city)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        cityErrorMsg: {
+          message: "City Cannot Contain Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(order.city)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        cityErrorMsg: {
+          message: "City Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        cityErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.contact.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Please Enter The Contact Number",
+          isVisible: true,
+        },
+      };
+    } else if (/[a-zA-Z]/.test(order.contact)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Contact Can Contain Only Numbers",
+          isVisible: true,
+        },
+      };
+    } else if (/[!@#$%^&*(),?":{}|<>]/.test(order.contact)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Contact Cannot Contain Special Characters",
+          isVisible: true,
+        },
+      };
+    } else if (order.contact.length > 10 || order.contact.length < 10) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "Contact Should Be A 10 Digit Number",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        contactErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (order.deliverDate.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        deliverDateErrorMsg: {
+          message: "Please Enter The Date To Deliver",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        deliverDateErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    setUpdateFormError(updateFormErrors);
+    return (
+      updateFormErrors.senderNameErrorMsg.isVisible ||
+      updateFormErrors.senderContactErrorMsg.isVisible ||
+      updateFormErrors.senderEmailErrorMsg.isVisible ||
+      updateFormErrors.firstNameErrorMsg.isVisible ||
+      updateFormErrors.lastNameErrorMsg.isVisible ||
+      updateFormErrors.addressErrorMsg.isVisible ||
+      updateFormErrors.cityErrorMsg.isVisible ||
+      updateFormErrors.contactErrorMsg.isVisible ||
+      updateFormErrors.deliverDateErrorMsg.isVisible ||
+      updateFormErrors.deliverTimeErrorMsg.isVisible ||
+      updateFormErrors.messageErrorMsg.isVisible
+    );
+  };
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -90,14 +455,334 @@ export default function Checkout() {
   };
 
   const handleInput = (event) => {
+    let updateFormErrors = updateFormError;
     let name = event.target.name;
     let value = event.target.value;
 
-    setOrder({ ...order, [name]: value });
+    if (name === "senderName") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderNameErrorMsg: {
+            message: "Please Enter The Sender's Name",
+            isVisible: true,
+          },
+        };
+      } else if (/\d+/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderNameErrorMsg: {
+            message: "Name Cannot Contain Numbers",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*(),?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderNameErrorMsg: {
+            message: "Sender's Name Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderNameErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "senderContact") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderContactErrorMsg: {
+            message: "Please Enter The Contact Number",
+            isVisible: true,
+          },
+        };
+      } else if (/[a-zA-Z]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderContactErrorMsg: {
+            message: "Contact Can Contain Only Numbers",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*(),?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderContactErrorMsg: {
+            message: "Contact Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else if (value.length > 10 || value.length < 10) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderContactErrorMsg: {
+            message: "Contact Should Be A 10 Digit Number",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderContactErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "senderEmail") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderEmailErrorMsg: {
+            message: "Please Enter The Sender's Email",
+            isVisible: true,
+          },
+        };
+      } else if (!/\S+@\S+\.\S+/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderEmailErrorMsg: {
+            message: "Please Enter A Valid Email",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          senderEmailErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "firstName") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          firstNameErrorMsg: {
+            message: "Please Enter The Name",
+            isVisible: true,
+          },
+        };
+      } else if (/\d+/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          firstNameErrorMsg: {
+            message: "Name Cannot Contain Numbers",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*(),?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          firstNameErrorMsg: {
+            message: "Name Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          firstNameErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "lastName") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          lastNameErrorMsg: {
+            message: "Please Enter The Name",
+            isVisible: true,
+          },
+        };
+      } else if (/\d+/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          lastNameErrorMsg: {
+            message: "Name Cannot Contain Numbers",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*(),?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          lastNameErrorMsg: {
+            message: "Name Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          lastNameErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "address") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          addressErrorMsg: {
+            message: "Please Enter The Address",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*()?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          addressErrorMsg: {
+            message: "Address Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          addressErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "city") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          cityErrorMsg: {
+            message: "Please Enter The City",
+            isVisible: true,
+          },
+        };
+      } else if (/\d+/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          cityErrorMsg: {
+            message: "City Cannot Contain Numbers",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*(),?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          cityErrorMsg: {
+            message: "City Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          cityErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "contact") {
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          contactErrorMsg: {
+            message: "Please Enter The Contact Number",
+            isVisible: true,
+          },
+        };
+      } else if (/[a-zA-Z]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          contactErrorMsg: {
+            message: "Contact Can Contain Only Numbers",
+            isVisible: true,
+          },
+        };
+      } else if (/[!@#$%^&*(),?":{}|<>]/.test(value)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          contactErrorMsg: {
+            message: "Contact Cannot Contain Special Characters",
+            isVisible: true,
+          },
+        };
+      } else if (value.length > 10 || value.length < 10) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          contactErrorMsg: {
+            message: "Contact Should Be A 10 Digit Number",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          contactErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "deliverDate") {
+      today.setDate(today.getDate() + 2);
+
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          deliverDateErrorMsg: {
+            message: "Please Enter The Date To Deliver",
+            isVisible: true,
+          },
+        };
+      } else if (value < today.toISOString().substring(0, 10)) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          deliverDateErrorMsg: {
+            message: "Order Should Placed At Least 2 Days before",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          deliverDateErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let validated = validateProductInput();
 
     const {
       userId,
@@ -123,63 +808,85 @@ export default function Checkout() {
       products,
     } = order;
 
-    try {
-      const res = await fetch("/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId,
-          firstName,
-          lastName,
-          address,
-          city,
-          contact,
-          deliverDate,
-          deliverTime,
-          message,
-          senderName,
-          senderContact,
-          senderEmail,
-          cardType,
-          cardName,
-          cardNumber,
-          expDate,
-          cvv,
-          total,
-          orderPlacedDate,
-          status,
-          products,
-        }),
-      });
-      if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials");
-      } else {
-        swal("Success", "Successfully Added", "success", {
-          button: false,
-          timer: 1500,
+    if (!validated) {
+      try {
+        const res = await fetch("/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            firstName,
+            lastName,
+            address,
+            city,
+            contact,
+            deliverDate,
+            deliverTime,
+            message,
+            senderName,
+            senderContact,
+            senderEmail,
+            cardType,
+            cardName,
+            cardNumber,
+            expDate,
+            cvv,
+            total,
+            orderPlacedDate,
+            status,
+            products,
+          }),
         });
+        if (res.status === 400 || !res) {
+          window.alert("Invalid Credentials");
+        } else {
+          swal("Success", "Successfully Added", "success", {
+            button: false,
+            timer: 1500,
+          });
 
-        console.log(event.target);
+          console.log(event.target);
+        }
+      } catch (error) {
+        console.log("ERROR IS", error);
       }
-    } catch (error) {
-      console.log("ERROR IS", error);
     }
   };
 
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <OrderSenderDetails handleInput={handleInput} />;
+        return (
+          <OrderSenderDetails
+            handleInput={handleInput}
+            updateFormError={updateFormError}
+          />
+        );
       case 1:
-        return <OrderReceiverDetails handleInput={handleInput} />;
+        return (
+          <OrderReceiverDetails
+            handleInput={handleInput}
+            updateFormError={updateFormError}
+          />
+        );
       case 2:
-        return <OrderDetails handleInput={handleInput} />;
+        return (
+          <OrderDetails
+            handleInput={handleInput}
+            updateFormError={updateFormError}
+          />
+        );
       case 3:
-        return <PaymentForm handleInput={handleInput} />;
+        return (
+          <PaymentForm
+            handleInput={handleInput}
+            updateFormError={updateFormError}
+          />
+        );
       case 4:
-        return <Review order={order} />;
+        return <Review order={order} updateFormError={updateFormError} />;
       default:
         throw new Error("Unknown step");
     }
