@@ -20,9 +20,10 @@ const PartyPacks = () => {
   });
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [cakeTypes, setCakeTypes] = useState([]);
-  const [cakeFlavors, setcakeFlavors] = useState([]);
+  const [pastryTypes, setPastryTypes] = useState([]);
+  const [pastryFlavors, setPastryFlavors] = useState([]);
   const [modalData, setModalData] = useState({});
+  const [ranges, setRanges] = useState([]);
 
   useEffect(() => {
     fetch("/partyPacks", {
@@ -38,15 +39,31 @@ const PartyPacks = () => {
       .then((data) => {
         let types = [];
         let flavors = [];
+        let priceList = [];
         data.products.map((product) => {
           types.push(product.type);
           flavors.push(product.flavor);
+          priceList.push(product.price);
         });
+
+        const highest = Math.max(...priceList);
+        const smallest = Math.min(...priceList);
+        console.log(highest, smallest);
+        let start = smallest;
+        let end = start + 500;
+        while (end <= highest) {
+          ranges.push(`${start}-${end}`);
+          start += 500;
+          end += 500;
+        }
+        if (end >= highest) {
+          ranges.push(`${start}-${end}`);
+        }
 
         let uniqueTypes = [...new Set(types)];
         let uniqueFlavors = [...new Set(flavors)];
-        setCakeTypes(uniqueTypes);
-        setcakeFlavors(uniqueFlavors);
+        setPastryTypes(uniqueTypes);
+        setPastryFlavors(uniqueFlavors);
         setProducts(data.products);
         setFilteredProducts(data.products);
       })
@@ -208,8 +225,8 @@ const PartyPacks = () => {
         <div className="row">
           <div className="col-md-2">
             <div className="d-flex flex-column">
-              <h4>Type</h4>
-              {cakeTypes.map((type) => {
+              {pastryTypes.length !== 0 ? <h4>Type</h4> : ""}
+              {pastryTypes.map((type) => {
                 return (
                   <div class="form-check">
                     <input
@@ -226,8 +243,9 @@ const PartyPacks = () => {
               })}
             </div>
             <div className="d-flex flex-column mt-4">
-              <h4>Flavor</h4>
-              {cakeFlavors.map((flavor) => {
+              {pastryFlavors.length !== 0 ? <h4>Flavor</h4> : ""}
+
+              {pastryFlavors.map((flavor) => {
                 return (
                   <div class="form-check">
                     <input
@@ -244,40 +262,22 @@ const PartyPacks = () => {
               })}
             </div>
             <div className="d-flex flex-column mt-4">
-              <h4>Price (LKR)</h4>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="100-500"
-                  onChange={handlePriceChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  100 - 500
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="500-750"
-                  onChange={handlePriceChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  500 - 750
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="2500-4000"
-                  onChange={handlePriceChecked}
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  2500 - 4000
-                </label>
-              </div>
+              {ranges.length !== 0 ? <h4>Price (LKR)</h4> : ""}
+              {ranges.map((range) => {
+                return (
+                  <div class="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={range}
+                      onChange={handlePriceChecked}
+                    />
+                    <label class="form-check-label" for="defaultCheck1">
+                      {range}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="col-md-10">
