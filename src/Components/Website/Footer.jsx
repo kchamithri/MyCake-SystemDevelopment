@@ -6,7 +6,7 @@ const Footer = () => {
     <div>
       <footer className="footer text-white ">
         <div className="container" mt="2">
-          <footer className="py-5">
+          <footer className="py-5 pb-0">
             <div className="row">
               <div className="col-6">
                 <h4>MY CAKE</h4>
@@ -49,7 +49,7 @@ const Footer = () => {
               </div>
 
               <div className="d-flex justify-content-center pt-4 mt-3 border-top">
-                <p>@2022 Copy right reserved</p>
+                <p>@2023 Copy right reserved</p>
               </div>
             </div>
           </footer>
