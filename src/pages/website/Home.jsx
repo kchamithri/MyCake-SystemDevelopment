@@ -1,3 +1,4 @@
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import Footer from "../../Components/Website/Footer";
 import HomeCards from "../../Components/Website/HomeCards";
@@ -73,7 +74,113 @@ const Home = () => {
           />
         </div>
       </div>
-      <LongCard title={"On Your Special Day"} image={"Assets/wedding1.webp"} />
+      <Grid container spacing={1} marginY={2} paddingX={6}>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="div">
+            <Box
+              sx={{
+                fontWeight: "bold",
+                m: 1,
+                fontSize: 30,
+                color: "#b1397a",
+              }}
+            >
+              We Have Products For Your ...
+            </Box>
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <img
+            src="/Assets/wedding1.webp"
+            alt="chef"
+            style={{
+              height: "85%",
+              width: "100%",
+              padding: "20px",
+              paddingBottom: "0px",
+            }}
+          />
+          <Typography component="div">
+            <Box
+              sx={{
+                fontWeight: "bold",
+                m: 1,
+                fontSize: 25,
+                paddingLeft: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Special Day
+            </Box>
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <img
+            src="/Assets/birthday3.jpeg"
+            alt="chef"
+            style={{
+              height: "85%",
+              width: "100%",
+              padding: "20px",
+              paddingBottom: "0px",
+            }}
+          />
+          <Typography component="div">
+            <Box
+              sx={{
+                fontWeight: "bold",
+                m: 1,
+                fontSize: 25,
+                paddingLeft: "20px",
+
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Loved Ones Big Day
+            </Box>
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <img
+            src="/Assets/company.webp"
+            alt="chef"
+            style={{
+              height: "85%",
+              width: "100%",
+              padding: "20px",
+              paddingBottom: "0px",
+            }}
+          />
+          <Typography component="div">
+            <Box
+              sx={{
+                fontWeight: "bold",
+                m: 1,
+                fontSize: 25,
+                paddingLeft: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              Companys Big Day
+            </Box>
+          </Typography>
+        </Grid>
+      </Grid>
+      {/* <LongCard title={"On Your Special Day"} image={"Assets/wedding1.webp"} />
       <LongCard
         title={"Celebrate Your Loved Ones Big Day"}
         image={"Assets/birthday3.jpeg"}
@@ -82,7 +189,7 @@ const Home = () => {
         title={"On Your Companys Big Day"}
         image={"Assets/company.webp"}
       />
-      <LongCard title={"Customize Your Cake"} image={"Assets/custom.jpg"} />
+      <LongCard title={"Customize Your Cake"} image={"Assets/custom.jpg"} /> */}
 
       <Footer />
     </div>

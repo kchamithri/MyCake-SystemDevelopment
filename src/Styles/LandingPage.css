@@ -24,8 +24,8 @@
 
 /* footer */
 .footer {
-  background-color: #e4aec5;
-  background: #e4aec5;
+  background-color: #b1397a;
+  background: #b1397a;
   margin: 0px;
   padding: 0px;
   /* overflow: hidden; */
@@ -40,4 +40,11 @@
 .pageStyle p {
   color: #814d69;
   font-weight: 600;
+}
+
+.aboutUs {
+  background-image: url("/public/Assets/chef.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 700px;
 }
