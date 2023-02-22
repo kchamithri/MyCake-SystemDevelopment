@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const AdminLogin = () => {
+const AdminLogin = ({ setAdminauth }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -38,6 +38,7 @@ const AdminLogin = () => {
         if (res.status === 400 || !res) {
           window.alert("Invalid Credentials");
         } else {
+          setAdminauth(true);
           localStorage.setItem("adminId", res.admin.id);
           localStorage.setItem("adminName", res.admin.name);
           localStorage.setItem("adminEmail", res.admin.email);

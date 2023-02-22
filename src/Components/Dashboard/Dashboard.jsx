@@ -24,6 +24,7 @@ const Dashboard = () => {
 
   const [pendingOrdersData, setpendingOrdersData] = useState([]);
   const [todayDispatchOrderData, setTodayDispatchOrderData] = useState([]);
+  const [totalOrders, setTotalOrders] = useState(0);
   const openModal = () => {
     setModalOpen(true);
   };
@@ -65,6 +66,9 @@ const Dashboard = () => {
       })
       .then((data) => {
         console.log(data.orders);
+        data.orders.map((order) => {
+          console.log(order.orderPlacedDate);
+        });
 
         setTodayDispatchOrderData(
           data.orders
@@ -143,7 +147,7 @@ const Dashboard = () => {
           <Tile date="Today" title="Customized Orders" quantity="3" />
         </Grid> */}
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="January" title="Total Orders" quantity="4" />
+          <Tile date="January" title="Total Orders" quantity={totalOrders} />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
           <Tile date="January" title="Total Revenue" quantity="Rs. 4500" />

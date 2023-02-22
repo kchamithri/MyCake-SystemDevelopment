@@ -2,9 +2,10 @@ import swal from "@sweetalert/with-react";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Accordion, Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [showPendingOrders, setShowPendingOrders] = useState(true);
   const [showDeliveredOrders, setShowDeliveredOrders] = useState(false);
@@ -429,6 +430,20 @@ const Profile = () => {
                 }}
               >
                 Settings
+              </button>
+              <button
+                type="button"
+                className={
+                  showSettings
+                    ? "list-group-item list-group-item-action active"
+                    : "list-group-item list-group-item-action"
+                }
+                aria-current="true"
+                onClick={() => {
+                  navigate("/userLogout");
+                }}
+              >
+                Logout
               </button>
             </div>
           </div>

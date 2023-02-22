@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUserauth }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -119,11 +119,11 @@ const Login = () => {
           if (res.status === 400 || !res) {
             window.alert("Invalid Credentials");
           } else {
+            setUserauth(true);
             localStorage.setItem("userId", res.user.id);
             localStorage.setItem("name", res.user.name);
             localStorage.setItem("email", res.user.email);
             localStorage.setItem("contact", res.user.contact);
-            localStorage.setItem("token", res.token);
 
             swal("Success", "Successfully Logged ", "success", {
               button: false,

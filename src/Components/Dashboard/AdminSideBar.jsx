@@ -18,6 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "../../Data/listItems";
+import { logout } from "../../Data/logout";
 
 import { Outlet } from "react-router-dom";
 
@@ -136,6 +137,16 @@ const AdminSideBar = () => {
         <Divider />
         <List component="nav" sx={{ margin: "10px", color: "white" }}>
           {mainListItems}
+        </List>
+        <List
+          component="nav"
+          sx={{
+            margin: "10px",
+            color: "white",
+            marginTop: "200px",
+          }}
+        >
+          {logout}
         </List>
       </Drawer>
       <Box
