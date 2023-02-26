@@ -197,6 +197,8 @@ export default function DetailedInventoryTable({
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const [rowQuantities, setRowQuantities] = React.useState([]);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -251,6 +253,26 @@ export default function DetailedInventoryTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+  useEffect(() => {
+    let quantity = 0;
+    let length = rows.length;
+    let i = 0;
+    rows.map((row) => {
+      if (row.status === "Purchased") {
+        quantity = quantity + row.borrowedQuantity;
+        rowQuantities[i] = quantity;
+        i++;
+      } else {
+        quantity = quantity - row.borrowedQuantity;
+        rowQuantities[i] = quantity;
+        i++;
+      }
+    });
+  }, [rows]);
+
+  useEffect(() => {
+    console.log(rowQuantities);
+  }, [rowQuantities]);
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -297,7 +319,9 @@ export default function DetailedInventoryTable({
                         {row.expiryDate ? row.expiryDate : "-"}
                       </TableCell>
                       <TableCell align="center">{row.description}</TableCell>
-                      <TableCell align="center">totalQuantity</TableCell>
+                      <TableCell align="center">
+                        {rowQuantities[index]}
+                      </TableCell>
                       <TableCell align="center">
                         <Tooltip title="Edit">
                           <IconButton onClick={() => handleStockEdit(row)}>

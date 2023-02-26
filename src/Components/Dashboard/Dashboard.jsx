@@ -24,13 +24,32 @@ const Dashboard = () => {
 
   const [pendingOrdersData, setpendingOrdersData] = useState([]);
   const [todayDispatchOrderData, setTodayDispatchOrderData] = useState([]);
-  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalOrdersCount, setTotalOrdersCount] = useState();
+  const [totalOrdersMonth, setTotalOrdersMonth] = useState("");
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [lowInStock, setLowInStock] = useState([]);
+
   const openModal = () => {
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const monthNames = {
+    0: "January",
+    1: "February",
+    2: "March",
+    3: "April",
+    4: "May",
+    5: "June",
+    6: "July",
+    7: "August",
+    8: "September",
+    9: "October",
+    10: "November",
+    11: "December",
   };
 
   function createData(
@@ -66,9 +85,21 @@ const Dashboard = () => {
       })
       .then((data) => {
         console.log(data.orders);
+        let month = new Date(today).getMonth();
+        setTotalOrdersMonth(monthNames[month]);
+        let totalCount = 0;
+        let revenue = 0;
         data.orders.map((order) => {
-          console.log(order.orderPlacedDate);
+          let orderPlacedMonth = new Date(order.orderPlacedDate).getMonth();
+          if (orderPlacedMonth === month) {
+            totalCount = totalCount + 1;
+            order.products.map((products) => {
+              revenue = revenue + parseInt(products.product.price);
+            });
+          }
         });
+        setTotalOrdersCount(totalCount);
+        setTotalRevenue(revenue);
 
         setTodayDispatchOrderData(
           data.orders
@@ -115,6 +146,37 @@ const Dashboard = () => {
       .catch((error) => {
         console.log("error fetching:", error);
       });
+  }, [today]);
+
+  useEffect(() => {
+    fetch("/admin/reports", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chart: "inventory",
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        data.result.map((type) => {
+          let obj = data.inventory.find(
+            (inventory) => inventory.name === type.name
+          );
+          if (obj.reorderQuantity >= type.quantity) {
+            lowInStock.push(type);
+          }
+        });
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
   }, []);
 
   return (
@@ -138,22 +200,42 @@ const Dashboard = () => {
             date="Today"
             title="Orders to dispatch"
             quantity={todayDispatchCount}
+            color="#CEEDC7"
           />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="Today" title="Orders Received" quantity={todayOrders} />
+          <Tile
+            date="Today"
+            title="Orders Received"
+            quantity={todayOrders}
+            color="#C8FFD4"
+          />
         </Grid>
         {/* <Grid item xs={6} md={6} lg={2}>
           <Tile date="Today" title="Customized Orders" quantity="3" />
         </Grid> */}
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="January" title="Total Orders" quantity={totalOrders} />
+          <Tile
+            date={totalOrdersMonth}
+            title="Total Orders"
+            quantity={totalOrdersCount}
+            color="#CDF0EA"
+          />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile date="January" title="Total Revenue" quantity="Rs. 4500" />
+          <Tile
+            date={totalOrdersMonth}
+            title="Total Revenue"
+            quantity={totalRevenue}
+            color="#ABF0E9"
+          />
         </Grid>
         <Grid item xs={6} md={6} lg={2}>
-          <Tile title="Total customers" quantity="5" />
+          <Tile
+            title="Low In Stock"
+            quantity={lowInStock.length}
+            color="#B9F3FC"
+          />
         </Grid>
       </Grid>
 

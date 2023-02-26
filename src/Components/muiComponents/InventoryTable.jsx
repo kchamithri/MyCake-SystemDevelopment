@@ -175,6 +175,7 @@ export default function InventoryTable({
   rows,
   handleDelete,
   handleEdit,
+  rowQuantities,
   handleDetailedTableShow,
 }) {
   const [order, setOrder] = React.useState("asc");
@@ -278,7 +279,9 @@ export default function InventoryTable({
                       <TableCell align="center">
                         {row.inventoryType.name}
                       </TableCell>
-                      <TableCell align="center">4kg</TableCell>
+                      <TableCell align="center">
+                        {rowQuantities[index]}
+                      </TableCell>
                       <TableCell align="center">
                         {row.inventoryType.reorderQuantity}
                       </TableCell>

@@ -43,6 +43,7 @@ const Inventory = () => {
     supplier: {},
   });
   const [modalData, setModalData] = useState({});
+  const [rowQuantities, setRowQuantities] = React.useState([]);
 
   function createData(
     id,
@@ -235,10 +236,27 @@ const Inventory = () => {
   };
 
   useEffect(() => {
+    let quantity = 0;
+    let i = 0;
+    detailedTableData.data.map((row) => {
+      if (row.status === "Purchased") {
+        quantity = quantity + row.borrowedQuantity;
+        rowQuantities[i] = quantity;
+        i++;
+      } else {
+        quantity = quantity - row.borrowedQuantity;
+        rowQuantities[i] = quantity;
+        i++;
+      }
+    });
+  }, [detailedTableData]);
+
+  useEffect(() => {
     console.log(dataToUpdate);
     console.log(tableData);
     console.log("detailedTableData", detailedTableData);
-  }, [dataToUpdate, tableData, detailedTableData]);
+    console.log(rowQuantities);
+  }, [dataToUpdate, tableData, detailedTableData, rowQuantities]);
 
   useEffect(() => {
     fetch("/admin/inventory/newBorrowedInventory/get", {
@@ -318,6 +336,7 @@ const Inventory = () => {
         <div className={show ? "d-none" : "mt-4"}>
           <InventoryTable
             rows={tableData}
+            rowQuantities={rowQuantities}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
             handleDetailedTableShow={handleDetailedTableShow}
