@@ -20,13 +20,12 @@ import OrderReceiverDetails from "./OrderReceiverDetails";
 import OrderSenderDetails from "./OrderSenderDetails";
 import OrderDetails from "./OrderDetails";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const steps = [
   "Sender Information",
   "Receiver Information",
   "Order Details",
-  "Payment details",
   "Review your order",
 ];
 
@@ -38,6 +37,7 @@ export default function Checkout() {
   const [products, setProducts] = useState([]);
   const today = new Date();
   const [isformValid, setisFormValid] = useState(false);
+  const navigate = useNavigate();
 
   let location = useLocation();
 
@@ -54,11 +54,6 @@ export default function Checkout() {
     senderName: "",
     senderContact: "",
     senderEmail: "",
-    cardType: "",
-    cardName: "",
-    cardNumber: "",
-    expDate: "",
-    cvv: "",
     total: location.state.total,
     orderPlacedDate: today.toISOString().substring(0, 10),
     status: "Pending",
@@ -440,9 +435,7 @@ export default function Checkout() {
       updateFormErrors.addressErrorMsg.isVisible ||
       updateFormErrors.cityErrorMsg.isVisible ||
       updateFormErrors.contactErrorMsg.isVisible ||
-      updateFormErrors.deliverDateErrorMsg.isVisible ||
-      updateFormErrors.deliverTimeErrorMsg.isVisible ||
-      updateFormErrors.messageErrorMsg.isVisible
+      updateFormErrors.deliverDateErrorMsg.isVisible
     );
   };
 
@@ -777,7 +770,98 @@ export default function Checkout() {
         setOrder({ ...order, [name]: value });
       }
       setUpdateFormError(updateFormErrors);
+    } else if (name === "deliverTime") {
+      today.setDate(today.getDate() + 2);
+
+      if (value.length === 0) {
+        updateFormErrors = {
+          ...updateFormErrors,
+          deliverTimeErrorMsg: {
+            message: "Please Enter The Time To Deliver",
+            isVisible: true,
+          },
+        };
+      } else {
+        updateFormErrors = {
+          ...updateFormErrors,
+          deliverTimeErrorMsg: {
+            message: "",
+            isVisible: false,
+          },
+        };
+        setOrder({ ...order, [name]: value });
+      }
+      setUpdateFormError(updateFormErrors);
+    } else if (name === "message") {
+      setOrder({ ...order, [name]: value });
     }
+    setUpdateFormError(updateFormErrors);
+  };
+
+  const [pamentDone, setPaymentDone] = useState("Not completed");
+
+  const handlepayment = (order, payment, hash) => {
+    let paymentDetails = {
+      sandbox: true,
+      merchant_id: "1222544", // Replace your Merchant ID
+      return_url: undefined, // Important
+      cancel_url: undefined, // Important
+      notify_url:
+        "https://577b-2402-4000-20c0-171e-2c33-fa59-deb-aa49.in.ngrok.io/notify",
+      order_id: payment._id,
+      items: "Order Dfh3480021192G",
+      amount: payment.total,
+      currency: "LKR",
+      hash: hash, // *Replace with generated hash retrieved from backend
+      first_name: order.senderName,
+      last_name: "Perera",
+      email: order.senderEmail,
+      phone: order.senderContact,
+      address: "Colombo",
+      city: "Colombo",
+      country: "Sri Lanka",
+      delivery_address: order.address,
+      delivery_city: order.city,
+      delivery_country: "Sri Lanka",
+    };
+
+    window.payhere.startPayment(paymentDetails);
+    let orderId = payment._id;
+    window.payhere.onCompleted = (orderId) => {
+      console.log(orderId);
+      fetch("/confirmPayment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paymentId: orderId,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response;
+        })
+        .then((data) => {
+          setPaymentDone("Payment Completed");
+          swal("Success", "Order Placed Successfully", "success", {
+            button: false,
+            timer: 1700,
+          }).then(navigate("/profile"));
+        })
+        .catch((error) => {
+          console.log("error fetching:", error);
+        });
+    };
+    window.payhere.onDismissed = () => {
+      console.log("payment canceled");
+      setPaymentDone("Payment canceled");
+    };
+    window.payhere.onError = () => {
+      setPaymentDone("Payment Error");
+    };
   };
 
   const handleSubmit = async (event) => {
@@ -797,11 +881,6 @@ export default function Checkout() {
       senderName,
       senderContact,
       senderEmail,
-      cardType,
-      cardName,
-      cardNumber,
-      expDate,
-      cvv,
       total,
       orderPlacedDate,
       status,
@@ -828,11 +907,6 @@ export default function Checkout() {
             senderName,
             senderContact,
             senderEmail,
-            cardType,
-            cardName,
-            cardNumber,
-            expDate,
-            cvv,
             total,
             orderPlacedDate,
             status,
@@ -842,10 +916,12 @@ export default function Checkout() {
         if (res.status === 400 || !res) {
           window.alert("Invalid Credentials");
         } else {
-          swal("Success", "Successfully Added", "success", {
-            button: false,
-            timer: 1500,
-          });
+          const data = await res.json();
+          let order = data.createCart;
+          let payment = data.payment;
+          let hash = data.hash;
+
+          handlepayment(order, payment, hash);
 
           console.log(event.target);
         }
@@ -879,13 +955,6 @@ export default function Checkout() {
           />
         );
       case 3:
-        return (
-          <PaymentForm
-            handleInput={handleInput}
-            updateFormError={updateFormError}
-          />
-        );
-      case 4:
         return <Review order={order} updateFormError={updateFormError} />;
       default:
         throw new Error("Unknown step");

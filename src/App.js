@@ -22,7 +22,6 @@ import Register from "./pages/Register";
 import About from "./pages/website/About";
 import CelebrationCake from "./pages/website/CelebrationCake";
 import Checkout from "./pages/website/checkout/Checkout";
-import Payment from "./pages/website/checkout/Payment";
 import DesignAcake from "./pages/website/DesignAcake";
 import Home from "./pages/website/Home";
 import PartyPacks from "./pages/website/PartyPacks";
