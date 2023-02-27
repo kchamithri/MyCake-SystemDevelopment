@@ -315,7 +315,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    fetch("/orders/get", {
+    fetch("/admin/orders/get", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -440,7 +440,12 @@ const Profile = () => {
                 }
                 aria-current="true"
                 onClick={() => {
-                  navigate("/userLogout");
+                  swal("Success", "Logged Out Successfully", "success", {
+                    button: false,
+                    timer: 1500,
+                  }).then((value) => {
+                    navigate("/userLogout");
+                  });
                 }}
               >
                 Logout
@@ -460,7 +465,11 @@ const Profile = () => {
                         <li className="mb-2">Recepient Contact:</li>
                         <li className="mb-2">Delivery Date:</li>
                         <li className="mb-2">Delivery Address:</li>
-                        <li className="mb-2">Delivery Message:</li>
+                        {order.message ? (
+                          <li className="mb-2">Delivery Message:</li>
+                        ) : (
+                          " "
+                        )}
                         <li className="mb-2">Total(Rs):</li>
                       </ul>
                     </div>
@@ -474,7 +483,9 @@ const Profile = () => {
                         <li className="mb-2">{order.contact}</li>
                         <li className="mb-2">{order.deliverDate}</li>
                         <li className="mb-2">{order.address}</li>
-                        <li className="mb-2">{order.message}</li>
+                        <li className="mb-2">
+                          {order.message ? order.message : " "}
+                        </li>
                         <li className="mb-2">Rs. 4000</li>
                       </ul>
                     </div>

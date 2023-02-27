@@ -147,7 +147,7 @@ const CelebrationCake = () => {
 
     if (localStorage.getItem("userId")) {
       try {
-        const res = await fetch("/cart/add", {
+        const res = await fetch("/admin/cart/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

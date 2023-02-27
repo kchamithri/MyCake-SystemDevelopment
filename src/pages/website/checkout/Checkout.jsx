@@ -807,7 +807,7 @@ export default function Checkout() {
       return_url: undefined, // Important
       cancel_url: undefined, // Important
       notify_url:
-        "https://577b-2402-4000-20c0-171e-2c33-fa59-deb-aa49.in.ngrok.io/notify",
+        "https://ecfe-2402-4000-20c0-171e-b948-5318-17d2-18dc.in.ngrok.io/notify",
       order_id: payment._id,
       items: "Order Dfh3480021192G",
       amount: payment.total,
@@ -849,7 +849,9 @@ export default function Checkout() {
           swal("Success", "Order Placed Successfully", "success", {
             button: false,
             timer: 1700,
-          }).then(navigate("/profile"));
+          }).then((value) => {
+            navigate("/profile");
+          });
         })
         .catch((error) => {
           console.log("error fetching:", error);

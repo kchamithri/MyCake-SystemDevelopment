@@ -290,9 +290,11 @@ export default function EnhancedTable({
                       <TableCell align="center">{row.type}</TableCell>
                       <TableCell align="center">{row.weight}</TableCell>
                       <TableCell align="center">{row.price}</TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center" width="30%">
+                        {row.description}
+                      </TableCell>
 
-                      <TableCell align="center">
+                      <TableCell align="center" width="15%">
                         <Tooltip title="View more">
                           <IconButton onClick={() => openModal(row.id)}>
                             <VisibilityIcon />

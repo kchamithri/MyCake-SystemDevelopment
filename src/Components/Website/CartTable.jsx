@@ -58,7 +58,7 @@ const CartTable = ({ cartData }) => {
     console.log(deleteId);
 
     try {
-      fetch("/cart/delete", {
+      fetch("/admin/cart/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

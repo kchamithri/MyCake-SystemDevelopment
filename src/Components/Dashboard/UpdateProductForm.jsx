@@ -104,7 +104,7 @@ const UpdateProductForm = ({ dataToUpdate, handleShow }) => {
   }, [dataToUpdate]);
 
   useEffect(() => {
-    fetch("/typesAndFlavours", {
+    fetch("/admin/products/typesAndFlavours", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

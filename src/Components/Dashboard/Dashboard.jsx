@@ -74,7 +74,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log(today);
-    fetch("/orders/get", {
+    fetch("/admin/orders/get", {
       method: "POST",
     })
       .then((response) => {

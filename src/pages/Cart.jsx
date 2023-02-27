@@ -15,7 +15,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (userId) {
-      fetch("/cart/get", {
+      fetch("admin/cart/get", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

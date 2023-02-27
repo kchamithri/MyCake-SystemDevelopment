@@ -23,6 +23,19 @@ ChartJS.register(
 );
 
 const BarChart = ({ data }) => {
+  // function dynamicColors() {
+  //   var r = Math.floor(Math.random() * 255);
+  //   var g = Math.floor(Math.random() * 255);
+  //   var b = Math.floor(Math.random() * 255);
+  //   return "rgba(" + r + "," + g + "," + b + ", 0.8)";
+  // }
+  // function poolColors(a) {
+  //   var pool = [];
+  //   for (let i = 0; i < a; i++) {
+  //     pool.push(dynamicColors());
+  //   }
+  //   return pool;
+  // }
   return (
     <div className="chart-container">
       <Bar
@@ -39,6 +52,7 @@ const BarChart = ({ data }) => {
                 "#f3ba2f",
                 "#2a71d0",
               ],
+              // backgroundColor: poolColors(data.data.length),
               borderColor: "black",
               borderWidth: 2,
             },

@@ -219,7 +219,7 @@ export default function OrderDispatchTable({
     });
 
     try {
-      fetch("/admin/products/statusUpdate", {
+      fetch("/admin/orders/statusUpdate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

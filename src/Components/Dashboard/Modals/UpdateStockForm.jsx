@@ -7,8 +7,17 @@ import DashboardModal from "../DashboardModal";
 import AddSupplier from "./AddSupplier";
 import swal from "@sweetalert/with-react";
 import AddInventoryType from "./AddInventoryType";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
+const UpdateStockForm = ({
+  handleUpdateFormShow,
+  stockEditData,
+  show,
+  setShow,
+  updateFormOpen,
+  setUpdateFormOpen,
+}) => {
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [inventoryModalOpen, setInventoryModalOpen] = React.useState(false);
@@ -349,6 +358,9 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
           swal("Success", "Stock Updated  Successfully", "success", {
             button: false,
             timer: 1500,
+          }).then((value) => {
+            setUpdateFormOpen(!updateFormOpen);
+            setShow(!show);
           });
           if (stock.id) {
             handleUpdateFormShow(stock.id);
@@ -363,6 +375,7 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
               expenditure: "",
               description: "",
             });
+
             event.target.reset();
           } else {
             event.target.reset();
@@ -463,10 +476,9 @@ const UpdateStockForm = ({ handleUpdateFormShow, stockEditData }) => {
                 <Form.Select
                   aria-label="Default select example"
                   name="supplierName"
-                  onChange={(event) => {
-                    setSupplierName(event.target.value);
-                    handleInput();
-                  }}
+                  onChange={handleInput}
+                  // setSupplierName(event.target.value);
+
                   value={stock.supplierName}
                   isInvalid={updateFormError.supplierErrorMsg.isVisible}
                 >

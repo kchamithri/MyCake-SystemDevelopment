@@ -368,6 +368,10 @@ const Inventory = () => {
             </div>
             <div className="px-2 mt-2">
               <UpdateStockForm
+                setUpdateFormOpen={setUpdateFormOpen}
+                updateFormOpen={updateFormOpen}
+                setShow={setShow}
+                show={show}
                 stockEditData={stockEditData}
                 handleUpdateFormShow={handleUpdateFormShow}
               />

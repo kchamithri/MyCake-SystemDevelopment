@@ -130,7 +130,7 @@ const AddProductForm = (props) => {
   };
 
   useEffect(() => {
-    fetch("/typesAndFlavours", {
+    fetch("/admin/products/typesAndFlavours", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -238,7 +238,7 @@ const AddProductForm = (props) => {
       };
     } else if (
       /[a-zA-Z]/.test(product.weight) ||
-      /[!@#$%^&*(),.?":{}|<>]/.test(product.weight)
+      /[!@#$%^&*(),?":{}|<>]/.test(product.weight)
     ) {
       updateFormErrors = {
         ...updateFormErrors,

@@ -43,7 +43,7 @@ const Orders = () => {
   const [fromValue, setFromValue] = useState(null);
 
   useEffect(() => {
-    fetch("/orders/get", {
+    fetch("/admin/orders/get", {
       method: "POST",
     })
       .then((response) => {

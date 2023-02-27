@@ -41,10 +41,3 @@
   color: #814d69;
   font-weight: 600;
 }
-
-.aboutUs {
-  background-image: url("/public/Assets/chef.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 700px;
-}
