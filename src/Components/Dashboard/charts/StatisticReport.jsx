@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import LineChart from "./LineChart";
+import LineChartForStat from "./LineChartForStat";
 
 const StatisticReport = ({
   yearValue,
@@ -64,9 +65,9 @@ const StatisticReport = ({
       </Grid>
       <Grid item xs={12} md={12}>
         <Paper elevation={1}>
-          <LineChart
+          <LineChartForStat
             height="400px"
-            // categories={labels}
+            categories={labels}
             title="Total Statistics"
             series1="Revenue"
             series1Data={revenue}

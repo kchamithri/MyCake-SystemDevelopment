@@ -77,7 +77,7 @@ export default function Review({ order }) {
           </Typography>
           <Typography gutterBottom>{order.address}</Typography>
         </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
+        {/* <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Payment details
           </Typography>
@@ -115,7 +115,7 @@ export default function Review({ order }) {
               </Grid>
             </React.Fragment>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
     </React.Fragment>
   );

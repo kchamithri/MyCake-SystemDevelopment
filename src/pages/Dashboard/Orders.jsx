@@ -16,8 +16,12 @@ import OrdersTable from "../../Components/muiComponents/OrdersTable";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import DashboardModal from "../../Components/Dashboard/DashboardModal";
+import OrderDetailsModal from "../../Components/Dashboard/Modals/OrderDetailsModal";
 
 const Orders = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
   function createData(
     id,
     foodItems,
@@ -42,6 +46,19 @@ const Orders = () => {
   const [toValue, setToValue] = useState(null);
   const [fromValue, setFromValue] = useState(null);
 
+  const openModal = (id) => {
+    console.log(id);
+    setModalData(orders.filter((data) => data._id === id)[0]);
+    setModalOpen(true);
+  };
+  useEffect(() => {
+    console.log(modalData);
+  }, [modalData]);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   useEffect(() => {
     fetch("/admin/orders/get", {
       method: "POST",
@@ -64,7 +81,7 @@ const Orders = () => {
             return createData(
               list._id,
               list.products,
-              name,
+              list.senderName,
               list.address,
               list.deliverDate,
               orderPlacedOn,
@@ -119,7 +136,7 @@ const Orders = () => {
         return createData(
           list._id,
           list.products,
-          name,
+          list.senderName,
           list.address,
           list.deliverDate,
           orderPlacedOn,
@@ -137,6 +154,14 @@ const Orders = () => {
 
   return (
     <>
+      <DashboardModal
+        title="Order Details"
+        modalData={modalData}
+        show={modalOpen}
+        closeModal={closeModal}
+      >
+        <OrderDetailsModal modalData={modalData} />
+      </DashboardModal>
       <div className="mt-2">
         <div className="row justify-content-end my-4">
           <Grid container direction="row">
@@ -202,7 +227,11 @@ const Orders = () => {
             </Grid>
           </Grid>
         </div>
-        <OrdersTable rows={tableData} />
+        <OrdersTable
+          rows={tableData}
+          openModal={openModal}
+          closeModal={closeModal}
+        />
       </div>
     </>
   );

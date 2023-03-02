@@ -15,7 +15,7 @@ export const ViewProducts = async (req, res) => {
     }
   } else {
     try {
-      const products = await Products.find();
+      const products = await Products.find({ deleted: false });
       res.status(200).json({
         products: products,
       });

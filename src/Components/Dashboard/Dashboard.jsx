@@ -12,6 +12,8 @@ import Tile from "./Tile";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [allOrders, setAllOrders] = useState([]);
   const [todayDispatchCount, setTodayDispatchCount] = useState(0);
   const [todayOrders, setTodayOrders] = useState(0);
   const current = new Date();
@@ -29,9 +31,14 @@ const Dashboard = () => {
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [lowInStock, setLowInStock] = useState([]);
 
-  const openModal = () => {
+  const openModal = (id) => {
+    console.log(id);
+    setModalData(allOrders.filter((data) => data._id === id)[0]);
     setModalOpen(true);
   };
+  useEffect(() => {
+    console.log(modalData);
+  }, [modalData]);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -85,6 +92,7 @@ const Dashboard = () => {
       })
       .then((data) => {
         console.log(data.orders);
+        setAllOrders(data.orders);
         let month = new Date(today).getMonth();
         setTotalOrdersMonth(monthNames[month]);
         let totalCount = 0;
@@ -109,7 +117,7 @@ const Dashboard = () => {
               return createData(
                 list._id,
                 list.products,
-                name,
+                list.senderName,
                 list.address,
                 list.deliverDate,
                 list.deliverTime,
@@ -134,7 +142,7 @@ const Dashboard = () => {
               return createData(
                 list._id,
                 list.products,
-                name,
+                list.senderName,
                 list.address,
                 list.deliverDate,
                 list.deliverTime,
@@ -183,10 +191,11 @@ const Dashboard = () => {
     <>
       <DashboardModal
         title="Order Details"
+        modalData={modalData}
         show={modalOpen}
         closeModal={closeModal}
       >
-        <OrderDetailsModal />
+        <OrderDetailsModal modalData={modalData} />
       </DashboardModal>
 
       <Grid

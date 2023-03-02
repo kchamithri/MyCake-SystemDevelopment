@@ -23,19 +23,20 @@ const Table = ({
   useEffect(() => {
     console.log(pendingOrdersData);
   }, [pendingOrdersData]);
+
   return (
-    <div className="card pb-2">
-      <div
-        className="rounded-top fs-6 fw-bold"
-        style={{
-          backgroundColor: color,
-          height: "40px",
-          padding: "4px 0px 4px 4px",
-        }}
-      >
-        {tableName}
-      </div>
-      <>
+    <>
+      <div className="card">
+        <div
+          className="rounded-top fs-6 fw-bold mb-0"
+          style={{
+            backgroundColor: color,
+            height: "40px",
+            padding: "4px 0px 4px 4px",
+          }}
+        >
+          {tableName}
+        </div>
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
@@ -61,8 +62,9 @@ const Table = ({
             />
           </Tab>
         </Tabs>
-      </>
-      <div className="row my-2 d-flex flex-column justify-content-center align-items-center">
+      </div>
+    </>
+    /* <div className="row my-2 d-flex flex-column justify-content-center align-items-center">
         <Form
           style={{
             width: "98%",
@@ -76,8 +78,7 @@ const Table = ({
             aria-label="Search"
           />
         </Form>
-      </div>
-    </div>
+      </div> */
   );
 };
 

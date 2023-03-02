@@ -3,8 +3,9 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
-const OrderSenderDetails = ({ handleInput, updateFormError }) => {
+const OrderSenderDetails = ({ handleInput, updateFormError, order }) => {
   useEffect(() => {
+    console.log(order);
     console.log(updateFormError.firstNameErrorMsg.isVisible);
   }, [updateFormError]);
   return (
@@ -20,6 +21,7 @@ const OrderSenderDetails = ({ handleInput, updateFormError }) => {
             id="senderName"
             name="senderName"
             label="Name"
+            value={order.senderName}
             fullWidth
             autoComplete="name"
             variant="standard"
@@ -33,6 +35,7 @@ const OrderSenderDetails = ({ handleInput, updateFormError }) => {
             id="senderContact"
             name="senderContact"
             label="Contact Number"
+            value={order.senderContact}
             fullWidth
             type="text"
             variant="standard"
@@ -50,6 +53,7 @@ const OrderSenderDetails = ({ handleInput, updateFormError }) => {
             id="senderEmail"
             name="senderEmail"
             label="Email"
+            value={order.senderEmail}
             fullWidth
             type="text"
             autoComplete="senderEmail"

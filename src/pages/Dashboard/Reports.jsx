@@ -97,9 +97,12 @@ const Reports = () => {
     "December",
   ]);
 
+  const today = new Date();
+  console.log(today);
+
   //sales statistics
-  const [toValue, setToValue] = useState("2023-03-17T18:58:25.593Z");
-  const [fromValue, setFromValue] = useState("2023-02-15T18:58:25.593Z");
+  const [toValue, setToValue] = useState("2023-03-01T18:58:25.593Z");
+  const [fromValue, setFromValue] = useState("2023-02-01T18:58:25.593Z");
   const [partyPacks, setPartyPacks] = useState([]);
   const [cakes, setCakes] = useState([]);
   const [salesLabels, setSalesLabels] = useState([]);
@@ -115,7 +118,23 @@ const Reports = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [lowInStock, setLowInStock] = useState([]);
 
-  useEffect(() => {}, [fromValue, toValue]);
+  const compareMonths = (a, b) => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return months.indexOf(a.month) - months.indexOf(b.month);
+  };
 
   useEffect(() => {
     console.log(yearMonthValue);
@@ -132,6 +151,9 @@ const Reports = () => {
     type: "", //bdy,anniversary
     flavor: "",
   };
+
+  const [revenueMonths, setRevenueMonths] = useState([]);
+  const [expensesMonths, setExpensesMonths] = useState([]);
 
   //statistic data fetching
   useEffect(() => {
@@ -154,45 +176,47 @@ const Reports = () => {
       .then((data) => {
         let revenueData = [];
         let expensesData = [];
+        const sortedRevenueData = data.revenue.sort(compareMonths);
+        sortedRevenueData.map((data) => {
+          revenueMonths.push(data.month);
+          revenueData.push(data.total.toString());
+          // revenueData.push({
+          //   x: data.month,
+          //   y: data.total,
+          // });
+        });
+        setRevenue(revenueData);
+        const sortedexpensesData = data.expenses.sort(compareMonths);
 
-        data.revenue.map((data) => {
-          // revenueMonths.push(data.month);
-          // revenueData.push(data.total.toString());
-          revenueData.push({
-            x: data.month,
-            y: data.total,
-          });
-          setRevenue(revenueData);
+        sortedexpensesData.map((data) => {
+          expensesMonths.push(data.month);
+          expensesData.push(data.total.toString());
+          // expensesData.push({
+          //   x: data.month,
+          //   y: data.total,
+          // });
         });
-        data.expenses.map((data) => {
-          // expensesMonths.push(data.month);
-          // expensesData.push(data.total.toString());
-          expensesData.push({
-            x: data.month,
-            y: data.total,
-          });
-          setExpenses(expensesData);
-        });
+        setExpenses(expensesData);
       })
       .catch((error) => {
         console.log("error fetching:", error);
       });
   }, [yearValue]);
 
-  // useEffect(() => {
-  //   let i = 0;
-  //   let profit = [];
+  useEffect(() => {
+    let i = 0;
+    let profit = [];
 
-  //   revenue.data.map((revenue) => {
-  //     profit.push(revenue - parseInt(expenses.data[i]));
-  //     i = i + 1;
-  //   });
-  //   setProfit({
-  //     ...profit,
-  //     months: expenses.months,
-  //     data: profit,
-  //   });
-  // }, [yearValue, revenue]);
+    revenue.map((revenue) => {
+      profit.push(revenue - parseInt(expenses[i]));
+      i = i + 1;
+    });
+    setProfit({
+      ...profit,
+      months: expensesMonths,
+      data: profit,
+    });
+  }, [yearValue, revenue]);
 
   useEffect(() => {
     console.log(revenue);
@@ -324,6 +348,11 @@ const Reports = () => {
         });
     };
 
+    lineChart();
+    barCharts();
+  }, [toValue, fromValue]);
+
+  useEffect(() => {
     const pieChart = async () => {
       fetch("/admin/reports", {
         method: "POST",
@@ -363,11 +392,8 @@ const Reports = () => {
           console.log("error fetching:", error);
         });
     };
-
-    lineChart();
-    barCharts();
     pieChart();
-  }, [toValue, fromValue]);
+  }, []);
 
   useEffect(() => {
     console.log(cakes);
@@ -426,10 +452,10 @@ const Reports = () => {
         <StatisticReport
           yearValue={yearValue}
           setYearValue={setYearValue}
-          // profit={profit.data}
+          profit={profit.data}
           revenue={revenue}
           expense={expenses}
-          // labels={revenue.months}
+          labels={revenueMonths}
         />
       </Grid>
 

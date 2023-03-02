@@ -83,48 +83,64 @@ const SalesReport = ({
       <Grid item xs={12} md={6}>
         <Paper elevation={1}>
           <BarChart
-            data={{
-              title: "Cakes by category",
-              labels: cCategoryLabels,
-              label: "Category",
-              data: cCategoryData,
-            }}
+            title="Cakes by category"
+            categories={cCategoryLabels}
+            series="Category"
+            data={cCategoryData}
+            // data={{
+            //   title: "Cakes by category",
+            //   labels: cCategoryLabels,
+            //   label: "Category",
+            //   data: cCategoryData,
+            // }}
           />
         </Paper>
       </Grid>
       <Grid item xs={12} md={6}>
         <Paper elevation={1}>
           <BarChart
-            data={{
-              title: "Cakes by flavours",
-              labels: cFlavorLabels,
-              label: "Flavor",
-              data: cFlavorData,
-            }}
+            title="Cakes by Flavors"
+            categories={cFlavorLabels}
+            series="Flavor"
+            data={cFlavorData}
+            // data={{
+            //   title: "Cakes by flavours",
+            //   labels: cFlavorLabels,
+            //   label: "Flavor",
+            //   data: cFlavorData,
+            // }}
           />
         </Paper>
       </Grid>
       <Grid item xs={12} md={6}>
         <Paper elevation={1}>
           <BarChart
-            data={{
-              title: "Party packs by category",
-              labels: pCategoryLabels,
-              label: "Category",
-              data: pCategoryData,
-            }}
+            title="Party packs by category"
+            categories={pCategoryLabels}
+            series="Category"
+            data={pCategoryData}
+            // data={{
+            //   title: "Party packs by category",
+            //   labels: pCategoryLabels,
+            //   label: "Category",
+            //   data: pCategoryData,
+            // }}
           />
         </Paper>
       </Grid>
       <Grid item xs={12} md={6}>
         <Paper elevation={1}>
           <BarChart
-            data={{
-              title: "Party packs by flavours",
-              labels: pFlavorLabels,
-              label: "Flavor",
-              data: pFlavorData,
-            }}
+            title="Party packs by flavours"
+            categories={pFlavorLabels}
+            series="Flavor"
+            data={pFlavorData}
+            // data={{
+            //   title: "Party packs by flavours",
+            //   labels: pFlavorLabels,
+            //   label: "Flavor",
+            //   data: pFlavorData,
+            // }}
           />
         </Paper>
       </Grid>

@@ -10,6 +10,7 @@ const Profile = () => {
   const [showPendingOrders, setShowPendingOrders] = useState(true);
   const [showDeliveredOrders, setShowDeliveredOrders] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [logout, setLogout] = useState(false);
   const [infoButton, setInfoButton] = useState(false);
   const [passwordButton, setPasswordButton] = useState(true);
   const [pendingOrdersData, setpendingOrdersData] = useState([]);
@@ -396,6 +397,7 @@ const Profile = () => {
                   setShowPendingOrders(true);
                   setShowDeliveredOrders(false);
                   setShowSettings(false);
+                  setLogout(false);
                 }}
               >
                 Pending Orders
@@ -411,6 +413,7 @@ const Profile = () => {
                   setShowDeliveredOrders(true);
                   setShowPendingOrders(false);
                   setShowSettings(false);
+                  setLogout(false);
                 }}
               >
                 Delivered Orders
@@ -427,6 +430,7 @@ const Profile = () => {
                   setShowSettings(true);
                   setShowPendingOrders(false);
                   setShowDeliveredOrders(false);
+                  setLogout(false);
                 }}
               >
                 Settings
@@ -434,12 +438,16 @@ const Profile = () => {
               <button
                 type="button"
                 className={
-                  showSettings
+                  logout
                     ? "list-group-item list-group-item-action active"
                     : "list-group-item list-group-item-action"
                 }
                 aria-current="true"
                 onClick={() => {
+                  setShowSettings(false);
+                  setShowPendingOrders(false);
+                  setShowDeliveredOrders(false);
+                  setLogout(true);
                   swal("Success", "Logged Out Successfully", "success", {
                     button: false,
                     timer: 1500,

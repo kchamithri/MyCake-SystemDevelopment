@@ -214,7 +214,7 @@ const Register = () => {
             button: false,
             timer: 1500,
           }).then((value) => {
-            navigate("/celebrationcakes");
+            navigate("/login");
           });
         }
       } catch (error) {

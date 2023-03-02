@@ -21,8 +21,14 @@ const InventoryReport = ({ inventoryData, inventoryLabels, lowInStock }) => {
       <Grid item xs={12} md={6}>
         <Paper elevation={1}>
           <PieChart
-            inventoryData={inventoryData}
-            inventoryLabels={inventoryLabels}
+            title="Inventory Quantity"
+            size="60%"
+            labels={inventoryLabels}
+            series={inventoryData}
+            // width="98%"
+            height="290px"
+            // inventoryData={inventoryData}
+            // inventoryLabels={inventoryLabels}
           />
         </Paper>
       </Grid>

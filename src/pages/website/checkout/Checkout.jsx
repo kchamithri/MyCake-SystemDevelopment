@@ -40,6 +40,9 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   let location = useLocation();
+  const user = localStorage.getItem("name");
+  const contact = localStorage.getItem("contact");
+  const email = localStorage.getItem("email");
 
   const [order, setOrder] = useState({
     userId: localStorage.getItem("userId"),
@@ -51,9 +54,9 @@ export default function Checkout() {
     deliverDate: "",
     deliverTime: "",
     message: "",
-    senderName: "",
-    senderContact: "",
-    senderEmail: "",
+    senderName: user,
+    senderContact: contact,
+    senderEmail: email,
     total: location.state.total,
     orderPlacedDate: today.toISOString().substring(0, 10),
     status: "Pending",
@@ -807,7 +810,7 @@ export default function Checkout() {
       return_url: undefined, // Important
       cancel_url: undefined, // Important
       notify_url:
-        "https://ecfe-2402-4000-20c0-171e-b948-5318-17d2-18dc.in.ngrok.io/notify",
+        "https://ad63-2402-4000-21c2-c09d-60af-40cc-bdbf-aea8.ap.ngrok.io/notify",
       order_id: payment._id,
       items: "Order Dfh3480021192G",
       amount: payment.total,
@@ -938,6 +941,7 @@ export default function Checkout() {
       case 0:
         return (
           <OrderSenderDetails
+            order={order}
             handleInput={handleInput}
             updateFormError={updateFormError}
           />

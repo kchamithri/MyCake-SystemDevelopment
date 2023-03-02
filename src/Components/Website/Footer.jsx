@@ -1,55 +1,93 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 const Footer = () => {
   return (
-    <div>
+    <div style={{ marginTop: "70px" }}>
       <footer className="footer text-white ">
         <div className="container" mt="2">
           <footer className="py-5 pb-0">
             <div className="row">
-              <div className="col-6">
-                <h4>MY CAKE</h4>
-                <ul className="nav flex-column">
-                  <li className="nav-item mb-2">All around the country</li>
-                  <li className="nav-item mb-2">Sri Lanka</li>
-                </ul>
-              </div>
               <div className="col-4">
-                <h5>Admin</h5>
+                <h4 style={{ fontWeight: "bold" }}>MY CAKE</h4>
                 <ul className="nav flex-column">
-                  <li className="nav-item mb-2">Kosala Chamithri</li>
-                  <li className="nav-item mb-2">
-                    <a to="#" className="nav-link p-0 text-white">
-                      kosala@gmail.com
-                    </a>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    mycake@gmail.com
                   </li>
-                </ul>
-              </div>
-              <div className="col-2">
-                <h5>Contact Us</h5>
-                <ul className="nav flex-column">
-                  <li className="nav-item mb-2">
-                    <NavLink
-                      to="./requestForm"
-                      className="nav-link p-0 text-white"
-                    >
-                      Tel
-                    </NavLink>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    076 3 456 789
                   </li>
-                  <li className="nav-item mb-2">
-                    <NavLink
-                      to="./tableNew"
-                      className="nav-link p-0 text-white"
-                    >
-                      Address
-                    </NavLink>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    No.23, Ashoka Gardens, Kiribathgoda{" "}
+                  </li>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    Sri Lanka
                   </li>
                 </ul>
               </div>
 
+              <div className="col-2">
+                <h5 style={{ fontWeight: "bold" }}>Explore Us</h5>
+                <ul className="nav flex-column">
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    <NavLink
+                      to="./celebrationCakes"
+                      className="nav-link p-0 text-white"
+                    >
+                      Celebration Cakes
+                    </NavLink>
+                  </li>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    <NavLink
+                      to="./partyPacks"
+                      className="nav-link p-0 text-white"
+                    >
+                      Party Packs
+                    </NavLink>
+                  </li>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    <NavLink to="./about" className="nav-link p-0 text-white">
+                      About Us
+                    </NavLink>
+                  </li>
+                  <li className="nav-item mb-2" style={{ fontWeight: "bold" }}>
+                    <NavLink
+                      to="./register"
+                      className="nav-link p-0 text-white"
+                    >
+                      Register
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+              <div className="col-2">
+                <h5 style={{ fontWeight: "bold" }}>Follow Us</h5>
+                <ul className="nav flex-column">
+                  <li className="nav-item mb-2">
+                    <InstagramIcon />
+                  </li>
+                  <li className="nav-item mb-2">
+                    <FacebookIcon />
+                  </li>
+                </ul>
+              </div>
+              <div className="col-4">
+                <h5 style={{ fontWeight: "bold" }}>Payments</h5>
+                <div className="d-flex justify-content-start align-items-center">
+                  <a href="https://www.payhere.lk" target="_blank">
+                    <img
+                      src="https://www.payhere.lk/downloads/images/payhere_long_banner.png"
+                      alt="PayHere"
+                      width="400"
+                    />
+                  </a>
+                </div>
+              </div>
+
               <div className="d-flex justify-content-center pt-4 mt-3 border-top">
-                <p>@2023 Copy right reserved</p>
+                <p>@2023 Copy rights reserved</p>
               </div>
             </div>
           </footer>

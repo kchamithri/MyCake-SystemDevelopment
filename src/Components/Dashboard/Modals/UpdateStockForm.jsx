@@ -372,7 +372,7 @@ const UpdateStockForm = ({
               borrowedQuantity: "",
               expiryDate: "",
               status: "",
-              expenditure: "",
+              expenditure: 0,
               description: "",
             });
 

@@ -10,7 +10,7 @@ export const AddStock = async (req, res) => {
       borrowedQuantity: req.body.borrowedQuantity,
       expiryDate: req.body.expiryDate,
       status: req.body.status,
-      expenditure: req.body.expenditure,
+      expenditure: parseInt(req.body.expenditure),
       description: req.body.description,
     });
     const created = await createInventory.save();
@@ -22,7 +22,7 @@ export const AddStock = async (req, res) => {
         supplierName: req.body.supplierName,
         borrowedQuantity: req.body.borrowedQuantity,
         expiryDate: req.body.expiryDate,
-        expenditure: req.body.expenditure,
+        expenditure: parseInt(req.body.expenditure),
         status: req.body.status,
         description: req.body.description,
       });
