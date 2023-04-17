@@ -11,6 +11,86 @@ const AdminLogin = ({ setAdminauth }) => {
     email: "",
     password: "",
   });
+  //validations
+  const [userFormError, setUserFormError] = useState({
+    emailErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+    passwordErrorMsg: {
+      message: "",
+      isVisible: false,
+    },
+  });
+
+  const validateUserInput = () => {
+    let updateFormErrors = userFormError;
+
+    if (user.email.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "Please Enter The Email",
+          isVisible: true,
+        },
+      };
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "Please Enter A Valid Email",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        emailErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+
+    if (user.password.length === 0) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "Please Enter The Password",
+          isVisible: true,
+        },
+      };
+    } else if (user.password.length < 8) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "Password must be at least 8 characters",
+          isVisible: true,
+        },
+      };
+    } else if (!/[!@#$%^&*(),?":{}|<>]/.test(user.password)) {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "Password must at least contain A Special Character",
+          isVisible: true,
+        },
+      };
+    } else {
+      updateFormErrors = {
+        ...updateFormErrors,
+        passwordErrorMsg: {
+          message: "",
+          isVisible: false,
+        },
+      };
+    }
+    setUserFormError(updateFormErrors);
+    return (
+      updateFormErrors.emailErrorMsg.isVisible ||
+      updateFormErrors.passwordErrorMsg.isVisible
+    );
+  };
 
   const handleInput = (event) => {
     let name = event.target.name;
@@ -35,8 +115,12 @@ const AdminLogin = ({ setAdminauth }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.status === 400 || !res) {
-          window.alert("Invalid Credentials");
+        if (res.message === "Invalid Credentials") {
+          swal("Error", "Invalid Credentials!", "warning", {
+            button: false,
+            timer: 1500,
+          });
+          // window.alert("Invalid Credentials");
         } else {
           setAdminauth(true);
           localStorage.setItem("adminId", res.admin.id);

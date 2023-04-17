@@ -276,7 +276,6 @@ const Register = () => {
                   type="text"
                   class="form-control"
                   id="contact"
-                  placeholder="Kosala Chamithri"
                   name="contact"
                   value={user.contact}
                   onChange={handleInput}

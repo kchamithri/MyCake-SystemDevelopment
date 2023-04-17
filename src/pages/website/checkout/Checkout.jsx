@@ -810,7 +810,7 @@ export default function Checkout() {
       return_url: undefined, // Important
       cancel_url: undefined, // Important
       notify_url:
-        "https://ad63-2402-4000-21c2-c09d-60af-40cc-bdbf-aea8.ap.ngrok.io/notify",
+        "http://fb63-2402-4000-20c3-7584-70b2-9d0-9d69-2e9c.ngrok-free.app/notify",
       order_id: payment._id,
       items: "Order Dfh3480021192G",
       amount: payment.total,
@@ -849,16 +849,16 @@ export default function Checkout() {
         })
         .then((data) => {
           setPaymentDone("Payment Completed");
-          swal("Success", "Order Placed Successfully", "success", {
-            button: false,
-            timer: 1700,
-          }).then((value) => {
-            navigate("/profile");
-          });
         })
         .catch((error) => {
           console.log("error fetching:", error);
         });
+      swal("Success", "Order Placed Successfully", "success", {
+        button: false,
+        timer: 1700,
+      }).then((value) => {
+        navigate("/profile");
+      });
     };
     window.payhere.onDismissed = () => {
       console.log("payment canceled");

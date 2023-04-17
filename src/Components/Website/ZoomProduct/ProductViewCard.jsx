@@ -57,14 +57,14 @@ const ProductViewCard = (props) => {
           <ul class="list-unstyled">
             <li className="mb-2">Rs. {props.price} </li>
             <li className="mb-2">Weight: {props.weight}kg </li>
-            <li className="mb-2">
+            {/* <li className="mb-2">
               <QuantityPicker
                 smooth
                 min={1}
                 value={1}
                 onChange={getPickerValue}
               />
-            </li>
+            </li> */}
             <li className="mb-1">Description:</li>
             <li>{props.description}</li>
           </ul>

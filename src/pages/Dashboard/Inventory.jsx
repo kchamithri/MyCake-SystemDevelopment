@@ -44,6 +44,7 @@ const Inventory = () => {
   });
   const [modalData, setModalData] = useState({});
   const [rowQuantities, setRowQuantities] = React.useState([]);
+  const [inventoryData, setInventoryData] = useState([]);
 
   function createData(
     id,
@@ -235,21 +236,62 @@ const Inventory = () => {
     setShow(!show);
   };
 
+  // useEffect(() => {
+  //   let quantity = 0;
+  //   let i = 0;
+  //   detailedTableData.data.map((row) => {
+  //     if (row.status === "Purchased") {
+  //       quantity = quantity + row.borrowedQuantity;
+  //       rowQuantities[i] = quantity;
+  //       i++;
+  //     } else {
+  //       quantity = quantity - row.borrowedQuantity;
+  //       rowQuantities[i] = quantity;
+  //       i++;
+  //     }
+  //   });
+  // }, [detailedTableData]);
+
   useEffect(() => {
-    let quantity = 0;
-    let i = 0;
-    detailedTableData.data.map((row) => {
-      if (row.status === "Purchased") {
-        quantity = quantity + row.borrowedQuantity;
-        rowQuantities[i] = quantity;
-        i++;
-      } else {
-        quantity = quantity - row.borrowedQuantity;
-        rowQuantities[i] = quantity;
-        i++;
-      }
-    });
-  }, [detailedTableData]);
+    fetch("/admin/reports", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chart: "inventory",
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        let inventoryLabels = [];
+        let inventoryData = [];
+
+        data.result.map((data) => {
+          inventoryLabels.push(data.name);
+          inventoryData.push(data.quantity);
+        });
+        // data.result.map((type) => {
+        //   let obj = data.inventory.find(
+        //     (inventory) => inventory.name === type.name
+        //   );
+        //   if (obj.reorderQuantity >= type.quantity) {
+        //     lowInStock.push(type);
+        //   }
+        // });
+        // setInventoryLabels(inventoryLabels);
+        console.log(inventoryData);
+        setInventoryData(inventoryData);
+      })
+      .catch((error) => {
+        console.log("error fetching:", error);
+      });
+  }, [show]);
 
   useEffect(() => {
     console.log(dataToUpdate);
@@ -336,7 +378,7 @@ const Inventory = () => {
         <div className={show ? "d-none" : "mt-4"}>
           <InventoryTable
             rows={tableData}
-            rowQuantities={rowQuantities}
+            rowQuantities={inventoryData}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
             handleDetailedTableShow={handleDetailedTableShow}

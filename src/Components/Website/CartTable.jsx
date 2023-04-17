@@ -132,7 +132,7 @@ const CartTable = ({ cartData }) => {
                 <td className="align-middle text-center fs-4">
                   <QuantityPicker
                     smooth
-                    min={1}
+                    min={data.product.category === "Party Packs" ? 12 : 1}
                     value={data.quantity}
                     onChange={(value) => {
                       console.log(value);

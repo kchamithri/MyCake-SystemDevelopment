@@ -125,7 +125,7 @@ const Suppliers = () => {
           </Grid>
         </>
       ) : (
-        <div className="mt-2">
+        <div style={{ marginTop: "80px" }}>
           <SuppliersTable
             rows={tableData}
             handleDelete={handleDelete}

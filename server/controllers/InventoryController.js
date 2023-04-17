@@ -1,5 +1,6 @@
 import Inventory from "../models/inventorySchema.js";
 import NewBorrowedInventory from "../models/newBorrowedInventory.js";
+import Stock from "../models/stockSchema.js";
 
 export const AddInventory = async (req, res) => {
   try {
@@ -38,9 +39,14 @@ export const DeleteInventory = async (req, res) => {
 
     if (stock.acknowledged === true) {
       const inventory = await Inventory.deleteOne({ _id: req.body.id });
-      res.status(200).json({
-        message: "Success",
-      });
+      if (inventory.acknowledged === true) {
+        const stocks = await Stock.deleteMany({
+          inventoryType: req.body.id,
+        });
+        res.status(200).json({
+          message: "Success",
+        });
+      }
     }
   } catch (error) {
     res.status(400).send(error);

@@ -196,6 +196,7 @@ export default function OrderDispatchTable({
   handleDelete,
   handleEdit,
   openModal,
+  showDropdown,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("foodItems");
@@ -343,7 +344,9 @@ export default function OrderDispatchTable({
                       <TableCell>
                         {row.foodItems.map((item) => {
                           return (
-                            <TableRow align="center">{item.quantity}</TableRow>
+                            <TableRow text-align="center">
+                              {item.quantity}
+                            </TableRow>
                           );
                         })}
                       </TableCell>
@@ -359,25 +362,29 @@ export default function OrderDispatchTable({
                           </IconButton>
                         </Tooltip>
                       </TableCell>
-                      <TableCell align="right">
-                        <FormControl
-                          variant="standard"
-                          sx={{ m: 1, minWidth: 120 }}
-                        >
-                          <Select
-                            labelId="demo-simple-select-standard-label"
-                            id="demo-simple-select-standard"
-                            value={row.status}
-                            onChange={(event) => {
-                              handleChange(event, row.id);
-                            }}
-                            label="Status"
+                      {showDropdown ? (
+                        <TableCell align="right">
+                          <FormControl
+                            variant="standard"
+                            sx={{ m: 1, minWidth: 120 }}
                           >
-                            <MenuItem value="Pending">Pending</MenuItem>
-                            <MenuItem value="Dispatched">Dispatched</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </TableCell>
+                            <Select
+                              labelId="demo-simple-select-standard-label"
+                              id="demo-simple-select-standard"
+                              value={row.status}
+                              onChange={(event) => {
+                                handleChange(event, row.id);
+                              }}
+                              label="Status"
+                            >
+                              <MenuItem value="Pending">Pending</MenuItem>
+                              <MenuItem value="Dispatched">Dispatched</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                      ) : (
+                        <TableCell align="center">Pending</TableCell>
+                      )}
                     </TableRow>
                   );
                 })}

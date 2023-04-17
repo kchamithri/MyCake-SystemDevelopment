@@ -149,7 +149,7 @@ const BarChart = (props) => {
           },
           xaxis: {
             type: "category",
-            overwriteCategories: props.categories,
+            categories: props.categories,
             labels: {
               rotate: -20,
               rotateAlways: false,

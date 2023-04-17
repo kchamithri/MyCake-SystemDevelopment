@@ -65,13 +65,13 @@ const headCells = [
     id: "supplier",
     numeric: true,
     disablePadding: false,
-    label: "Total Quantity",
+    label: "Total Quantity(kg)",
   },
   {
     id: "initialQuantity",
     numeric: true,
     disablePadding: false,
-    label: "Reorder Quantity",
+    label: "Reorder Quantity(kg)",
   },
   {
     id: "reorderQuantity",

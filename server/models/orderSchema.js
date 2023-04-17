@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   contact: {
-    type: Number,
+    type: String,
     required: true,
   },
   deliverDate: {
@@ -39,7 +39,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   senderContact: {
-    type: Number,
+    type: String,
     required: true,
   },
   senderEmail: {

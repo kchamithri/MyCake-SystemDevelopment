@@ -153,7 +153,7 @@ const PartyPacks = () => {
           body: JSON.stringify({
             user: localStorage.getItem("userId"),
             product: productId,
-            quantity: "1",
+            quantity: "12",
             total: price,
           }),
         });
@@ -281,6 +281,15 @@ const PartyPacks = () => {
             </div>
           </div>
           <div className="col-md-10">
+            <div className="form-text text-danger">
+              <i
+                class="fa fa-exclamation-circle"
+                aria-hidden="true"
+                style={{ color: "red" }}
+              ></i>
+              We only take orders of or above 12 pieces of selected party pack
+              food item.
+            </div>
             <div className="row row-cols-1 row-cols-md-4 g-4">
               {filteredProducts.map((item) => {
                 return (

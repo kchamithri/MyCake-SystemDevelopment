@@ -19,6 +19,7 @@ const Table = ({
   displaySearch,
 }) => {
   const [key, setKey] = useState("Today");
+  const [showDropdown, setShowDropdown] = useState(true);
 
   useEffect(() => {
     console.log(pendingOrdersData);
@@ -48,6 +49,7 @@ const Table = ({
           <Tab eventKey="Today" title="Today">
             <OrderDispatchTable
               rows={todayDispatchOrderData}
+              showDropdown={showDropdown}
               // handleDelete={handleDelete}
               // handleEdit={handleEdit}
               openModal={openModal}
@@ -56,6 +58,7 @@ const Table = ({
           <Tab eventKey="Upcoming" title="Upcoming">
             <OrderDispatchTable
               rows={pendingOrdersData}
+              showDropdown={!showDropdown}
               // handleDelete={handleDelete}
               // handleEdit={handleEdit}
               openModal={openModal}

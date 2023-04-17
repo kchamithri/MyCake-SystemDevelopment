@@ -116,8 +116,12 @@ const Login = ({ setUserauth }) => {
       })
         .then((res) => res.json())
         .then((res) => {
-          if (res.status === 400 || !res) {
-            window.alert("Invalid Credentials");
+          if (res.message === "Invalid Credentials") {
+            swal("Error", "Invalid Credentials!", "warning", {
+              button: false,
+              timer: 1500,
+            });
+            // window.alert("Invalid Credentials");
           } else {
             setUserauth(true);
             localStorage.setItem("userId", res.user.id);

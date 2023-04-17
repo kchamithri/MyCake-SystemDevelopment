@@ -21,39 +21,6 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
-const Data = [
-  {
-    id: 1,
-    year: "January",
-    userGain: 80000,
-    userLost: 823,
-  },
-  {
-    id: 2,
-    year: "February",
-    userGain: 45677,
-    userLost: 345,
-  },
-  {
-    id: 3,
-    year: "March",
-    userGain: 78888,
-    userLost: 555,
-  },
-  {
-    id: 4,
-    year: "April",
-    userGain: 90000,
-    userLost: 4555,
-  },
-  {
-    id: 5,
-    year: "May",
-    userGain: 4300,
-    userLost: 234,
-  },
-];
-
 const Reports = () => {
   //overall statistics
   const [yearValue, setYearValue] = useState(dayjs("2023"));
@@ -101,8 +68,8 @@ const Reports = () => {
   console.log(today);
 
   //sales statistics
-  const [toValue, setToValue] = useState("2023-03-01T18:58:25.593Z");
-  const [fromValue, setFromValue] = useState("2023-02-01T18:58:25.593Z");
+  const [toValue, setToValue] = useState("2023-04-17T18:58:25.593Z");
+  const [fromValue, setFromValue] = useState("2023-03-17T18:58:25.593Z");
   const [partyPacks, setPartyPacks] = useState([]);
   const [cakes, setCakes] = useState([]);
   const [salesLabels, setSalesLabels] = useState([]);
@@ -247,12 +214,12 @@ const Reports = () => {
         })
         .then((data) => {
           console.log(data.result.length);
-
-          data.result.map((data) => {
-            if (data._id.category === "Party Packs") {
-              if (data.sales.length === 0) {
-                setPartyPacks([]);
-              } else {
+          if (data.result.length === 0) {
+            setPartyPacks([]);
+            setCakes([]);
+          } else {
+            data.result.map((data) => {
+              if (data._id.category === "Party Packs") {
                 setPartyPacks(
                   data.sales.map((obj) => {
                     return {
@@ -261,21 +228,18 @@ const Reports = () => {
                     };
                   })
                 );
+              } else if (data._id.category === "Cake") {
+                setCakes(
+                  data.sales.map((obj) => {
+                    return {
+                      x: obj.date,
+                      y: obj.count,
+                    };
+                  })
+                );
               }
-            } else if (data._id.category === "Cake") {
-              if (data.sales.length === 0) {
-                setCakes([]);
-              }
-              setCakes(
-                data.sales.map((obj) => {
-                  return {
-                    x: obj.date,
-                    y: obj.count,
-                  };
-                })
-              );
-            }
-          });
+            });
+          }
         })
         .catch((error) => {
           console.log("error fetching:", error);

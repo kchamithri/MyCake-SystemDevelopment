@@ -313,8 +313,10 @@ const AddIngredients = ({ handleFormShow }) => {
           swal("Success", "Stock Added Successfully", "success", {
             button: false,
             timer: 1500,
+          }).then((value) => {
+            event.target.reset();
+            handleFormShow();
           });
-          event.target.reset();
         }
       } catch (error) {
         console.log("ERROR IS", error);

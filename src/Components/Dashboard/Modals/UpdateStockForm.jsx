@@ -363,7 +363,7 @@ const UpdateStockForm = ({
             setShow(!show);
           });
           if (stock.id) {
-            handleUpdateFormShow(stock.id);
+            // handleUpdateFormShow(stock.id);
             setStock({
               id: "",
               inventoryType: "",

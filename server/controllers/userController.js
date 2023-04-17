@@ -114,7 +114,7 @@ export const UserLogout = async (req, res) => {
 
 export const CelebrationCakes = async (req, res) => {
   try {
-    const products = await Products.find({ category: "Cake" });
+    const products = await Products.find({ category: "Cake", deleted: false });
     res.status(200).json({
       products: products,
     });
@@ -125,7 +125,10 @@ export const CelebrationCakes = async (req, res) => {
 
 export const PartyPacks = async (req, res) => {
   try {
-    const products = await Products.find({ category: "Party Packs" });
+    const products = await Products.find({
+      category: "Party Packs",
+      deleted: false,
+    });
     res.status(200).json({
       products: products,
     });
