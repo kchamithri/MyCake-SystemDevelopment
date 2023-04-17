@@ -278,22 +278,72 @@ const Reports = () => {
           data.result.map((data) => {
             if (data._id === "Cake") {
               data.types.map((data) => {
-                cakeCategory.push(data.type);
-                cakeCategoryData.push(data.count);
+                // if (!cakeCategory.includes(data.type)) {
+                //   cakeCategory.push(data.type);
+                //   cakeCategoryData.push(data.count);
+                // }else{
+
+                // }
+                let categoryIndex = cakeCategory.indexOf(data.type);
+                if (categoryIndex === -1) {
+                  cakeCategory.push(data.type);
+                  categoryIndex = cakeCategory.length - 1;
+                  cakeCategoryData.push(data.count);
+                } else {
+                  let index = cakeCategoryData[categoryIndex];
+                  cakeCategoryData[categoryIndex] =
+                    cakeCategoryData[categoryIndex] + data.count;
+                }
 
                 data.flavors.map((data) => {
-                  cakeFlavors.push(data.flavor);
-                  cakeFlavorData.push(data.count);
+                  let flavorIndex = cakeFlavors.indexOf(data.flavor);
+                  if (flavorIndex === -1) {
+                    console.log(data.flavor);
+                    cakeFlavors.push(data.flavor);
+                    flavorIndex = cakeFlavors.length - 1;
+                    cakeFlavorData.push(data.count);
+                  } else {
+                    let index = cakeFlavorData[flavorIndex];
+                    cakeFlavorData[flavorIndex] =
+                      cakeFlavorData[flavorIndex] + data.count;
+                  }
+
+                  //   console.log(data.count);
+                  //   cakeFlavors.push(data.flavor);
+                  //   cakeFlavorData.push(data.count);
                 });
               });
             } else if (data._id === "Party Packs") {
               data.types.map((data) => {
-                partyPacksCategory.push(data.type);
-                partyPacksCategoryData.push(data.count);
+                let categoryIndex = partyPacksCategory.indexOf(data.type);
+                if (categoryIndex === -1) {
+                  partyPacksCategory.push(data.type);
+                  categoryIndex = partyPacksCategory.length - 1;
+                  partyPacksCategoryData.push(data.count);
+                } else {
+                  let index = cakeCategoryData[categoryIndex];
+                  partyPacksCategoryData[categoryIndex] =
+                    partyPacksCategoryData[categoryIndex] + data.count;
+                }
+
+                // partyPacksCategory.push(data.type);
+                // partyPacksCategoryData.push(data.count);
 
                 data.flavors.map((data) => {
-                  partyPacksFlavors.push(data.flavor);
-                  partyPacksFlavorData.push(data.count);
+                  let flavorIndex = partyPacksFlavors.indexOf(data.flavor);
+                  if (flavorIndex === -1) {
+                    console.log(data.flavor);
+                    partyPacksFlavors.push(data.flavor);
+                    flavorIndex = partyPacksFlavors.length - 1;
+                    partyPacksFlavorData.push(data.count);
+                  } else {
+                    let index = partyPacksFlavorData[flavorIndex];
+                    partyPacksFlavorData[flavorIndex] =
+                      partyPacksFlavorData[flavorIndex] + data.count;
+                  }
+
+                  // partyPacksFlavors.push(data.flavor);
+                  // partyPacksFlavorData.push(data.count);
                 });
               });
             }

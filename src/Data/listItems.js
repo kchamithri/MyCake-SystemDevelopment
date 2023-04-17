@@ -13,7 +13,7 @@ import { NavLink } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <NavLink className="nav-link active" aria-current="page" to="/admin">
+    <NavLink className="nav-link " aria-current="page" to="/admin">
       <ListItemButton>
         <ListItemIcon>
           <DashboardIcon />

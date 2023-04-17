@@ -39,10 +39,12 @@ const About = () => {
               With Our <span style={{ color: "#CB1C8D" }}>Food!</span>
             </Box>
             <Box sx={{ fontWeight: "regular", m: 1, fontSize: 15 }}>
-              However, for extra security, you should always check if the POST
-              parameters received are a result of a valid payment. Otherwise, a
-              malicious user can send requests with fake parameters to this URL
-              for his/her advantage.
+              Welcome to our shop! Here, you will find a wide selection of
+              delicious cakes and party food that will satisfy your sweet
+              cravings. Our food are made with high-quality ingredients and
+              baked to perfection by our expert bakers. Whether you're
+              celebrating a special occasion or just want to treat yourself, our
+              cakes are perfect for any occasion.
             </Box>
           </Typography>
         </Grid>
@@ -192,9 +194,8 @@ const About = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
+                  You can only order two days prior to the date you need to get
+                  your order.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -219,9 +220,8 @@ const About = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
+                  Yes, we do. Please provide the correct location of where your
+                  order should be delivered at the ordering process.
                 </Typography>
               </AccordionDetails>
             </Accordion>

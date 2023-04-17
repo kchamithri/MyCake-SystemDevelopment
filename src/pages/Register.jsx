@@ -208,7 +208,10 @@ const Register = () => {
           }),
         });
         if (res.status === 400 || !res) {
-          window.alert("Already used details");
+          swal("Error", "Already used Details!", "warning", {
+            button: false,
+            timer: 1500,
+          });
         } else {
           swal("Success", "Successfully Registered", "success", {
             button: false,
